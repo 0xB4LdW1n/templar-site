@@ -15,7 +15,15 @@ and the screenshots) plus `404.html`, `robots.txt`, `sitemap.xml`, `CNAME` and `
 ## How it goes online
 
 A push to `main` runs `.github/workflows/pages.yml`: it checks that every page and every local
-reference exists, then uploads `site/` to GitHub Pages. No build step, no dependencies.
+reference exists, then uploads one folder to GitHub Pages. No build step, no dependencies.
+
+**Right now the site is closed.** `PUBLISH_DIR` in that workflow is set to `soon`, so the only
+thing on the server is the holding page in `soon/` (plus its font, its mark and a `robots.txt`
+that asks not to be indexed). The real pages are in this repository but are never uploaded, so
+no URL reaches them.
+
+To open the site: set `PUBLISH_DIR: site` in `.github/workflows/pages.yml` and push. To close it
+again: set it back to `soon`. Nothing else changes.
 
 The custom domain is **templar.red**, kept in `site/CNAME` and in Settings → Pages.
 

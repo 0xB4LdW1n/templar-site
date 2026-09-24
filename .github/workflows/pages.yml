@@ -1,8 +1,17 @@
-# Publishes the static site in site/ to GitHub Pages, on every push to main.
+# Publishes a folder of this repository to GitHub Pages, on every push to main.
 #
-# There is no build step: site/ is plain HTML, CSS, JS, fonts and images, and
-# it is uploaded as it is. The custom domain lives in site/CNAME and in the
-# repository's Pages settings; .nojekyll keeps Pages from touching the files.
+# PUBLISH_DIR below decides WHAT goes online, and it is the only switch:
+#
+#   soon   the holding page alone (what is online today). The real pages stay
+#          in this repository and never reach the server, so no URL can reach
+#          them: there is nothing to guess.
+#   site   the whole site: protocol, wallet, documentation, IT and EN.
+#
+# To open the site, set PUBLISH_DIR to `site` and push. To close it again, set
+# it back to `soon`. There is no build step either way: the folder is plain
+# HTML, CSS, JS, fonts and images, uploaded as it is. The custom domain lives
+# in the repository's Pages settings (and in a CNAME file in both folders);
+# .nojekyll keeps Pages from touching the files.
 #
 # Third-party actions are pinned to a commit SHA (the comment names the tag).
 name: pages
@@ -19,6 +28,10 @@ permissions:
 concurrency:
   group: pages
   cancel-in-progress: false
+
+env:
+  # `soon` = the holding page, `site` = the whole site. See the header.
+  PUBLISH_DIR: soon
 
 jobs:
   deploy:
@@ -42,15 +55,20 @@ jobs:
       - name: Check the pages and their assets
         run: |
           set -eu
-          for f in site/index.html site/en/index.html site/wallet/index.html \
-                   site/en/wallet/index.html site/wallet/docs/index.html \
-                   site/en/wallet/docs/index.html site/404.html site/CNAME \
-                   site/robots.txt site/sitemap.xml site/.nojekyll; do
-            test -e "$f" || { echo "missing: $f"; exit 1; }
+          test -d "$PUBLISH_DIR" || { echo "no such folder: $PUBLISH_DIR"; exit 1; }
+          if [ "$PUBLISH_DIR" = "site" ]; then
+            pages="index.html en/index.html wallet/index.html en/wallet/index.html \
+                   wallet/docs/index.html en/wallet/docs/index.html 404.html CNAME \
+                   robots.txt sitemap.xml .nojekyll"
+          else
+            pages="index.html 404.html CNAME robots.txt .nojekyll"
+          fi
+          for f in $pages; do
+            test -e "$PUBLISH_DIR/$f" || { echo "missing: $PUBLISH_DIR/$f"; exit 1; }
           done
-          python3 - <<'PY'
-          import os, pathlib, re, sys
-          root = pathlib.Path("site")
+          python3 - "$PUBLISH_DIR" <<'PY'
+          import pathlib, re, sys
+          root = pathlib.Path(sys.argv[1])
           missing = []
           for page in root.rglob("*.html"):
               html = page.read_text(encoding="utf-8")
@@ -62,12 +80,12 @@ jobs:
                   if not target.exists(): missing.append(f"{page}: {ref}")
           if missing:
               print("\n".join(sorted(missing))); sys.exit(1)
-          print("every local reference resolves")
+          print(f"{root}: every local reference resolves")
           PY
 
       - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
       - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
         with:
-          path: site
+          path: ${{ env.PUBLISH_DIR }}
       - id: deploy
         uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

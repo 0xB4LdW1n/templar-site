@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Templar Wallet — Documentazione</title>
-<meta name="description" content="La documentazione di Templar Wallet, il wallet Bitcoin e Liquid in alpha sulla rete di prova: installazione, verifica del download, primo wallet, multisig, hardware wallet, Liquid, collegamento a Templar Protocol e codice sorgente.">
+<meta name="description" content="La documentazione di Templar Wallet, il wallet Bitcoin e Liquid in alpha sulla rete di prova: installazione, verifica del download, primo wallet, multisig, hardware wallet, Liquid, collegamento a Templar Lend e codice sorgente.">
 <link rel="canonical" href="https://templar.red/wallet/docs/">
 <link rel="alternate" hreflang="it" href="https://templar.red/wallet/docs/">
 <link rel="alternate" hreflang="en" href="https://templar.red/en/wallet/docs/">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Templar Protocol">
+<meta property="og:site_name" content="Templar Lend">
 <meta property="og:title" content="Templar Wallet — Documentazione">
 <meta property="og:description" content="Come installare Templar Wallet e usarlo, un passo alla volta. Alpha, solo rete di prova.">
 <meta property="og:locale" content="it_IT">
@@ -42,7 +42,7 @@
       <a href="../#confronto">Confronto</a>
       <a href="../#scarica">Scarica</a>
       <a href="./" aria-current="page">Docs</a>
-      <a class="only-menu" href="../../">Templar Protocol &#8594;</a>
+      <a class="only-menu" href="../../">Templar Lend &#8594;</a>
       <div class="menu-tools only-menu">
         <div class="seg seg-nav" aria-label="Lingua"><a href="./" aria-current="page" hreflang="it">IT</a><a href="../../en/wallet/docs/" hreflang="en" lang="en">EN</a></div>
         <button type="button" class="nav-theme" data-theme-toggle aria-label="Cambia tema"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 2.5a7.5 7.5 0 0 1 0 15Z" fill="currentColor"/></svg></button>
@@ -56,7 +56,7 @@
       <button type="button" class="nav-theme" data-theme-toggle aria-label="Cambia tema">
         <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 2.5a7.5 7.5 0 0 1 0 15Z" fill="currentColor"/></svg>
       </button>
-      <a class="nav-x" href="../../">Templar Protocol<span aria-hidden="true">&#8594;</span></a>
+      <a class="nav-x" href="../../">Templar Lend<span aria-hidden="true">&#8594;</span></a>
       <a class="cta cta-sm" href="../#scarica"><span>Scarica</span><span class="cta-arrow" aria-hidden="true">&#8594;</span></a>
       <button type="button" class="menu-btn" aria-expanded="false" aria-controls="menu">Menu</button>
     </div>
@@ -122,7 +122,7 @@
         <li><a href="#multisig"><i>08</i><span>Multisig e co-firma</span></a></li>
         <li><a href="#hardware"><i>09</i><span>Hardware wallet</span></a></li>
         <li><a href="#liquid"><i>10</i><span>Liquid: asset, LiquiDEX e Peg</span></a></li>
-        <li><a href="#protocollo"><i>11</i><span>Collegare Templar Protocol</span></a></li>
+        <li><a href="#protocollo"><i>11</i><span>Collegare Templar Lend</span></a></li>
       </ol>
       <p class="toc-g">Aiuto</p>
       <ol>
@@ -160,7 +160,7 @@
           <li><a href="#multisig"><i>08</i><span>Multisig e co-firma</span></a></li>
           <li><a href="#hardware"><i>09</i><span>Hardware wallet</span></a></li>
           <li><a href="#liquid"><i>10</i><span>Liquid: asset, LiquiDEX e Peg</span></a></li>
-          <li><a href="#protocollo"><i>11</i><span>Collegare Templar Protocol</span></a></li>
+          <li><a href="#protocollo"><i>11</i><span>Collegare Templar Lend</span></a></li>
         </ol>
         <p class="toc-g">Aiuto</p>
         <ol>
@@ -554,7 +554,7 @@ update-desktop-database ~/.local/share/applications</code></pre>
   <p>Sul telefono un solo elenco: <em>Wallet info · Biometric unlock · Auto-lock · Vault &amp; backup · Lock now · Theme &amp; units · Reduce effects · Nodes &amp; explorers · Squid Protocol · Auto-sync · About</em>.</p>
   <ul class="doc-list">
     <li><b>Network &amp; Sync.</b> Sincronizzazione all'avvio. Rete Liquid <b>Testnet</b>. <b>Regtest</b> serve solo a chi sviluppa con un nodo locale. Il server Bitcoin è fisso, gli explorer si possono cambiare. Tor è annunciato, non ancora pronto.</li>
-    <li><b>Squid Protocol.</b> Siti collegati e richieste di firma: vedi <a href="#protocollo">Templar Protocol</a>.</li>
+    <li><b>Squid Protocol.</b> Siti collegati e richieste di firma: vedi <a href="#protocollo">Templar Lend</a>.</li>
     <li><b>Appearance.</b> Nome e colore del wallet, valuta, BTC o sats, tema <em>Dark</em>, <em>Light</em> o <em>System</em>. In un multisig c'è <em>Cosigner labels</em>: nomi e colori delle chiavi, salvati solo su questo dispositivo. <em>Language</em> non ha ancora effetto: l'app è solo in inglese.</li>
     <li><b>About.</b> Mostra per errore <code>v0.1.0-alpha.1</code>: la versione vera è la <code>0.1.0-alpha.15</code>. <em>Source code</em> porta al repository GitHub.</li>
   </ul>
@@ -729,10 +729,10 @@ update-desktop-database ~/.local/share/applications</code></pre>
 
 <section class="doc" id="protocollo" aria-labelledby="h-protocollo">
   <p class="doc-label">11 &mdash; <strong>Avanzato</strong></p>
-  <h2 class="doc-h" id="h-protocollo">Collegare Templar Protocol.</h2>
-  <p class="doc-lede">Templar Wallet firma i passi dei tuoi prestiti su un sito Templar Protocol. Le chiavi restano nel wallet.</p>
+  <h2 class="doc-h" id="h-protocollo">Collegare Templar Lend.</h2>
+  <p class="doc-lede">Templar Wallet firma i passi dei tuoi prestiti su un sito Templar Lend. Le chiavi restano nel wallet.</p>
   <p>Il sito costruisce le transazioni del prestito. Templar te le mostra e firma solo dopo la tua conferma. A trasmetterle in rete è il sito, mai il wallet.</p>
-  <p>Nell'app il protocollo si chiama <b>Templar Protocol</b>. I link iniziano con <code>templar://</code>.</p>
+  <p>Nell'app il protocollo si chiama <b>Templar Lend</b>. I link iniziano con <code>templar://</code>.</p>
 
   <h3 class="doc-h3" id="protocollo-prima">Prima di iniziare</h3>
   <ul class="doc-list">
@@ -897,7 +897,7 @@ Remove-Item -Force "$env:APPDATA\templar_wallet.json"</code></pre>
     <li>cosa stavi facendo, cosa ti aspettavi e cosa è successo;</li>
     <li>uno screenshot, se puoi.</li>
   </ul>
-  <p>Per un problema con <a href="#protocollo">Templar Protocol</a> aggiungi la rete Liquid, il riferimento del prestito, il <b>Request id</b> e uno screenshot della schermata di firma con tutte e due le colonne.</p>
+  <p>Per un problema con <a href="#protocollo">Templar Lend</a> aggiungi la rete Liquid, il riferimento del prestito, il <b>Request id</b> e uno screenshot della schermata di firma con tutte e due le colonne.</p>
 
   <h3 class="doc-h3" id="problemi-log">Allega il log</h3>
   <p>Su computer il log è <code>logs/templar.log</code> nella cartella dati, più <code>templar.log.1</code> se c'è. Per copiarlo sulla Scrivania, su macOS:</p>
@@ -1070,7 +1070,7 @@ cargo run -p squid-lend-server</code></pre>
     <li><b>Apri il sito.</b> Risponde su <code>http://127.0.0.1:8087</code>.</li>
     <li><b>Passa Templar su regtest.</b> Vai in <b>Settings &rsaquo; Network &amp; Sync &rsaquo; Liquid network</b>, scegli <b>Regtest</b> e premi <b>Apply</b>. Il wallet aperto si chiude: riaprilo e sincronizza.</li>
     <li><b>Ricevi monete di prova.</b> Sempre nel repository del protocollo: <code>cargo run -p squid-ops -- fund &lt;indirizzo&gt; 1.0</code>, con un indirizzo Liquid regtest di Templar.</li>
-    <li><b>Collega il wallet.</b> Sul sito premi <b>Collega Templar Wallet</b>. Se il link non apre l'app, incollalo in <b>Settings &rsaquo; Squid Protocol &rsaquo; Open a request</b>. Il resto funziona come in <a href="#protocollo">Collegare Templar Protocol</a>.</li>
+    <li><b>Collega il wallet.</b> Sul sito premi <b>Collega Templar Wallet</b>. Se il link non apre l'app, incollalo in <b>Settings &rsaquo; Squid Protocol &rsaquo; Open a request</b>. Il resto funziona come in <a href="#protocollo">Collegare Templar Lend</a>.</li>
   </ol>
 
   <p class="doc-src"><span>Fonti: <code>README.md</code>, <code>docs/build/</code>, <code>docs/guides/PROTOCOL_CONNECTOR.md</code></span><a class="gh" href="https://github.com/0xB4LdW1n/TemplarWallet/blob/main/README.md" rel="noopener" data-path="README.md"><svg class="ic" aria-hidden="true"><use href="#i-github"/></svg>Leggi su GitHub</a></p>
@@ -1086,10 +1086,10 @@ cargo run -p squid-lend-server</code></pre>
     <div class="foot-brand foot-anim">
       <a class="brand" href="../../">
         <img class="brand-mark" src="../../assets/img/templar-cross.svg" alt="" width="26" height="26">
-        <span class="word">Templar Protocol</span>
+        <span class="word">Templar Lend</span>
       </a>
       <p class="disclaimer">Templar Wallet &egrave; una alpha e funziona solo sulla rete di prova: le monete di prova non hanno valore. L'uso &egrave; sotto la responsabilit&agrave; di chi lo usa. Il codice &egrave; su GitHub, con licenza MIT.</p>
-      <p class="foot-copy">&copy; 2026 Templar Protocol. Tutti i diritti riservati.</p>
+      <p class="foot-copy">&copy; 2026 Templar Lend. Tutti i diritti riservati.</p>
     </div>
     <div class="foot-cols">
       <div class="foot-col foot-anim"><h3>Wallet</h3><ul><li><a href="../#funzioni">Funzioni</a></li><li><a href="../#tour">Tour</a></li><li><a href="../#confronto">Confronto</a></li><li><a href="../#scarica">Scarica</a></li><li><a href="../#codice">Codice</a></li><li><a href="./" aria-current="page">Documentazione</a></li></ul></div>

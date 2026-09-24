@@ -3,15 +3,15 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Templar Protocol — USDt loans backed by bitcoin, on the Liquid Network</title>
+<title>Templar Lend — USDt loans backed by bitcoin, on the Liquid Network</title>
 <meta name="description" content="Peer-to-peer fixed-term loans in Liquid USDt, backed by L-BTC and settled on-chain on the Liquid Network. No custodian, no oracle, no price liquidation. You sign in your wallet.">
 <link rel="canonical" href="https://templar.red/en/">
 <link rel="alternate" hreflang="it" href="https://templar.red/">
 <link rel="alternate" hreflang="en" href="https://templar.red/en/">
 <link rel="alternate" hreflang="x-default" href="https://templar.red/">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="Templar Protocol">
-<meta property="og:title" content="Templar Protocol — Borrow against your bitcoin. Keep the keys.">
+<meta property="og:site_name" content="Templar Lend">
+<meta property="og:title" content="Templar Lend — Borrow against your bitcoin. Keep the keys.">
 <meta property="og:description" content="Fixed-term loans in Liquid USDt, backed by L-BTC. No custodian, no oracle, no price liquidation.">
 <meta property="og:url" content="https://templar.red/en/">
 <meta property="og:image" content="https://templar.red/assets/img/og-en.png">
@@ -32,9 +32,9 @@
 
 <header class="nav" data-open="false">
   <div class="wrap">
-    <a class="brand" href="#top" aria-label="Templar Protocol, top of page">
+    <a class="brand" href="#top" aria-label="Templar Lend, top of page">
       <img class="brand-mark" src="../assets/img/templar-cross.svg" alt="" width="26" height="26">
-      <span class="word">Templar Protocol</span>
+      <span class="word">Templar Lend</span>
     </a>
     <span class="tag tag-warn nav-net"><i class="dot"></i>Testnet</span>
     <nav class="nav-links" id="menu" aria-label="Sections">
@@ -375,40 +375,40 @@
         <p class="lede" style="margin-top: var(--s2)">Liquidity without selling your bitcoin. A contract on the chain, a custodian, or a bank.</p>
       </div>
     </div>
-    <div class="schema reveal" role="table" aria-label="Templar Protocol, custodial lender and bank compared">
+    <div class="schema reveal" role="table" aria-label="Templar Lend, custodial lender and bank compared">
       <div class="sch-heads" role="row">
         <div class="sch-k" role="columnheader"><span class="sr-only">Criterion</span></div>
-        <div class="sch-head sch-us" role="columnheader"><img src="../assets/img/templar-cross.svg" alt="" width="40" height="40"><b>Templar Protocol</b><span>a contract on the chain</span></div>
+        <div class="sch-head sch-us" role="columnheader"><img src="../assets/img/templar-cross.svg" alt="" width="40" height="40"><b>Templar Lend</b><span>a contract on the chain</span></div>
         <div class="sch-head" role="columnheader"><svg aria-hidden="true"><use href="#i-vault"/></svg><b>Custodial lender</b><span>a company holds your bitcoin</span></div>
         <div class="sch-head" role="columnheader"><svg aria-hidden="true"><use href="#i-bank"/></svg><b>Bank</b><span>an account, a judgement</span></div>
       </div>
       <div class="sch-row" role="row">
         <p class="sch-k" role="rowheader">Who holds the keys</p>
-        <div class="sch-c sch-us" role="cell" data-who="Templar Protocol"><b class="yes">Nobody</b><span>On-chain escrow: no operator can spend it.</span></div>
+        <div class="sch-c sch-us" role="cell" data-who="Templar Lend"><b class="yes">Nobody</b><span>On-chain escrow: no operator can spend it.</span></div>
         <div class="sch-c" role="cell" data-who="Custodial lender"><b class="no">The lender</b><span>Your bitcoin enter its balance sheet.</span></div>
         <div class="sch-c" role="cell" data-who="Bank"><b class="no">The bank</b><span>Or a custodian on its behalf.</span></div>
       </div>
       <div class="sch-row" role="row">
         <p class="sch-k" role="rowheader">What triggers liquidation</p>
-        <div class="sch-c sch-us" role="cell" data-who="Templar Protocol"><b class="yes">Only the deadline</b><span>Expired without repayment. The price does not count.</span></div>
+        <div class="sch-c sch-us" role="cell" data-who="Templar Lend"><b class="yes">Only the deadline</b><span>Expired without repayment. The price does not count.</span></div>
         <div class="sch-c" role="cell" data-who="Custodial lender"><b class="no">The price</b><span>Thresholds and timing set by the lender.</span></div>
         <div class="sch-c" role="cell" data-who="Bank"><b class="no">A judgement</b><span>Clauses, ratings, internal decisions.</span></div>
       </div>
       <div class="sch-row" role="row">
         <p class="sch-k" role="rowheader">What you know before signing</p>
-        <div class="sch-c sch-us" role="cell" data-who="Templar Protocol"><b class="yes">A flat fee</b><span>Written in the contract. No other line.</span></div>
+        <div class="sch-c sch-us" role="cell" data-who="Templar Lend"><b class="yes">A flat fee</b><span>Written in the contract. No other line.</span></div>
         <div class="sch-c" role="cell" data-who="Custodial lender"><b class="no">A variable rate</b><span>Spread and terms that can change.</span></div>
         <div class="sch-c" role="cell" data-who="Bank"><b class="no">A variable rate</b><span>Charges, penalties, clauses.</span></div>
       </div>
       <div class="sch-row" role="row">
         <p class="sch-k" role="rowheader">Who sees the amounts</p>
-        <div class="sch-c sch-us" role="cell" data-who="Templar Protocol"><b class="yes">The two parties</b><span>Blinded amounts on the chain.</span></div>
+        <div class="sch-c sch-us" role="cell" data-who="Templar Lend"><b class="yes">The two parties</b><span>Blinded amounts on the chain.</span></div>
         <div class="sch-c" role="cell" data-who="Custodial lender"><b class="no">The lender</b><span>And the chain, if it is transparent.</span></div>
         <div class="sch-c" role="cell" data-who="Bank"><b class="no">The bank</b><span>And whoever asks it.</span></div>
       </div>
       <div class="sch-row" role="row">
         <p class="sch-k" role="rowheader">If the operator disappears</p>
-        <div class="sch-c sch-us" role="cell" data-who="Templar Protocol"><b class="yes">The contract remains</b><span>It lives on the chain, signable by your wallet.</span></div>
+        <div class="sch-c sch-us" role="cell" data-who="Templar Lend"><b class="yes">The contract remains</b><span>It lives on the chain, signable by your wallet.</span></div>
         <div class="sch-c" role="cell" data-who="Custodial lender"><b class="no">The funds disappear</b><span>It has happened before.</span></div>
         <div class="sch-c" role="cell" data-who="Bank"><b class="no">Public guarantees</b><span>With limits and long waits.</span></div>
       </div>
@@ -522,7 +522,7 @@
     <div class="conn reveal" aria-label="The site, the connector, the wallet">
       <figure class="cn-site">
         <div class="win">
-          <div class="win-bar"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="win-url">templar-protocol &middot; app</span></div>
+          <div class="win-bar"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="win-url">templar-lend &middot; app</span></div>
           <div class="win-pg">
             <p class="label">The site</p>
             <p class="win-h">Prepares the transaction</p>
@@ -620,10 +620,10 @@
     <div class="foot-brand foot-anim">
       <a class="brand" href="#top">
       <img class="brand-mark" src="../assets/img/templar-cross.svg" alt="" width="26" height="26">
-        <span class="word">Templar Protocol</span>
+        <span class="word">Templar Lend</span>
       </a>
-      <p class="disclaimer">Templar Protocol is open-source software; use is at the user's own responsibility. Taking or granting a loan carries risks: the collateral's volatility, bugs in the software, the behaviour of the network. This page describes a development build on the test network: no real funds.</p>
-      <p class="foot-copy">© 2026 Templar Protocol. All rights reserved.</p>
+      <p class="disclaimer">Templar Lend is open-source software; use is at the user's own responsibility. Taking or granting a loan carries risks: the collateral's volatility, bugs in the software, the behaviour of the network. This page describes a development build on the test network: no real funds.</p>
+      <p class="foot-copy">© 2026 Templar Lend. All rights reserved.</p>
     </div>
     <div class="foot-cols">
       <div class="foot-col foot-anim">

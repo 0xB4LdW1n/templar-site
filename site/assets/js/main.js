@@ -1,4 +1,4 @@
-/* Templar Protocol landing — theme, language memory, menu, block-clock ruler, delayed nav,
+/* Templar Lend landing — theme, language memory, menu, block-clock ruler, delayed nav,
    pinned hero phrases, worked-example diagram on a clock, device composition, footer reveal.
    Everything degrades: without JS the page is complete and static. */
 (function () {

@@ -1,11 +1,11 @@
-# templar.red — the Templar Protocol website
+# templar.red — the Templar Lend website
 
-The public site: what the protocol is, what Templar Wallet is, and its documentation.
-Italian first, English beside it. No app: the protocol app is not published yet.
+The public site: what Templar Lend is, what Templar Wallet is, and its documentation.
+Italian first, English beside it. No app: the lending app is not published yet.
 
 | Page | Italian | English |
 |---|---|---|
-| The protocol | `site/index.html` | `site/en/index.html` |
+| Templar Lend | `site/index.html` | `site/en/index.html` |
 | Templar Wallet | `site/wallet/index.html` | `site/en/wallet/index.html` |
 | Documentation | `site/wallet/docs/index.html` | `site/en/wallet/docs/index.html` |
 

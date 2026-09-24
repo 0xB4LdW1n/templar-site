@@ -1,0 +1,682 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Templar Protocol — USDt loans backed by bitcoin, on the Liquid Network</title>
+<meta name="description" content="Peer-to-peer fixed-term loans in Liquid USDt, backed by L-BTC and settled on-chain on the Liquid Network. No custodian, no oracle, no price liquidation. You sign in your wallet.">
+<link rel="canonical" href="https://templar.red/en/">
+<link rel="alternate" hreflang="it" href="https://templar.red/">
+<link rel="alternate" hreflang="en" href="https://templar.red/en/">
+<link rel="alternate" hreflang="x-default" href="https://templar.red/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Templar Protocol">
+<meta property="og:title" content="Templar Protocol — Borrow against your bitcoin. Keep the keys.">
+<meta property="og:description" content="Fixed-term loans in Liquid USDt, backed by L-BTC. No custodian, no oracle, no price liquidation.">
+<meta property="og:url" content="https://templar.red/en/">
+<meta property="og:image" content="https://templar.red/assets/img/og-en.png">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="it_IT">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#F2F5F4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A0E0D" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="../assets/img/favicon.svg" type="image/svg+xml">
+<script>try{var t=localStorage.getItem('sp-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}document.documentElement.classList.add('nav-off','js')</script>
+<noscript><style>.nav-off .nav{opacity:1;transform:none;pointer-events:auto}</style></noscript>
+<link rel="preload" href="../assets/fonts/Archivo-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../assets/fonts/JetBrainsMono-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="nav" data-open="false">
+  <div class="wrap">
+    <a class="brand" href="#top" aria-label="Templar Protocol, top of page">
+      <img class="brand-mark" src="../assets/img/templar-cross.svg" alt="" width="26" height="26">
+      <span class="word">Templar Protocol</span>
+    </a>
+    <span class="tag tag-warn nav-net"><i class="dot"></i>Testnet</span>
+    <nav class="nav-links" id="menu" aria-label="Sections">
+      <a href="#protocollo">Protocol</a>
+      <a href="#sicurezza">Security</a>
+      <a href="#costi">Costs</a>
+      <a href="#wallet">Connector</a>
+      <a class="only-menu" href="wallet/">Templar Wallet &#8594;</a>
+      <div class="menu-tools only-menu">
+        <div class="seg seg-nav" aria-label="Language"><a href="../" data-lang-set="it" hreflang="it" lang="it">IT</a><a href="./" aria-current="page" data-lang-set="en" hreflang="en">EN</a></div>
+        <button type="button" class="nav-theme" data-theme-toggle aria-label="Switch theme"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 2.5a7.5 7.5 0 0 1 0 15Z" fill="currentColor"/></svg></button>
+      </div>
+    </nav>
+    <div class="nav-ctl">
+      <div class="seg seg-nav" aria-label="Language">
+        <a href="../" data-lang-set="it" hreflang="it" lang="it">IT</a>
+        <a href="./" aria-current="page" data-lang-set="en" hreflang="en">EN</a>
+      </div>
+      <button type="button" class="nav-theme" data-theme-toggle aria-label="Switch theme">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 2.5a7.5 7.5 0 0 1 0 15Z" fill="currentColor"/></svg>
+      </button>
+      <a class="nav-x" href="wallet/">Templar Wallet<span aria-hidden="true">&#8594;</span></a>
+      <span class="cta cta-sm is-soon" aria-disabled="true"><span>Open the app</span><em>coming</em></span>
+      <button type="button" class="menu-btn" aria-expanded="false" aria-controls="menu">Menu</button>
+    </div>
+  </div>
+</header>
+
+<!-- icon sprite: one definition, used by the diagram, the ledger and the device mock -->
+<svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false"><defs>
+  <symbol id="i-person" viewBox="0 0 24 24" fill="currentColor"><path d="M20.25 23H17.46V18.38Q17.46 17.65 16.91 17.1Q16.36 16.55 15.63 16.55H8.3Q7.56 16.55 7.01 17.1Q6.46 17.65 6.46 18.38V23H3.75V18.38Q3.75 17.21 4.34 16.14Q4.92 15.08 5.99 14.46Q7.05 13.83 8.3 13.83H15.63Q16.88 13.83 17.94 14.46Q19 15.08 19.59 16.14Q20.18 17.21 20.25 18.38ZM11.96 12Q10.5 12 9.21 11.27Q7.93 10.53 7.2 9.25Q6.46 7.97 6.46 6.5Q6.46 5.03 7.2 3.75Q7.93 2.47 9.21 1.73Q10.5 1 11.96 1Q13.43 1 14.71 1.73Q16 2.47 16.73 3.75Q17.46 5.03 17.46 6.5Q17.46 7.97 16.73 9.25Q16 10.53 14.71 11.27Q13.43 12 11.96 12ZM11.96 3.71Q10.79 3.71 9.98 4.52Q9.18 5.33 9.21 6.5Q9.25 7.67 10.02 8.44Q10.79 9.21 11.96 9.21Q13.14 9.21 13.94 8.44Q14.75 7.67 14.75 6.5Q14.75 5.33 13.94 4.52Q13.14 3.71 11.96 3.71Z"/></symbol>
+  <symbol id="i-vault" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><rect x="2.5" y="3" width="19" height="16" rx="2"/><circle cx="12" cy="11" r="4"/><path d="M12 8.6v2.4l1.6 1.2M6 19v2.5M18 19v2.5M2.5 11h2M19.5 11h2"/></symbol>
+  <symbol id="i-bank" viewBox="0 0 24 24" fill="currentColor"><path d="M1 20.21H23V23H1ZM23 8.41V10.17H20.29V15.67H22.12V18.38H1.95V15.67H3.79V10.17H1V8.41Q1 7.6 1.44 6.83Q1.88 6.06 2.61 5.69L10.53 1.37Q11.19 1 12 1Q12.81 1 13.47 1.37L21.39 5.69Q22.12 6.06 22.56 6.83Q23 7.6 23 8.41ZM5.18 7.38H18.82L12.22 3.79Q12 3.71 11.85 3.79ZM11.12 10.17V15.67H12.95V10.17ZM6.5 15.67H8.33V10.17H6.5ZM17.5 10.17H15.67V15.67H17.5Z"/></symbol>
+  <symbol id="i-squid" viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3c-4.4 0-7 3.6-7 8v6c0 1.5.8 2.6 2 3.2V22h10v-1.8c1.2-.6 2-1.7 2-3.2v-6c0-4.4-2.6-8-7-8Z"/><path d="M9 9 6 12M23 9l3 3"/><circle cx="13" cy="14" r="1.3" fill="currentColor" stroke="none"/><circle cx="19" cy="14" r="1.3" fill="currentColor" stroke="none"/><path d="M11 22c0 3-1 5-2 6M14 22c0 3 0 5-.5 7M18 22c0 3 0 5 .5 7M21 22c0 3 1 5 2 6"/></symbol>
+  <symbol id="i-lock" viewBox="0 0 24 24" fill="currentColor"><path d="M18.5 8.23V7.42Q18.42 5.72 17.57 4.21Q16.72 2.7 15.25 1.85Q13.77 1 12 1Q10.23 1 8.75 1.85Q7.28 2.7 6.39 4.21Q5.5 5.72 5.5 7.42V8.23H2.77V20.19Q2.77 21.38 3.58 22.19Q4.4 23 5.5 23H18.5Q19.6 23 20.42 22.19Q21.23 21.38 21.23 20.19V8.23ZM8.31 7.42Q8.31 5.95 9.38 4.84Q10.45 3.73 12 3.73Q13.55 3.73 14.62 4.84Q15.69 5.95 15.69 7.42V8.23H8.31ZM5.58 20.19V10.97H18.5V20.19ZM10.15 13.77H13.85V16.5H10.15Z"/></symbol>
+  <symbol id="i-lock-open" viewBox="0 0 24 24" fill="currentColor"><path d="M8.31 8.25V7.44Q8.31 6.19 9.09 5.19Q9.86 4.2 11.08 3.9Q12.29 3.61 13.44 4.09Q14.58 4.57 15.24 5.67L17.6 4.35Q16.57 2.43 14.54 1.54Q12.52 0.66 10.38 1.21Q8.24 1.77 6.88 3.54Q5.51 5.3 5.59 7.44V8.25H2.78V20.2Q2.78 21.38 3.59 22.19Q4.41 23 5.51 23H18.49Q19.59 23 20.41 22.19Q21.22 21.38 21.22 20.2V8.25ZM5.59 20.2V10.98H18.49V20.2ZM10.16 13.78H13.84V16.51H10.16Z"/></symbol>
+  <symbol id="i-blocks" viewBox="0 0 24 24" fill="currentColor"><path d="M18.16 9.8V4.15L13.61 1.44Q12.88 1 12 1Q11.12 1 10.39 1.44L5.84 4.15V9.8L1 12.66V19.85L5.55 22.56Q6.35 23 7.2 23Q8.04 23 8.85 22.56L12 20.65L15.23 22.56Q15.96 23 16.84 23Q17.72 23 18.45 22.56L23 19.85V12.66L18.23 9.8ZM16.84 15.15 14.27 13.69 16.84 12.15 19.33 13.69ZM7.23 15.15 4.67 13.69 7.23 12.15 9.73 13.69ZM8.55 6.79 11.12 8.26V11.27L8.55 9.8ZM12.95 11.27V8.26L15.45 6.79V9.8ZM11.78 3.79Q12 3.64 12.22 3.79L14.57 5.18L12 6.65L9.51 5.18ZM3.79 18.31V15.3L6.28 16.77V19.77ZM8.11 19.77V16.77L10.61 15.3V18.31ZM13.39 18.31V15.3L15.89 16.77V19.77ZM17.72 19.77V16.77L20.21 15.3V18.31Z"/></symbol>
+  <symbol id="i-btc" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10.6" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M15.11 11.38Q15.62 10.69 15.62 9.83Q15.62 8.79 14.92 8.04Q14.22 7.28 13.22 7.17V6.2H11.75V7.17H10.78V6.2H9.35V7.17H9.08Q8.38 7.17 7.9 7.67Q7.42 8.17 7.42 8.87V15.13Q7.42 15.83 7.9 16.33Q8.38 16.83 9.08 16.83H9.35V17.8H10.78V16.83H11.75V17.8H13.22V16.83H13.68Q14.46 16.83 15.13 16.45Q15.81 16.06 16.2 15.38Q16.58 14.71 16.58 13.91Q16.58 13.12 16.18 12.44Q15.77 11.77 15.11 11.38ZM8.85 8.87Q8.85 8.75 8.93 8.67Q9 8.6 9.08 8.6H12.95Q13.45 8.6 13.82 8.96Q14.18 9.33 14.18 9.83Q14.18 10.34 13.82 10.69Q13.45 11.03 12.95 11.03H8.85ZM13.68 15.36H9.08Q9 15.36 8.93 15.31Q8.85 15.25 8.85 15.13V12.46H13.68Q14.26 12.46 14.71 12.91Q15.15 13.35 15.15 13.93Q15.15 14.51 14.71 14.94Q14.26 15.36 13.68 15.36Z"/></symbol>
+  <symbol id="i-usd" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="10.6" fill="none" stroke="currentColor" stroke-width="2.4"/><path d="M15.87 10.07V9.72Q15.87 9.02 15.52 8.44Q15.17 7.86 14.59 7.51Q14.01 7.17 13.31 7.17H12.73V6.2H11.27V7.17H10.69Q9.76 7.17 9.02 7.79Q8.29 8.4 8.15 9.35Q8.02 10.3 8.52 11.11Q9.02 11.92 9.95 12.19L11.27 12.54V15.36H10.69Q10.22 15.36 9.91 15.05Q9.6 14.75 9.6 14.28V13.93H8.13V14.28Q8.13 14.98 8.48 15.56Q8.83 16.14 9.41 16.49Q9.99 16.83 10.69 16.83H11.27V17.8H12.73V16.83H13.31Q14.24 16.83 14.98 16.21Q15.71 15.6 15.85 14.65Q15.98 13.7 15.48 12.89Q14.98 12.08 14.05 11.81L12.73 11.46V8.6H13.31Q13.78 8.64 14.09 8.95Q14.4 9.25 14.4 9.72V10.07ZM13.62 13.2Q14.01 13.31 14.24 13.66Q14.47 14.01 14.42 14.44Q14.36 14.86 14.03 15.13Q13.7 15.4 13.31 15.36H12.73V12.97ZM11.27 11.03 10.38 10.8Q9.99 10.69 9.76 10.34Q9.53 9.99 9.58 9.56Q9.64 9.14 9.97 8.89Q10.3 8.64 10.69 8.64H11.27Z"/></symbol>
+  <symbol id="i-tag" viewBox="0 0 24 24" fill="currentColor"><path d="M21.28 8.85 13.36 1 5.44 1.95 5.8 4.67 12.4 3.93 19.3 10.83Q19.44 10.9 19.3 11.05L18.2 12.22L11.3 5.33L2.58 6.5L1.92 15.01L9.1 22.12Q9.98 23 11.16 23Q12.33 23 13.21 22.12L18.49 16.62Q19.15 15.96 19.3 15.08L21.28 12.95Q22.08 12.15 22.08 10.94Q22.08 9.73 21.28 8.85ZM16.58 14.71 11.23 20.21Q11.23 20.21 11.16 20.21Q11.08 20.21 11.01 20.21L4.78 13.91L5.14 8.92L10.28 8.26L16.58 14.49Q16.58 14.57 16.58 14.6Q16.58 14.64 16.58 14.71ZM9.25 11.56Q9.25 12.15 8.85 12.55Q8.44 12.95 7.89 12.92Q7.34 12.88 6.94 12.51Q6.54 12.15 6.54 11.56Q6.54 10.97 6.94 10.57Q7.34 10.17 7.89 10.17Q8.44 10.17 8.85 10.57Q9.25 10.97 9.25 11.56Z"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24" fill="currentColor"><path d="M8.06 20Q6.99 20 6.31 19.24L1 14.01L3.05 11.96L8.06 16.97L20.95 4L23 6.04L9.72 19.24Q9.04 20 7.98 20Z"/></symbol>
+  <symbol id="i-swap" viewBox="0 0 24 24" fill="currentColor"><path d="M23 18.42H5.33L7.09 20.18L5.11 22.08L1.66 18.64Q1 17.98 1 17.02Q1 16.07 1.66 15.41L5.11 11.96L7.09 13.94L5.33 15.7H23ZM16.99 10.13 18.89 12.04 22.34 8.59Q23 7.93 23 6.98Q23 6.02 22.34 5.36L18.89 1.92L16.99 3.9L18.67 5.58H1V8.37H18.67Z"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24" fill="currentColor"><path d="M7.7 22.99Q5.64 22.99 3.96 21.85Q2.27 20.71 1.5 18.88Q0.74 17.05 1.14 15.07Q1.54 13.09 3.01 11.63L6.67 7.89L8.65 9.87L4.91 13.61Q4.18 14.34 3.92 15.33Q3.67 16.32 3.92 17.34Q4.18 18.37 4.91 19.1Q5.64 19.84 6.67 20.09Q7.7 20.35 8.69 20.09Q9.67 19.84 10.41 19.1L14.14 15.37L16.12 17.34L12.39 21.01Q11.43 21.96 10.22 22.47Q9.01 22.99 7.7 22.99ZM17.37 16.1 15.39 14.12 19.13 10.38Q20.22 9.28 20.22 7.67Q20.22 6.06 19.09 4.93Q17.95 3.79 16.34 3.79Q14.73 3.79 13.63 4.89L9.89 8.63L7.92 6.65L11.65 2.98Q12.97 1.66 14.66 1.23Q16.34 0.79 18.06 1.26Q19.79 1.74 21.03 2.98Q22.28 4.23 22.75 5.95Q23.23 7.67 22.79 9.36Q22.35 11.04 21.03 12.36ZM7.92 14.12 14.14 7.89 16.12 9.87 9.89 16.1Z"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24" fill="currentColor"><path d="M20.29 13.83Q19.85 11.63 18.53 10.17L20.65 8.33Q22.41 10.39 23 13.32ZM20.21 16.11 22.93 16.62Q22.56 18.53 21.13 19.85Q19.7 21.17 17.94 21.17Q16.18 21.17 14.57 19.99Q12.73 21.17 10.61 21.17Q8.11 21.17 5.91 18.89Q3.49 21.17 1 21.17V18.45Q2.54 18.45 4.15 16.77Q2.76 14.64 1.81 12Q1 9.58 1 7.89Q1 6.5 1.7 5.36Q2.39 4.23 3.53 3.53Q4.67 2.83 6.02 2.83Q7.38 2.83 8.55 3.53Q9.73 4.23 10.42 5.36Q11.12 6.5 11.12 7.89Q11.12 9.58 10.17 12.07Q9.21 14.64 7.67 16.84Q9.21 18.38 10.61 18.38Q11.63 18.38 12.59 17.94Q11.93 16.91 11.52 15.81Q11.12 14.71 11.12 13.83Q11.12 12.29 12.18 11.23Q13.25 10.17 14.75 10.17Q16.25 10.17 17.35 11.23Q18.45 12.29 18.45 13.83Q18.45 14.71 17.98 15.85Q17.5 16.99 16.69 18.09Q17.35 18.38 17.94 18.38Q18.75 18.38 19.41 17.72Q20.07 17.06 20.21 16.11ZM5.99 14.49Q7.01 12.81 7.67 10.97Q8.33 9.14 8.33 7.89Q8.33 6.94 7.67 6.24Q7.01 5.55 6.06 5.55Q5.11 5.55 4.41 6.24Q3.71 6.94 3.71 7.89Q3.71 9.14 4.34 10.97Q4.96 12.81 5.99 14.49ZM15.67 13.83Q15.67 13.47 15.41 13.17Q15.15 12.88 14.75 12.88Q14.35 12.88 14.09 13.17Q13.83 13.47 13.83 13.87Q13.83 14.27 14.05 14.9Q14.27 15.52 14.71 16.11Q15.15 15.52 15.41 14.9Q15.67 14.27 15.67 13.83Z"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24" fill="currentColor"><path d="M2.61 6.72Q1.88 6.94 1.44 7.53Q1 8.11 1 8.92Q1 9.8 1.73 10.46L4.67 13.39V19.33H10.61L13.54 22.34Q14.2 23 15.15 23Q15.45 23 15.67 22.93Q16.25 22.78 16.69 22.34Q17.13 21.9 17.28 21.39L23 1ZM4.23 9.14 16.33 5.69 7.45 14.64V12.29ZM14.86 19.77 11.71 16.55H9.36L18.23 7.67Z"/></symbol>
+  <symbol id="i-shield" viewBox="0 0 24 24" fill="currentColor"><path d="M11.27 11.71 9.65 10.02 7.67 11.93 9.65 14.05Q10.31 14.71 11.19 14.71Q12.15 14.71 12.73 14.13L17.35 9.51L15.37 7.53ZM11.93 23 11.41 22.78Q10.31 22.27 9.07 21.46Q6.57 19.77 4.96 17.79Q2.83 15.08 2.83 12V6.06Q2.83 5.18 3.35 4.45Q3.86 3.71 4.74 3.42L12 1L19.26 3.42Q20.14 3.71 20.65 4.45Q21.17 5.18 21.17 6.06V12Q21.17 15.52 18.97 18.23Q17.43 20.29 14.86 21.68Q13.54 22.49 12.44 22.85ZM12 3.93 5.62 6.06V12Q5.62 14.79 8.26 17.28Q9.87 18.89 12.07 19.99Q14.27 19.11 15.81 17.65Q18.38 15.23 18.38 12V6.06Z"/></symbol>
+  <symbol id="g-btc" viewBox="0 0 24 24" fill="currentColor"><path d="M16.83 11.04Q17.61 9.96 17.61 8.64Q17.61 7.02 16.53 5.85Q15.45 4.68 13.89 4.5V3H11.61V4.5H10.11V3H7.89V4.5H7.47Q6.39 4.5 5.64 5.28Q4.89 6.06 4.89 7.14V16.86Q4.89 17.94 5.64 18.72Q6.39 19.5 7.47 19.5H7.89V21H10.11V19.5H11.61V21H13.89V19.5H14.61Q15.81 19.5 16.86 18.9Q17.91 18.3 18.51 17.25Q19.11 16.2 19.11 14.97Q19.11 13.74 18.48 12.69Q17.85 11.64 16.83 11.04ZM7.11 7.14Q7.11 6.96 7.23 6.84Q7.35 6.72 7.47 6.72H13.47Q14.25 6.72 14.82 7.29Q15.39 7.86 15.39 8.64Q15.39 9.42 14.82 9.96Q14.25 10.5 13.47 10.5H7.11ZM14.61 17.22H7.47Q7.35 17.22 7.23 17.13Q7.11 17.04 7.11 16.86V12.72H14.61Q15.51 12.72 16.2 13.41Q16.89 14.1 16.89 15Q16.89 15.9 16.2 16.56Q15.51 17.22 14.61 17.22Z"/></symbol>
+  <symbol id="g-usd" viewBox="0 0 24 24" fill="currentColor"><path d="M18 9V8.46Q18 7.38 17.46 6.48Q16.92 5.58 16.02 5.04Q15.12 4.5 14.04 4.5H13.14V3H10.86V4.5H9.96Q8.52 4.5 7.38 5.46Q6.24 6.42 6.03 7.89Q5.82 9.36 6.6 10.62Q7.38 11.88 8.82 12.3L10.86 12.84V17.22H9.96Q9.24 17.22 8.76 16.74Q8.28 16.26 8.28 15.54V15H6V15.54Q6 16.62 6.54 17.52Q7.08 18.42 7.98 18.96Q8.88 19.5 9.96 19.5H10.86V21H13.14V19.5H14.04Q15.48 19.5 16.62 18.54Q17.76 17.58 17.97 16.11Q18.18 14.64 17.4 13.38Q16.62 12.12 15.18 11.7L13.14 11.16V6.72H14.04Q14.76 6.78 15.24 7.26Q15.72 7.74 15.72 8.46V9ZM14.52 13.86Q15.12 14.04 15.48 14.58Q15.84 15.12 15.75 15.78Q15.66 16.44 15.15 16.86Q14.64 17.28 14.04 17.22H13.14V13.5ZM10.86 10.5 9.48 10.14Q8.88 9.96 8.52 9.42Q8.16 8.88 8.25 8.22Q8.34 7.56 8.85 7.17Q9.36 6.78 9.96 6.78H10.86Z"/></symbol>
+  <symbol id="i-flag" viewBox="0 0 24 24" fill="currentColor"><path d="M15.67 4.67V4.23Q15.67 2.91 14.71 1.95Q13.76 1 12.44 1H1V23H3.79V13.83H10.17V14.27Q10.17 15.59 11.12 16.55Q12.07 17.5 13.39 17.5H23V4.67ZM3.79 3.71H12.44Q12.66 3.71 12.81 3.86Q12.95 4.01 12.95 4.23V11.05H3.79ZM20.29 14.71H13.39Q13.17 14.79 13.03 14.64Q12.88 14.49 12.88 14.27V13.83H15.67V7.38H20.29Z"/></symbol>
+  <symbol id="i-arrow" viewBox="0 0 24 24" fill="currentColor"><path d="M16.55 15.89 19.04 13.39 1 13.32V10.61H19.04L16.55 8.11L18.45 6.13L22.05 9.73Q23 10.68 23 12Q23 13.32 22.05 14.27L18.45 17.87Z"/></symbol>
+  <symbol id="i-mail" viewBox="0 0 24 24" fill="currentColor"><path d="M20.29 1.92H3.79Q2.61 1.92 1.81 2.72Q1 3.53 1 4.7V22.08H23V4.7Q23 3.53 22.19 2.72Q21.39 1.92 20.21 1.92ZM20.07 4.7 13.47 11.23Q12.88 11.82 12 11.82Q11.12 11.82 10.53 11.23L3.93 4.7ZM3.79 19.37V8.37L8.55 13.21Q9.21 13.87 10.13 14.24Q11.05 14.6 12 14.6Q12.95 14.6 13.87 14.24Q14.79 13.87 15.45 13.21L20.29 8.37V19.37Z"/></symbol>
+  <symbol id="i-team" viewBox="0 0 24 24" fill="currentColor"><path d="M7.89 12.88Q6.13 12.88 4.92 11.71Q3.71 10.53 3.75 8.81Q3.79 7.09 4.96 5.88Q6.13 4.67 7.86 4.67Q9.58 4.67 10.79 5.88Q12 7.09 12 8.81Q12 10.53 10.79 11.71Q9.58 12.88 7.89 12.88ZM7.89 7.38Q7.31 7.38 6.9 7.78Q6.5 8.19 6.5 8.77Q6.5 9.36 6.9 9.76Q7.31 10.17 7.89 10.17Q8.48 10.17 8.85 9.76Q9.21 9.36 9.21 8.77Q9.21 8.19 8.85 7.78Q8.48 7.38 7.89 7.38ZM14.79 19.77Q14.71 18.45 14.05 17.28Q13.39 16.11 12.22 15.45Q11.05 14.79 9.73 14.71H6.06Q4.67 14.79 3.53 15.45Q2.39 16.11 1.7 17.28Q1 18.45 1 19.77V23H3.79V19.77Q3.79 18.82 4.45 18.16Q5.11 17.5 6.06 17.5H9.73Q10.68 17.5 11.34 18.16Q12 18.82 12 19.77V23H14.79ZM17.06 9.21Q15.3 9.29 14.13 8.08Q12.95 6.87 12.95 5.14Q12.95 3.42 14.13 2.21Q15.3 1 17.02 1Q18.75 1 19.96 2.21Q21.17 3.42 21.17 5.14Q21.17 6.87 19.96 8.04Q18.75 9.21 17.06 9.29ZM17.06 3.71Q16.47 3.71 16.07 4.12Q15.67 4.52 15.67 5.11Q15.67 5.69 16.07 6.1Q16.47 6.5 17.06 6.5Q17.65 6.5 18.05 6.1Q18.45 5.69 18.42 5.11Q18.38 4.52 18.01 4.12Q17.65 3.71 17.06 3.71ZM23 16.11Q23 14.79 22.3 13.61Q21.61 12.44 20.47 11.78Q19.33 11.12 17.94 11.12H14.79V13.83H17.94Q18.89 13.83 19.55 14.49Q20.21 15.15 20.21 16.11V19.33H23Z"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24" fill="currentColor"><path d="M4.74 23V1L17.84 9.38Q18.51 9.83 18.88 10.54Q19.26 11.25 19.26 12.04Q19.26 12.82 18.88 13.5Q18.51 14.17 17.84 14.62ZM7.51 6.16V17.84L16.34 12.22Q16.41 12.15 16.41 12Q16.41 11.85 16.34 11.78Z"/></symbol>
+  <symbol id="i-pause" viewBox="0 0 24 24" fill="currentColor"><path d="M11.08 23H3.75V1H11.08ZM6.46 20.21H8.3V3.71H6.46ZM20.25 23H12.92V1H20.25ZM15.63 20.21H17.46V3.71H15.63Z"/></symbol>
+  <symbol id="i-github" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.28Q8.99 1.28 6.46 2.75Q3.93 4.22 2.47 6.75Q1 9.28 1 12.28Q1 14.63 1.95 16.76Q2.91 18.88 4.63 20.42Q6.35 21.96 8.55 22.7Q8.92 22.77 9.1 22.59Q9.29 22.4 9.29 22.18V20.13Q8.19 20.35 7.38 20.2Q6.72 20.06 6.28 19.69Q5.91 19.47 5.69 19.1L5.55 18.81Q5.25 18 4.74 17.56Q4.52 17.27 4.3 17.2Q3.86 16.9 3.9 16.76Q3.93 16.61 4.15 16.54H4.37Q5.11 16.61 5.69 17.12Q5.91 17.42 6.06 17.71Q6.72 18.81 7.82 18.88Q8.55 18.96 9.29 18.59Q9.43 17.64 10.02 17.12Q7.75 16.9 6.57 15.88Q4.96 14.56 4.96 11.7Q4.96 10.01 6.13 8.76Q5.91 8.32 5.91 7.74Q5.84 6.78 6.21 5.83H6.57Q6.94 5.83 7.53 6.05Q8.33 6.34 9.21 6.93Q10.53 6.56 12 6.56Q13.47 6.56 14.79 6.93Q16.03 6.05 17.06 5.83Q17.57 5.76 17.79 5.83Q18.16 6.78 18.09 7.74Q18.09 8.32 17.87 8.76Q19.04 9.94 19.04 11.7Q19.04 14.56 17.43 15.88Q16.25 16.83 13.98 17.12Q14.71 17.78 14.71 19.18V22.18Q14.71 22.4 14.9 22.59Q15.08 22.77 15.52 22.7Q17.65 21.96 19.37 20.42Q21.09 18.88 22.05 16.76Q23 14.63 23 12.28Q23 9.28 21.53 6.75Q20.07 4.22 17.54 2.75Q15.01 1.28 12 1.28ZM5.18 17.05Q5.11 17.12 4.96 17.09Q4.81 17.05 4.85 16.94Q4.89 16.83 5.03 16.9Q5.18 16.98 5.18 17.05ZM5.62 17.56Q5.55 17.64 5.4 17.49Q5.25 17.34 5.36 17.27Q5.47 17.2 5.58 17.34Q5.69 17.49 5.62 17.56ZM6.06 18.15Q5.91 18.3 5.8 18.11Q5.69 17.93 5.8 17.82Q5.91 17.71 6.02 17.89Q6.13 18.08 6.06 18.15ZM6.65 18.81Q6.5 18.96 6.35 18.77Q6.21 18.59 6.32 18.48Q6.43 18.37 6.57 18.52Q6.72 18.66 6.65 18.81ZM7.45 19.18Q7.38 19.32 7.16 19.25Q6.94 19.18 7.01 19.03Q7.09 18.88 7.31 18.96Q7.53 19.03 7.45 19.18ZM8.33 19.25Q8.33 19.4 8.11 19.4Q7.89 19.4 7.89 19.21Q7.89 19.03 8.11 19.03Q8.33 19.03 8.33 19.25ZM9.21 19.1Q9.21 19.25 8.99 19.29Q8.77 19.32 8.74 19.18Q8.7 19.03 8.92 18.96Q9.14 18.88 9.21 19.1Z"/></symbol>
+  <symbol id="i-prev" viewBox="0 0 24 24" fill="currentColor"><path d="M15.89 23 7.16 14.27Q6.21 13.32 6.21 12Q6.21 10.68 7.16 9.73L15.89 1L17.79 2.98L9.07 11.71Q8.92 11.78 8.92 12Q8.92 12.22 9.07 12.29L17.79 21.02Z"/></symbol>
+  <symbol id="i-next" viewBox="0 0 24 24" fill="currentColor"><path d="M8.19 23 16.84 14.27Q17.79 13.32 17.79 12Q17.79 10.68 16.84 9.73L8.11 1L6.21 2.98L14.93 11.71Q15.08 11.78 15.08 12Q15.08 12.22 14.93 12.29L6.21 21.02Z"/></symbol>
+</defs></svg>
+
+<main id="main">
+
+<!-- HERO · the sentence, full screen, nothing else -->
+<section class="hero" id="top" aria-labelledby="h-hero">
+ <div class="hero-stage">
+  <div class="paths" aria-hidden="true" style="--period:11s">
+    <svg class="paths-layer paths-orange" viewBox="0 0 1440 900" preserveAspectRatio="none" fill="none" aria-hidden="true">
+      <defs>
+        <path id="l0" d="M-60 63.0C378.4 63.0 698.4 233.0 698.4 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="l1" d="M-60 84.9C349.3 84.9 669.3 254.9 669.3 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="l2" d="M-60 106.8C320.2 106.8 640.2 276.8 640.2 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="l3" d="M-60 128.7C291.1 128.7 611.1 298.7 611.1 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="l4" d="M-60 150.7C261.9 150.7 581.9 320.7 581.9 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="l5" d="M-60 172.6C232.8 172.6 552.8 342.6 552.8 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="l6" d="M-60 194.5C203.7 194.5 523.7 364.5 523.7 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="l7" d="M-60 216.4C174.6 216.4 494.6 386.4 494.6 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="l8" d="M-60 238.3C145.5 238.3 465.5 408.3 465.5 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="l9" d="M-60 260.2C116.4 260.2 436.4 430.2 436.4 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="l10" d="M-60 282.1C87.3 282.1 407.3 452.1 407.3 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="l11" d="M-60 304.0C58.2 304.0 378.2 474.0 378.2 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="l12" d="M-60 326.0C29.0 326.0 349.0 496.0 349.0 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="l13" d="M-60 347.9C-0.1 347.9 319.9 517.9 319.9 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="l14" d="M-60 369.8C-29.2 369.8 290.8 539.8 290.8 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="l15" d="M-60 391.7C-58.3 391.7 261.7 561.7 261.7 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="l16" d="M-60 413.6C-87.4 413.6 232.6 583.6 232.6 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="l17" d="M-60 435.5C-116.5 435.5 203.5 605.5 203.5 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="l18" d="M-60 457.4C-145.6 457.4 174.4 627.4 174.4 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="l19" d="M-60 479.3C-174.7 479.3 145.3 649.3 145.3 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="l20" d="M-60 501.3C-203.9 501.3 116.1 671.3 116.1 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="l21" d="M-60 523.2C-233.0 523.2 87.0 693.2 87.0 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="l22" d="M-60 545.1C-262.1 545.1 57.9 715.1 57.9 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="l23" d="M-60 567.0C-291.2 567.0 28.8 737.0 28.8 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+      </defs>
+      <use class="base" href="#l0" stroke-width="1.30" stroke-opacity="0.13"/>
+      <use class="base" href="#l1" stroke-width="1.40" stroke-opacity="0.14"/>
+      <use class="base" href="#l2" stroke-width="1.51" stroke-opacity="0.15"/>
+      <use class="base" href="#l3" stroke-width="1.61" stroke-opacity="0.16"/>
+      <use class="base" href="#l4" stroke-width="1.72" stroke-opacity="0.18"/>
+      <use class="base" href="#l5" stroke-width="1.82" stroke-opacity="0.19"/>
+      <use class="base" href="#l6" stroke-width="1.93" stroke-opacity="0.20"/>
+      <use class="base" href="#l7" stroke-width="2.03" stroke-opacity="0.21"/>
+      <use class="base" href="#l8" stroke-width="2.13" stroke-opacity="0.22"/>
+      <use class="base" href="#l9" stroke-width="2.24" stroke-opacity="0.23"/>
+      <use class="base" href="#l10" stroke-width="2.34" stroke-opacity="0.24"/>
+      <use class="base" href="#l11" stroke-width="2.45" stroke-opacity="0.25"/>
+      <use class="base" href="#l12" stroke-width="2.45" stroke-opacity="0.25"/>
+      <use class="base" href="#l13" stroke-width="2.34" stroke-opacity="0.24"/>
+      <use class="base" href="#l14" stroke-width="2.24" stroke-opacity="0.23"/>
+      <use class="base" href="#l15" stroke-width="2.13" stroke-opacity="0.22"/>
+      <use class="base" href="#l16" stroke-width="2.03" stroke-opacity="0.21"/>
+      <use class="base" href="#l17" stroke-width="1.93" stroke-opacity="0.20"/>
+      <use class="base" href="#l18" stroke-width="1.82" stroke-opacity="0.19"/>
+      <use class="base" href="#l19" stroke-width="1.72" stroke-opacity="0.18"/>
+      <use class="base" href="#l20" stroke-width="1.61" stroke-opacity="0.16"/>
+      <use class="base" href="#l21" stroke-width="1.51" stroke-opacity="0.15"/>
+      <use class="base" href="#l22" stroke-width="1.40" stroke-opacity="0.14"/>
+      <use class="base" href="#l23" stroke-width="1.30" stroke-opacity="0.13"/>
+      <use class="flow" href="#l0" stroke-width="1.30" stroke-opacity="0.38" style="--o:-0.00s"/>
+      <use class="flow" href="#l1" stroke-width="1.40" stroke-opacity="0.41" style="--o:-0.46s"/>
+      <use class="flow" href="#l2" stroke-width="1.51" stroke-opacity="0.44" style="--o:-0.92s"/>
+      <use class="flow" href="#l3" stroke-width="1.61" stroke-opacity="0.47" style="--o:-1.38s"/>
+      <use class="flow" href="#l4" stroke-width="1.72" stroke-opacity="0.50" style="--o:-1.83s"/>
+      <use class="flow" href="#l5" stroke-width="1.82" stroke-opacity="0.53" style="--o:-2.29s"/>
+      <use class="flow" href="#l6" stroke-width="1.93" stroke-opacity="0.56" style="--o:-2.75s"/>
+      <use class="flow" href="#l7" stroke-width="2.03" stroke-opacity="0.59" style="--o:-3.21s"/>
+      <use class="flow" href="#l8" stroke-width="2.13" stroke-opacity="0.62" style="--o:-3.67s"/>
+      <use class="flow" href="#l9" stroke-width="2.24" stroke-opacity="0.65" style="--o:-4.12s"/>
+      <use class="flow" href="#l10" stroke-width="2.34" stroke-opacity="0.68" style="--o:-4.58s"/>
+      <use class="flow" href="#l11" stroke-width="2.45" stroke-opacity="0.71" style="--o:-5.04s"/>
+      <use class="flow" href="#l12" stroke-width="2.45" stroke-opacity="0.71" style="--o:-5.50s"/>
+      <use class="flow" href="#l13" stroke-width="2.34" stroke-opacity="0.68" style="--o:-5.96s"/>
+      <use class="flow" href="#l14" stroke-width="2.24" stroke-opacity="0.65" style="--o:-6.42s"/>
+      <use class="flow" href="#l15" stroke-width="2.13" stroke-opacity="0.62" style="--o:-6.88s"/>
+      <use class="flow" href="#l16" stroke-width="2.03" stroke-opacity="0.59" style="--o:-7.33s"/>
+      <use class="flow" href="#l17" stroke-width="1.93" stroke-opacity="0.56" style="--o:-7.79s"/>
+      <use class="flow" href="#l18" stroke-width="1.82" stroke-opacity="0.53" style="--o:-8.25s"/>
+      <use class="flow" href="#l19" stroke-width="1.72" stroke-opacity="0.50" style="--o:-8.71s"/>
+      <use class="flow" href="#l20" stroke-width="1.61" stroke-opacity="0.47" style="--o:-9.17s"/>
+      <use class="flow" href="#l21" stroke-width="1.51" stroke-opacity="0.44" style="--o:-9.62s"/>
+      <use class="flow" href="#l22" stroke-width="1.40" stroke-opacity="0.41" style="--o:-10.08s"/>
+      <use class="flow" href="#l23" stroke-width="1.30" stroke-opacity="0.38" style="--o:-10.54s"/>
+    </svg>
+    <svg class="paths-layer paths-green" viewBox="0 0 1440 900" preserveAspectRatio="none" fill="none" aria-hidden="true">
+      <defs>
+        <path id="r0" d="M1500 63.0C1061.6 63.0 741.6 233.0 741.6 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="r1" d="M1500 84.9C1090.7 84.9 770.7 254.9 770.7 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="r2" d="M1500 106.8C1119.8 106.8 799.8 276.8 799.8 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="r3" d="M1500 128.7C1148.9 128.7 828.9 298.7 828.9 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="r4" d="M1500 150.7C1178.1 150.7 858.1 320.7 858.1 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="r5" d="M1500 172.6C1207.2 172.6 887.2 342.6 887.2 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="r6" d="M1500 194.5C1236.3 194.5 916.3 364.5 916.3 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="r7" d="M1500 216.4C1265.4 216.4 945.4 386.4 945.4 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="r8" d="M1500 238.3C1294.5 238.3 974.5 408.3 974.5 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="r9" d="M1500 260.2C1323.6 260.2 1003.6 430.2 1003.6 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="r10" d="M1500 282.1C1352.7 282.1 1032.7 452.1 1032.7 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="r11" d="M1500 304.0C1381.8 304.0 1061.8 474.0 1061.8 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="r12" d="M1500 326.0C1411.0 326.0 1091.0 496.0 1091.0 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="r13" d="M1500 347.9C1440.1 347.9 1120.1 517.9 1120.1 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="r14" d="M1500 369.8C1469.2 369.8 1149.2 539.8 1149.2 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="r15" d="M1500 391.7C1498.3 391.7 1178.3 561.7 1178.3 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="r16" d="M1500 413.6C1527.4 413.6 1207.4 583.6 1207.4 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="r17" d="M1500 435.5C1556.5 435.5 1236.5 605.5 1236.5 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="r18" d="M1500 457.4C1585.6 457.4 1265.6 627.4 1265.6 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="r19" d="M1500 479.3C1614.7 479.3 1294.7 649.3 1294.7 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="r20" d="M1500 501.3C1643.9 501.3 1323.9 671.3 1323.9 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="r21" d="M1500 523.2C1673.0 523.2 1353.0 693.2 1353.0 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="r22" d="M1500 545.1C1702.1 545.1 1382.1 715.1 1382.1 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+        <path id="r23" d="M1500 567.0C1731.2 567.0 1411.2 737.0 1411.2 980" pathLength="1" vector-effect="non-scaling-stroke"/>
+      </defs>
+      <use class="base" href="#r0" stroke-width="1.30" stroke-opacity="0.13"/>
+      <use class="base" href="#r1" stroke-width="1.40" stroke-opacity="0.14"/>
+      <use class="base" href="#r2" stroke-width="1.51" stroke-opacity="0.15"/>
+      <use class="base" href="#r3" stroke-width="1.61" stroke-opacity="0.16"/>
+      <use class="base" href="#r4" stroke-width="1.72" stroke-opacity="0.18"/>
+      <use class="base" href="#r5" stroke-width="1.82" stroke-opacity="0.19"/>
+      <use class="base" href="#r6" stroke-width="1.93" stroke-opacity="0.20"/>
+      <use class="base" href="#r7" stroke-width="2.03" stroke-opacity="0.21"/>
+      <use class="base" href="#r8" stroke-width="2.13" stroke-opacity="0.22"/>
+      <use class="base" href="#r9" stroke-width="2.24" stroke-opacity="0.23"/>
+      <use class="base" href="#r10" stroke-width="2.34" stroke-opacity="0.24"/>
+      <use class="base" href="#r11" stroke-width="2.45" stroke-opacity="0.25"/>
+      <use class="base" href="#r12" stroke-width="2.45" stroke-opacity="0.25"/>
+      <use class="base" href="#r13" stroke-width="2.34" stroke-opacity="0.24"/>
+      <use class="base" href="#r14" stroke-width="2.24" stroke-opacity="0.23"/>
+      <use class="base" href="#r15" stroke-width="2.13" stroke-opacity="0.22"/>
+      <use class="base" href="#r16" stroke-width="2.03" stroke-opacity="0.21"/>
+      <use class="base" href="#r17" stroke-width="1.93" stroke-opacity="0.20"/>
+      <use class="base" href="#r18" stroke-width="1.82" stroke-opacity="0.19"/>
+      <use class="base" href="#r19" stroke-width="1.72" stroke-opacity="0.18"/>
+      <use class="base" href="#r20" stroke-width="1.61" stroke-opacity="0.16"/>
+      <use class="base" href="#r21" stroke-width="1.51" stroke-opacity="0.15"/>
+      <use class="base" href="#r22" stroke-width="1.40" stroke-opacity="0.14"/>
+      <use class="base" href="#r23" stroke-width="1.30" stroke-opacity="0.13"/>
+      <use class="flow" href="#r0" stroke-width="1.30" stroke-opacity="0.38" style="--o:-0.00s"/>
+      <use class="flow" href="#r1" stroke-width="1.40" stroke-opacity="0.41" style="--o:-0.46s"/>
+      <use class="flow" href="#r2" stroke-width="1.51" stroke-opacity="0.44" style="--o:-0.92s"/>
+      <use class="flow" href="#r3" stroke-width="1.61" stroke-opacity="0.47" style="--o:-1.38s"/>
+      <use class="flow" href="#r4" stroke-width="1.72" stroke-opacity="0.50" style="--o:-1.83s"/>
+      <use class="flow" href="#r5" stroke-width="1.82" stroke-opacity="0.53" style="--o:-2.29s"/>
+      <use class="flow" href="#r6" stroke-width="1.93" stroke-opacity="0.56" style="--o:-2.75s"/>
+      <use class="flow" href="#r7" stroke-width="2.03" stroke-opacity="0.59" style="--o:-3.21s"/>
+      <use class="flow" href="#r8" stroke-width="2.13" stroke-opacity="0.62" style="--o:-3.67s"/>
+      <use class="flow" href="#r9" stroke-width="2.24" stroke-opacity="0.65" style="--o:-4.12s"/>
+      <use class="flow" href="#r10" stroke-width="2.34" stroke-opacity="0.68" style="--o:-4.58s"/>
+      <use class="flow" href="#r11" stroke-width="2.45" stroke-opacity="0.71" style="--o:-5.04s"/>
+      <use class="flow" href="#r12" stroke-width="2.45" stroke-opacity="0.71" style="--o:-5.50s"/>
+      <use class="flow" href="#r13" stroke-width="2.34" stroke-opacity="0.68" style="--o:-5.96s"/>
+      <use class="flow" href="#r14" stroke-width="2.24" stroke-opacity="0.65" style="--o:-6.42s"/>
+      <use class="flow" href="#r15" stroke-width="2.13" stroke-opacity="0.62" style="--o:-6.88s"/>
+      <use class="flow" href="#r16" stroke-width="2.03" stroke-opacity="0.59" style="--o:-7.33s"/>
+      <use class="flow" href="#r17" stroke-width="1.93" stroke-opacity="0.56" style="--o:-7.79s"/>
+      <use class="flow" href="#r18" stroke-width="1.82" stroke-opacity="0.53" style="--o:-8.25s"/>
+      <use class="flow" href="#r19" stroke-width="1.72" stroke-opacity="0.50" style="--o:-8.71s"/>
+      <use class="flow" href="#r20" stroke-width="1.61" stroke-opacity="0.47" style="--o:-9.17s"/>
+      <use class="flow" href="#r21" stroke-width="1.51" stroke-opacity="0.44" style="--o:-9.62s"/>
+      <use class="flow" href="#r22" stroke-width="1.40" stroke-opacity="0.41" style="--o:-10.08s"/>
+      <use class="flow" href="#r23" stroke-width="1.30" stroke-opacity="0.38" style="--o:-10.54s"/>
+    </svg>
+  </div>
+  <div class="wrap hero-inner">
+    <h1 class="display" id="h-hero">Borrow against your bitcoin.
+      <span class="mark" id="hero-mark"><span class="mark-txt">Keep the keys.</span></span></h1>
+  </div>
+  <i class="hero-prog" aria-hidden="true"></i>
+ </div>
+</section>
+
+<!-- SPEC BAND · the loan in four pictures -->
+<div class="spec" aria-label="The loan in four lines">
+  <div class="spec-kv">
+    <div class="kv"><svg class="kv-ic is-btc" aria-hidden="true"><use href="#i-btc"/></svg><span class="v">L-BTC</span><span class="k">as collateral</span></div>
+    <div class="kv"><svg class="kv-ic is-usd" aria-hidden="true"><use href="#i-usd"/></svg><span class="v">Liquid USDt</span><span class="k">borrowed</span></div>
+    <div class="kv"><svg class="kv-ic" aria-hidden="true"><use href="#i-blocks"/></svg><span class="v">in blocks</span><span class="k">the term</span></div>
+    <div class="kv"><svg class="kv-ic" aria-hidden="true"><use href="#i-tag"/></svg><span class="v">flat fee</span><span class="k">the cost</span></div>
+  </div>
+</div>
+
+<!-- 001 · PROTOCOLLO — one screen, plays on a clock. A big title and one sentence tell the step;
+     underneath, three actors and coins that really move, a previous/next button on either side
+     (inside the player bar on narrow screens); below, play/pause and a dot per step. -->
+<section class="sec-moves" id="protocollo" aria-labelledby="h-moves">
+  <div class="moves-pin">
+    <div class="wrap moves-top">
+      <div class="dg-head">
+        <p class="dg-state" id="dg-tone" data-tone="idle"><i class="dg-dot"></i><b id="dg-state">Offer</b></p>
+        <p class="forks" id="forks">
+          <button type="button" class="fk fk-a" data-go="repay"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>A &middot; repays</button>
+          <button type="button" class="fk fk-b" data-go="cut">B &middot; defaults</button>
+        </p>
+        <p class="label dg-sec">SEC/001 &mdash; <strong>Protocol</strong></p>
+      </div>
+      <ol class="story" id="story">
+        <li class="st st-intro" data-d="0.5"><h2 class="st-k" id="h-moves">Four moves.</h2><p class="st-p">One loan, start to finish.</p></li>
+        <li class="st" data-d="1.3" data-step="offer"><h3 class="st-k"><em>01</em>Publish</h3><p class="st-p">The borrower writes the terms and signs. The collateral is worth more than the loan: if the price swings, it holds.</p></li>
+        <li class="st" data-d="1.0,1.1" data-step="lock,fund" data-r="0.4"><h3 class="st-k"><em>02</em>Fund</h3><p class="st-p">A lender accepts. The bitcoin lock into the contract, the dollars reach the borrower. A small origination fee goes to the lender.</p></li>
+        <li class="st" data-d="1.0" data-step="time"><h3 class="st-k">Time passes.</h3><p class="st-p">Block after block. The price rises or falls: the contract never looks.</p></li>
+        <li class="st" data-d="0.9,1.2" data-step="repay,fee" data-r="0.4"><h3 class="st-k"><em>03</em>Repay</h3><p class="st-p">Before the deadline the borrower returns the dollars, plus a flat fee known from day one. A slice stays with the protocol.</p></li>
+        <li class="st" data-d="1.1" data-step="back"><h3 class="st-k"><em>03</em>Repay</h3><p class="st-p">The contract opens and the bitcoin go back to the borrower. Done.</p></li>
+        <li class="st" data-d="0.9" data-step="cut"><h3 class="st-k">Or.</h3><p class="st-p">Same contract. This time the borrower does not repay.</p></li>
+        <li class="st" data-d="1.1" data-step="timeB"><h3 class="st-k">Time passes.</h3><p class="st-p">Every block, down to the last. Before the deadline nobody can touch the bitcoin.</p></li>
+        <li class="st" data-d="1.3" data-step="claim" data-r="0.6"><h3 class="st-k"><em>04</em>Claim</h3><p class="st-p">Deadline. Now, and only now, the lender takes the bitcoin. Worth more than the loan: that is what protects them.</p></li>
+        <li class="st st-outro" data-d="1.0" data-step="outro" aria-hidden="true"><p class="st-k">Four moves. <span class="muted" id="h-moves-end">Nothing else.</span></p><p class="st-p">No custodian. No oracle. Only time.</p></li>
+      </ol>
+    </div>
+
+    <div class="wrap moves-body">
+      <button type="button" class="pl-btn pl-side is-prev" data-by="-1" aria-label="Previous step"><svg aria-hidden="true"><use href="#i-prev"/></svg></button>
+      <div class="diagram" id="diagram" data-scene="active" data-tone="live" data-branch="" aria-hidden="true">
+        <div class="dg-stage" id="dg-stage">
+          <svg class="rails" id="rails" focusable="false"></svg>
+
+          <div class="dg-grid">
+            <div class="node" id="node-b">
+              <svg class="node-ic"><use href="#i-person"/></svg>
+              <b class="node-k">Borrower</b><span class="node-s">who asks</span>
+              <div class="pocket"><i class="slot slot-sm" data-slot="bs"></i><i class="slot slot-lg" data-slot="bA"></i></div>
+            </div>
+
+            <div class="node node-c" id="node-c">
+              <svg class="node-ic ic-lk"><use href="#i-lock"/></svg>
+              <b class="node-k" id="deal-k">Contract</b>
+              <ul class="terms" id="terms">
+                <li class="t-btc"><svg class="ic"><use href="#i-btc"/></svg><i class="bar"><i class="bar-f"></i><i class="bar-x"></i></i><span>collateral</span></li>
+                <li class="t-usd"><svg class="ic"><use href="#i-usd"/></svg><i class="bar"><i class="bar-f"></i></i><span>loan</span></li>
+                <li class="t-fee"><svg class="ic"><use href="#i-tag"/></svg><i class="bar"><i class="bar-f"></i></i><span>fee</span></li>
+                <li class="t-time"><svg class="ic"><use href="#i-blocks"/></svg><i class="bar bar-minis"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></i><span>term</span></li>
+              </ul>
+              <p class="sigs"><span class="sg" id="sg-b"><svg class="ic"><use href="#i-person"/></svg><svg class="ic sg-ok"><use href="#i-check"/></svg></span><span class="sg" id="sg-l"><svg class="ic"><use href="#i-bank"/></svg><svg class="ic sg-ok"><use href="#i-check"/></svg></span></p>
+              <div class="pocket"><i class="slot slot-lg" data-slot="cA"></i></div>
+            </div>
+
+            <div class="node" id="node-l">
+              <svg class="node-ic"><use href="#i-bank"/></svg>
+              <b class="node-k">Lender</b><span class="node-s">who lends</span>
+              <div class="pocket"><i class="slot slot-lg" data-slot="lA"></i><i class="slot slot-sm" data-slot="ls1"></i><i class="slot slot-sm" data-slot="ls2"></i></div>
+            </div>
+          </div>
+
+          <div class="lane">
+            <div class="toll" id="toll"><i class="slot slot-xs toll-slot" data-slot="ps"></i><svg class="ic"><use href="#i-squid"/></svg><b>Protocol</b></div>
+          </div>
+
+          <div class="chain" id="chain">
+            <svg class="ic"><use href="#i-blocks"/></svg>
+            <div class="blocks" id="blocks"><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i class="on"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <svg class="ic chain-flag"><use href="#i-flag"/></svg>
+          </div>
+
+          <div class="coin coin-lg is-btc" id="c-btc"><svg><use href="#g-btc"/></svg></div>
+          <div class="coin coin-lg is-usd" id="c-usd"><svg><use href="#g-usd"/></svg></div>
+          <div class="coin coin-sm is-btc" id="c-orig"><svg><use href="#g-btc"/></svg></div>
+          <div class="coin coin-xs is-usd" id="c-cut"><svg><use href="#g-usd"/></svg></div>
+          <div class="coin coin-sm is-usd" id="c-fee"><svg><use href="#g-usd"/></svg></div>
+        </div>
+        <svg class="cut-ic" id="cut-ic"><use href="#i-swap"/></svg>
+      </div>
+      <button type="button" class="pl-btn pl-side is-next" data-by="1" aria-label="Next step"><svg aria-hidden="true"><use href="#i-next"/></svg></button>
+    </div>
+
+    <div class="wrap player" id="player" role="group" aria-label="Animation controls">
+      <div class="pl-bar">
+        <button type="button" class="pl-btn pl-in" data-by="-1" aria-label="Previous step"><svg aria-hidden="true"><use href="#i-prev"/></svg></button>
+        <button type="button" class="pl-btn" id="pl-play" aria-label="Pause"><svg aria-hidden="true"><use href="#i-pause"/></svg></button>
+        <div class="pl-dots" id="pl-dots"></div>
+        <button type="button" class="pl-btn pl-in" data-by="1" aria-label="Next step"><svg aria-hidden="true"><use href="#i-next"/></svg></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 002 · CONFRONTO — three answers side by side; generic icons, no third-party marks -->
+<section class="sec" id="perche" aria-labelledby="h-why">
+  <span class="sec-num" aria-hidden="true">002</span>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="label">SEC/002 &mdash; <strong>Comparison</strong></p>
+      <div>
+        <h2 class="h2" id="h-why">Same need, three answers.</h2>
+        <p class="lede" style="margin-top: var(--s2)">Liquidity without selling your bitcoin. A contract on the chain, a custodian, or a bank.</p>
+      </div>
+    </div>
+    <div class="schema reveal" role="table" aria-label="Templar Protocol, custodial lender and bank compared">
+      <div class="sch-heads" role="row">
+        <div class="sch-k" role="columnheader"><span class="sr-only">Criterion</span></div>
+        <div class="sch-head sch-us" role="columnheader"><img src="../assets/img/templar-cross.svg" alt="" width="40" height="40"><b>Templar Protocol</b><span>a contract on the chain</span></div>
+        <div class="sch-head" role="columnheader"><svg aria-hidden="true"><use href="#i-vault"/></svg><b>Custodial lender</b><span>a company holds your bitcoin</span></div>
+        <div class="sch-head" role="columnheader"><svg aria-hidden="true"><use href="#i-bank"/></svg><b>Bank</b><span>an account, a judgement</span></div>
+      </div>
+      <div class="sch-row" role="row">
+        <p class="sch-k" role="rowheader">Who holds the keys</p>
+        <div class="sch-c sch-us" role="cell" data-who="Templar Protocol"><b class="yes">Nobody</b><span>On-chain escrow: no operator can spend it.</span></div>
+        <div class="sch-c" role="cell" data-who="Custodial lender"><b class="no">The lender</b><span>Your bitcoin enter its balance sheet.</span></div>
+        <div class="sch-c" role="cell" data-who="Bank"><b class="no">The bank</b><span>Or a custodian on its behalf.</span></div>
+      </div>
+      <div class="sch-row" role="row">
+        <p class="sch-k" role="rowheader">What triggers liquidation</p>
+        <div class="sch-c sch-us" role="cell" data-who="Templar Protocol"><b class="yes">Only the deadline</b><span>Expired without repayment. The price does not count.</span></div>
+        <div class="sch-c" role="cell" data-who="Custodial lender"><b class="no">The price</b><span>Thresholds and timing set by the lender.</span></div>
+        <div class="sch-c" role="cell" data-who="Bank"><b class="no">A judgement</b><span>Clauses, ratings, internal decisions.</span></div>
+      </div>
+      <div class="sch-row" role="row">
+        <p class="sch-k" role="rowheader">What you know before signing</p>
+        <div class="sch-c sch-us" role="cell" data-who="Templar Protocol"><b class="yes">A flat fee</b><span>Written in the contract. No other line.</span></div>
+        <div class="sch-c" role="cell" data-who="Custodial lender"><b class="no">A variable rate</b><span>Spread and terms that can change.</span></div>
+        <div class="sch-c" role="cell" data-who="Bank"><b class="no">A variable rate</b><span>Charges, penalties, clauses.</span></div>
+      </div>
+      <div class="sch-row" role="row">
+        <p class="sch-k" role="rowheader">Who sees the amounts</p>
+        <div class="sch-c sch-us" role="cell" data-who="Templar Protocol"><b class="yes">The two parties</b><span>Blinded amounts on the chain.</span></div>
+        <div class="sch-c" role="cell" data-who="Custodial lender"><b class="no">The lender</b><span>And the chain, if it is transparent.</span></div>
+        <div class="sch-c" role="cell" data-who="Bank"><b class="no">The bank</b><span>And whoever asks it.</span></div>
+      </div>
+      <div class="sch-row" role="row">
+        <p class="sch-k" role="rowheader">If the operator disappears</p>
+        <div class="sch-c sch-us" role="cell" data-who="Templar Protocol"><b class="yes">The contract remains</b><span>It lives on the chain, signable by your wallet.</span></div>
+        <div class="sch-c" role="cell" data-who="Custodial lender"><b class="no">The funds disappear</b><span>It has happened before.</span></div>
+        <div class="sch-c" role="cell" data-who="Bank"><b class="no">Public guarantees</b><span>With limits and long waits.</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 003 · SICUREZZA — three questions, three dry answers, the small print behind a + -->
+<section class="sec" id="sicurezza" aria-labelledby="h-sec">
+  <span class="sec-num" aria-hidden="true">003</span>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="label">SEC/003 &mdash; <strong>Security</strong></p>
+      <div><h2 class="h2" id="h-sec">The keys stay in your wallet.</h2></div>
+    </div>
+    <div class="qa reveal">
+      <details class="qa-row">
+        <summary><span class="qa-q">Who has the keys?</span><span class="qa-a">You. Always.</span><i class="plus-i" aria-hidden="true"></i></summary>
+        <div class="qa-d"><p>The site builds the transactions and relays them to the network. It does not custody, does not sign, cannot move the collateral. Every move is a transaction your wallet shows in full and signs. <a href="#wallet">How it connects &#8594;</a></p></div>
+      </details>
+      <details class="qa-row">
+        <summary><span class="qa-q">What does the site see?</span><span class="qa-a">Only addresses. Never a key.</span><i class="plus-i" aria-hidden="true"></i></summary>
+        <div class="qa-d">
+          <div class="share">
+            <div class="share-col is-ok"><p class="label"><svg class="ic" aria-hidden="true"><use href="#i-check"/></svg>Share</p><ul><li>A watch-only descriptor: the site sees the addresses, cannot spend.</li><li>The escrow public key.</li></ul></div>
+            <div class="share-col is-no"><p class="label"><svg class="ic" aria-hidden="true"><use href="#i-lock"/></svg>Never</p><ul><li>The seed and the private keys.</li><li>Passwords or PINs. With Blockstream Jade the key never even touches the computer.</li></ul></div>
+          </div>
+        </div>
+      </details>
+      <details class="qa-row">
+        <summary><span class="qa-q">If the site disappears?</span><span class="qa-a">The contract stays on the chain.</span><i class="plus-i" aria-hidden="true"></i></summary>
+        <div class="qa-d"><p>The collateral is locked by a script with the contract's branches and the deadline as a block height. Anyone can verify it; the amounts stay blinded. Your wallet can sign the exit even without the site.</p></div>
+      </details>
+    </div>
+    <p class="status reveal">
+      <span class="tag tag-warn"><i class="dot"></i>In development</span>
+      <span class="muted">Testnet and regtest, no real funds. The wallet and the connector are public: <a href="https://github.com/0xB4LdW1n/TemplarWallet" rel="noopener">repository</a>, <a href="wallet/docs/">documentation</a>.</span>
+    </p>
+  </div>
+</section>
+
+<!-- 004 · COSTI -->
+<section class="sec sec-fees" id="costi" aria-labelledby="h-fees">
+  <span class="sec-num" aria-hidden="true">004</span>
+  <div class="wrap">
+    <div class="sec-head-c reveal">
+      <p class="label">SEC/004 &mdash; <strong>Costs</strong></p>
+      <h2 class="h2" id="h-fees">Three lines. No surprises.</h2>
+    </div>
+    <div class="fees reveal">
+      <!-- loan fee: written at the start, flat while the blocks pass, paid at the end -->
+      <div class="fee">
+        <h3 class="h3">Loan fee</h3>
+        <svg class="fx fx-flat" viewBox="0 0 260 120" aria-hidden="true" focusable="false">
+          <g class="fx-blocks"><rect x="33" y="88" width="14" height="14" rx="2"/><rect x="53" y="88" width="14" height="14" rx="2"/><rect x="73" y="88" width="14" height="14" rx="2"/><rect x="93" y="88" width="14" height="14" rx="2"/><rect x="113" y="88" width="14" height="14" rx="2"/><rect x="133" y="88" width="14" height="14" rx="2"/><rect x="153" y="88" width="14" height="14" rx="2"/><rect x="173" y="88" width="14" height="14" rx="2"/><rect x="193" y="88" width="14" height="14" rx="2"/><rect x="213" y="88" width="14" height="14" rx="2"/></g>
+          <g class="fx-blocks-on"><rect class="fx-span" x="33" y="88" width="200" height="14"/><rect x="33" y="88" width="14" height="14" rx="2"/><rect x="53" y="88" width="14" height="14" rx="2"/><rect x="73" y="88" width="14" height="14" rx="2"/><rect x="93" y="88" width="14" height="14" rx="2"/><rect x="113" y="88" width="14" height="14" rx="2"/><rect x="133" y="88" width="14" height="14" rx="2"/><rect x="153" y="88" width="14" height="14" rx="2"/><rect x="173" y="88" width="14" height="14" rx="2"/><rect x="193" y="88" width="14" height="14" rx="2"/><rect x="213" y="88" width="14" height="14" rx="2"/></g>
+          <path class="fx-tick" d="M40 66V84M220 66V84"/>
+          <path class="fx-rule" d="M58 46H200"/>
+          <path class="fx-line" d="M58 46H200" pathLength="1"/>
+          <use class="fx-ic" href="#i-tag" x="26" y="32" width="28" height="28"/>
+          <g class="fx-coin is-usd"><circle cx="220" cy="46" r="16"/><use href="#g-usd" x="208" y="34" width="24" height="24"/></g>
+        </svg>
+        <p class="fee-when label">flat &middot; at repayment &middot; in USDt</p>
+        <details class="more"><summary><i class="plus-i"></i><span>Details</span></summary><p>Written in the offer, it does not grow with time. It is the whole cost of the loan for the term.</p></details>
+      </div>
+      <!-- origination fee: the lock clicks shut, and a small coin leaves for the lender -->
+      <div class="fee">
+        <h3 class="h3">Origination fee</h3>
+        <svg class="fx fx-open" viewBox="0 0 260 120" aria-hidden="true" focusable="false">
+          <path class="fx-shackle" d="M44 52V40a14 14 0 0 1 28 0v12"/>
+          <rect class="fx-body" x="32" y="52" width="52" height="40" rx="4"/>
+          <use class="fx-glyph" href="#g-btc" x="44" y="58" width="28" height="28"/>
+          <path class="fx-rule" d="M96 72H190"/><path class="fx-head" d="M190 66l9 6-9 6Z"/>
+          <g class="fx-hop is-btc"><circle cx="0" cy="72" r="11"/><use href="#g-btc" x="-9" y="63" width="18" height="18"/></g>
+          <use class="fx-ic" href="#i-bank" x="206" y="52" width="40" height="40"/>
+          <text class="fx-t" x="58" y="110" text-anchor="middle">contract</text><text class="fx-t" x="226" y="110" text-anchor="middle">lender</text>
+        </svg>
+        <p class="fee-when label">once &middot; at origination &middot; in L-BTC</p>
+        <details class="more"><summary><i class="plus-i"></i><span>Details</span></summary><p>Locked together with the collateral when you publish the offer: it goes to the lender the moment the contract starts.</p></details>
+      </div>
+      <!-- protocol fee: one thin slice of the loan fee, the rest is the lender's -->
+      <div class="fee">
+        <h3 class="h3">Protocol fee</h3>
+        <svg class="fx fx-slice" viewBox="0 0 260 120" aria-hidden="true" focusable="false">
+          <use class="fx-ic" href="#i-bank" x="14" y="36" width="40" height="40"/>
+          <g class="fx-pie is-usd"><path d="M126 56L158.340 45.490A34 34 0 1 0 158.340 66.510Z"/><use href="#g-usd" x="104" y="38" width="36" height="36"/></g>
+          <path class="fx-wedge" d="M126 56L158.340 45.490A34 34 0 0 1 158.340 66.510Z"/>
+          <use class="fx-ic fx-squid" href="#i-squid" x="208" y="36" width="40" height="40"/>
+          <text class="fx-t" x="34" y="110" text-anchor="middle">lender</text><text class="fx-t" x="228" y="110" text-anchor="middle">protocol</text>
+        </svg>
+        <p class="fee-when label">a slice of the loan fee &middot; at repayment</p>
+        <details class="more"><summary><i class="plus-i"></i><span>Details</span></summary><p>Never from the principal. It is not added to the borrower's bill: it comes out of what the lender receives.</p></details>
+      </div>
+    </div>
+    <p class="fees-note label reveal">No spread &middot; no margin &middot; no penalties</p>
+  </div>
+</section>
+
+<!-- 005 · IL CONNECTOR — the site window, the one door, the wallet with real screens -->
+<section class="sec" id="wallet" aria-labelledby="h-wallet">
+  <span class="sec-num" aria-hidden="true">005</span>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="label">SEC/005 &mdash; <strong>The connector</strong></p>
+      <div>
+        <h2 class="h2" id="h-wallet">One door only, between the site and the wallet.</h2>
+        <p class="lede" style="margin-top: var(--s2)">The site prepares the transaction. The <span class="mono">templar://</span> connector carries it to Templar Wallet. You read it and sign it.</p>
+      </div>
+    </div>
+
+    <div class="conn reveal" aria-label="The site, the connector, the wallet">
+      <figure class="cn-site">
+        <div class="win">
+          <div class="win-bar"><i class="d d1"></i><i class="d d2"></i><i class="d d3"></i><span class="win-url">templar-protocol &middot; app</span></div>
+          <div class="win-pg">
+            <p class="label">The site</p>
+            <p class="win-h">Prepares the transaction</p>
+            <ul class="win-rows">
+              <li><i class="d-btc"></i><b>1,000 L-BTC</b><span>&#8594; escrow</span></li>
+              <li><i class="d-usd"></i><b>40.000 USDt</b><span>&#8594; you</span></li>
+              <li><i class="d-btc"></i><b>0,002 L-BTC</b><span>&#8594; lender</span></li>
+            </ul>
+            <p class="win-small">does not sign &middot; does not custody</p>
+            <span class="cta cta-sm win-cta"><span>Connect wallet</span><span class="cta-arrow" aria-hidden="true">&#8594;</span></span>
+          </div>
+        </div>
+        <figcaption class="label">The site &middot; in the browser</figcaption>
+      </figure>
+      <div class="cn-link" aria-hidden="true"><i class="ln out"></i><span class="lab">to sign</span><i class="ln back"></i><span class="lab is-proof">signed</span></div>
+      <figure class="cn-conn">
+        <div class="conn-box">
+          <p class="label is-primary">Templar connector</p>
+          <span class="conn-ring"><svg aria-hidden="true"><use href="#i-squid"/></svg></span>
+          <p class="conn-scheme mono">templar://</p>
+          <p class="win-small">watch-only &middot; PSET</p>
+        </div>
+        <figcaption class="label">The door</figcaption>
+      </figure>
+      <div class="cn-link" aria-hidden="true"><i class="ln out"></i><span class="lab">to sign</span><i class="ln back"></i><span class="lab is-proof">signed</span></div>
+      <figure class="cn-wallet">
+        <div class="lap"><picture><source srcset="../assets/img/wallet/send-review.webp" type="image/webp"><img src="../assets/img/wallet/send-review.jpg" alt="Templar Wallet on the laptop: the transaction review, inputs, outputs and fee, before signing" width="1280" height="800" loading="lazy" decoding="async"></picture></div>
+        <div class="ph-mini"><img src="../assets/img/templar-connect.png" alt="Templar Wallet on the phone: the connection request" width="184" height="384" loading="lazy" decoding="async"></div>
+        <figcaption class="label">Templar Wallet &middot; laptop or phone</figcaption>
+      </figure>
+    </div>
+
+    <ol class="way reveal" aria-label="The signing round">
+      <li><svg class="way-ic" aria-hidden="true"><use href="#i-link"/></svg><h3 class="h3">1 &middot; Connect</h3><p>Open the <span class="mono">templar://</span> link or scan the QR.</p></li>
+      <li><svg class="way-ic" aria-hidden="true"><use href="#i-pen"/></svg><h3 class="h3">2 &middot; Sign</h3><p>Templar shows the whole transaction. You decide.</p></li>
+      <li><svg class="way-ic" aria-hidden="true"><use href="#i-send"/></svg><h3 class="h3">3 &middot; Done</h3><p>The site broadcasts it. One block later it is confirmed.</p></li>
+    </ol>
+  </div>
+</section>
+
+<!-- 006 · TEMPLAR WALLET — a sneak peek, then the page of its own -->
+<section class="sec sec-tw" id="templar-wallet" aria-labelledby="h-tw">
+  <span class="sec-num" aria-hidden="true">006</span>
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <p class="label">SEC/006 &mdash; <strong>The wallet</strong></p>
+      <div>
+        <h2 class="h2" id="h-tw">Templar Wallet.</h2>
+        <p class="lede" style="margin-top: var(--s2)">Open source, easy, guided. The same wallet that signs the loans: no other app, no other key.</p>
+      </div>
+    </div>
+    <div class="peek reveal">
+      <div class="peek-copy">
+        <p class="tw-brand"><img src="../assets/img/templar-cross.svg" alt="" width="44" height="44"><span>Templar Wallet</span></p>
+        <ul class="tw-points">
+          <li><svg class="way-ic" aria-hidden="true"><use href="#i-shield"/></svg><div><h3 class="h3">One key or many</h3><p>Singlesig, multisig, Miniscript policies. Software or Blockstream Jade.</p></div></li>
+          <li><svg class="way-ic" aria-hidden="true"><use href="#i-swap"/></svg><div><h3 class="h3">Bitcoin and Liquid, together</h3><p>Every coin with its own card; Liquid assets with confidential amounts.</p></div></li>
+          <li><svg class="way-ic" aria-hidden="true"><use href="#i-pen"/></svg><div><h3 class="h3">Signs for the protocol</h3><p>It reads the transaction by itself and compares it with what the site says.</p></div></li>
+        </ul>
+        <div class="tw-ctas">
+          <a class="cta" href="wallet/"><span>Discover Templar Wallet</span><span class="cta-arrow" aria-hidden="true">&#8594;</span></a>
+          <a class="btn btn-ghost" href="wallet/#scarica">Download &#8594;</a>
+          <p class="label tw-note">Desktop &middot; Android in progress &middot; testnet</p>
+        </div>
+      </div>
+      <figure class="peek-shots" data-peek>
+        <div class="tw-frame">
+          <picture class="pk-shot is-on"><source srcset="../assets/img/wallet/dashboard-dark.webp" type="image/webp"><img src="../assets/img/wallet/dashboard-dark.jpg" alt="The dashboard: net worth, the 30-day chart, Bitcoin and Liquid" width="1280" height="800" loading="lazy" decoding="async"></picture>
+          <picture class="pk-shot"><source srcset="../assets/img/wallet/utxos.webp" type="image/webp"><img src="../assets/img/wallet/utxos.jpg" alt="The wallet's coins, one card each" width="1280" height="800" loading="lazy" decoding="async"></picture>
+          <picture class="pk-shot"><source srcset="../assets/img/wallet/multisig-threshold.webp" type="image/webp"><img src="../assets/img/wallet/multisig-threshold.jpg" alt="Multisig: how many keys, how many signatures" width="1280" height="800" loading="lazy" decoding="async"></picture>
+        </div>
+        <figcaption class="label pk-cap" data-peek-cap>Dashboard &middot; testnet</figcaption>
+      </figure>
+    </div>
+  </div>
+</section>
+
+<!-- CHIUSURA — the one thing to do next -->
+<section class="sec sec-cta" id="inizia" aria-labelledby="h-cta">
+  <span class="sec-num" aria-hidden="true">007</span>
+  <div class="wrap cta-final reveal">
+    <p class="label">SEC/007 &mdash; <strong>Start</strong></p>
+    <h2 class="display cta-h" id="h-cta">Connect the wallet.<br>Publish your first offer.</h2>
+    <p class="lede">Five minutes, on the test network. The keys stay in your wallet.</p>
+    <span class="cta cta-hero cta-xl is-soon" aria-disabled="true"><span>Open the app</span><em>coming</em></span>
+    <p class="cta-note label">Testnet &middot; no real funds &middot; you sign in your wallet</p>
+  </div>
+</section>
+
+</main>
+
+
+<footer class="foot">
+  <div class="foot-grid">
+    <div class="foot-brand foot-anim">
+      <a class="brand" href="#top">
+      <img class="brand-mark" src="../assets/img/templar-cross.svg" alt="" width="26" height="26">
+        <span class="word">Templar Protocol</span>
+      </a>
+      <p class="disclaimer">Templar Protocol is open-source software; use is at the user's own responsibility. Taking or granting a loan carries risks: the collateral's volatility, bugs in the software, the behaviour of the network. This page describes a development build on the test network: no real funds.</p>
+      <p class="foot-copy">© 2026 Templar Protocol. All rights reserved.</p>
+    </div>
+    <div class="foot-cols">
+      <div class="foot-col foot-anim">
+        <h3>Protocol</h3>
+        <ul>
+          <li><a href="#protocollo">The four moves</a></li>
+          <li><a href="#perche">Comparison</a></li>
+          <li><a href="#sicurezza">Security</a></li>
+          <li><a href="#wallet">The connector</a></li>
+          <li><a href="#costi">Costs</a></li>
+        </ul>
+      </div>
+      <div class="foot-col foot-anim">
+        <h3>Resources</h3>
+        <ul>
+          <li><a href="wallet/docs/">Wallet documentation</a></li>
+          <li><a href="https://github.com/0xB4LdW1n/TemplarWallet" rel="noopener">Wallet repository</a></li>
+          <li><span class="foot-soon">Testnet app <em>coming</em></span></li>
+          <li><a href="#templar-wallet">Templar Wallet</a></li>
+        </ul>
+      </div>
+      <div class="foot-col foot-anim">
+        <h3>Contact</h3>
+        <ul>
+          <li><a href="mailto:biz.vasco@proton.me"><svg aria-hidden="true"><use href="#i-mail"/></svg>biz.vasco@proton.me</a></li>
+        </ul>
+      </div>
+      <div class="foot-col foot-anim">
+        <h3>Social</h3>
+        <ul>
+          <!-- TODO(url-repo, url-x): public profiles -->
+          <li><a href="https://github.com/0xB4LdW1n/TemplarWallet" rel="noopener"><svg aria-hidden="true"><use href="#i-github"/></svg>GitHub</a></li>
+          
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="foot-bottom foot-anim">
+    <p class="foot-small">Bitcoin · Liquid Network · USDt · testnet, no real funds · Icons: <a href="https://www.flaticon.com/uicons" rel="noopener">UIcons by Flaticon</a></p>
+    <div class="seg" aria-label="Language">
+      <a href="../" data-lang-set="it" hreflang="it" lang="it">IT</a>
+      <a href="./" aria-current="page" data-lang-set="en" hreflang="en">EN</a>
+    </div>
+  </div>
+</footer>
+
+<div class="rule" aria-hidden="true">
+  <div class="line"><i></i></div>
+  <div class="txt mono num">BLK 000000 / 043200</div>
+</div>
+
+<script src="../assets/js/vendor/gsap.min.js"></script>
+<script src="../assets/js/vendor/ScrollTrigger.min.js"></script>
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

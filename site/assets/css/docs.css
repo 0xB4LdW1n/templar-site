@@ -1,0 +1,346 @@
+/* Templar Wallet — documentation (site/wallet/docs/, site/en/wallet/docs/). Loaded after style.css and wears
+   its skin: 96px ruled canvas, hairlines, one radius (4px), no shadows, no gradients, Archivo for text,
+   JetBrains Mono for labels, code and figures, crimson only for the active item, hovered links and the CTA.
+   Layout: a hero band, then a sticky column of chapters beside a solid "sheet" that holds the text.
+   Under 960px the column folds into a <details class="docs-toc"> bar pinned under the navbar.
+   Chapter vocabulary (writers use only these): section.doc · .doc-label · .doc-h · .doc-lede · .doc-h3 ·
+   .doc-list · .doc-steps · pre.code · code · kbd · .callout(.is-warn|.is-ok) · .dtable-wrap > .dtable ·
+   .doc-cards > .doc-card · .doc-fig · .doc-src (.gh). */
+
+.docs {
+  --side: 260px;
+  --sheet-pad: var(--s6);
+  --toc-h: 52px;                              /* the phone bar under the navbar */
+}
+.sprite { position: absolute; width: 0; height: 0; overflow: hidden; }
+.brand-mark { flex: 0 0 auto; }
+.nav-links > a[aria-current="page"] { color: var(--ink-strong); border-color: var(--primary); }
+/* the navbar's narrow widths are handled once, in style.css (tighter from 1280px, the menu from 1180px) */
+.foot-col a[aria-current="page"] { color: var(--ink-strong); }
+@media (min-width: 720px) { .foot-cols { grid-template-columns: repeat(3, minmax(0, 1fr)); } }   /* three columns here, four on the landing */
+
+.docs-wrap { max-width: 1184px; margin-inline: auto; padding-inline: var(--gutter); }
+
+/* ---------- hero band: the name of the page, the three doors, the code ---------- */
+.docs-hero { position: relative; padding: calc(var(--nav-h) + var(--s8)) 0 var(--s8); border-bottom: 1px solid var(--line-strong); }
+.docs-hero-in { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: var(--s6) var(--s8); align-items: end; }
+.docs-hero-text { display: grid; justify-items: start; gap: var(--s2); }
+.docs-title {
+  font-family: var(--display); font-stretch: 125%; font-weight: 800; line-height: 1; letter-spacing: -.03em;
+  font-size: clamp(34px, 5vw, 64px); color: var(--ink-strong); margin-top: var(--s1);
+}
+.docs-hero .lede { max-width: 34em; }
+.docs-tags { display: flex; flex-wrap: wrap; gap: var(--s1); margin-top: var(--s1); }
+
+/* the code: a framed slab with the GitHub mark, one honest line, one solid button */
+.gh-panel {
+  display: grid; grid-template-columns: auto minmax(0, 1fr); align-items: center; gap: var(--s2) var(--s2);
+  padding: var(--s3); border: 1px solid var(--line-strong); border-radius: var(--r); background: var(--surface);
+}
+.gh-mark { width: 40px; height: 40px; color: var(--ink-strong); }
+.gh-panel .label { color: var(--ink-strong); }
+.gh-note { grid-column: 1 / -1; font-size: 15px; line-height: 1.5; color: var(--muted); }
+.gh-btn {
+  grid-column: 1 / -1; display: flex; align-items: center; gap: 12px; height: 48px; padding: 0 var(--s2);
+  border: 1px solid var(--block); border-radius: var(--r); background: var(--block); color: var(--on-block);
+  font: 700 13px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; white-space: nowrap;
+  transition: background-color .15s, border-color .15s, color .15s;
+}
+.gh-btn svg { width: 22px; height: 22px; flex: 0 0 auto; }
+.gh-btn .gh-arrow, .side-gh .gh-arrow { margin-left: auto; font-family: var(--display); font-size: 18px; font-weight: 700; letter-spacing: 0; transition: translate .2s cubic-bezier(.2, .7, .2, 1); }
+.gh-btn:hover { text-decoration: none; background: var(--primary); border-color: var(--primary); color: var(--on-primary); }
+.gh-btn:hover .gh-arrow, .side-gh:hover .gh-arrow { translate: 4px 0; }
+
+/* the three doors sit on the band's last row */
+.doc-cards.docs-quick { grid-column: 1 / -1; grid-template-columns: repeat(3, minmax(0, 1fr)); margin-top: 0; }
+.doc-card-os { display: flex; gap: 12px; margin-top: 6px; color: var(--muted); }
+.doc-card-os svg { width: 16px; height: 16px; }
+.doc-card:hover .doc-card-os { color: var(--ink-strong); }
+
+/* ---------- the two columns: chapters | sheet ---------- */
+.docs-layout { display: grid; grid-template-columns: var(--side) minmax(0, 1fr); align-items: start; padding-bottom: var(--s12); }
+
+.docs-side {
+  position: sticky; top: var(--nav-h); max-height: calc(100vh - var(--nav-h)); overflow-y: auto; overscroll-behavior: contain;
+  padding: var(--s4) var(--s2) var(--s3) 0; scrollbar-width: thin;
+}
+.toc-g { margin: var(--s3) 0 8px; font: 600 11px/1.4 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.toc-g:first-child { margin-top: 0; }
+.toc ol { border-left: 1px solid var(--line); }
+.toc a {
+  display: grid; grid-template-columns: 24px minmax(0, 1fr); align-items: baseline; gap: 6px;
+  margin-left: -1px; padding: 6px 0 6px 14px; border-left: 2px solid transparent;
+  font-size: 15px; line-height: 1.35; color: var(--muted); transition: color .15s, border-color .15s;
+}
+.toc a i { font: 500 11px/1 var(--mono); font-style: normal; letter-spacing: .04em; color: var(--muted); }
+.toc a:hover { color: var(--ink-strong); text-decoration: none; }
+.toc a:hover span { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
+.toc a[aria-current="true"] { border-left-color: var(--primary); color: var(--ink-strong); -webkit-text-stroke: .4px currentColor; }   /* bold would widen the label and wrap it */
+.docs-side .toc a:focus-visible { outline-offset: -2px; }
+pre.code.is-cut { -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent); mask-image: linear-gradient(to right, #000 calc(100% - 48px), transparent); }
+pre.code.is-cut.is-end { -webkit-mask-image: none; mask-image: none; }
+.dtable td code { overflow-wrap: normal; }
+.toc a[aria-current="true"] i { color: var(--primary); }
+.side-gh {
+  display: flex; align-items: center; gap: 10px; margin-top: var(--s3); height: 44px; padding: 0 14px;
+  border: 1px solid var(--line-strong); border-radius: var(--r); background: var(--bg);
+  font: 600 12px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-strong);
+  transition: border-color .15s;
+}
+.side-gh svg { width: 18px; height: 18px; flex: 0 0 auto; }
+.side-gh .gh-arrow { font-size: 16px; color: var(--primary); }
+.side-gh:hover { text-decoration: none; border-color: var(--primary); }
+/* short screens: the list alone fills the column; the hero and every chapter already link the repository */
+@media (max-height: 820px) { .docs-side { padding-top: var(--s3); } .side-gh { display: none; } }
+
+/* the sheet: solid ground over the ruled canvas, hairline edges, the text at a reading measure */
+.docs-article {
+  min-width: 0; background: var(--bg);
+  border-inline: 1px solid var(--line); border-bottom: 1px solid var(--line);
+  padding: 0 var(--sheet-pad) var(--s6);
+}
+.docs-toc { display: none; }
+
+/* ---------- a chapter ---------- */
+.doc { max-width: 72ch; padding-block: var(--s8); border-top: 1px solid var(--line-strong); scroll-margin-top: calc(var(--nav-h) - var(--s4)); }
+.doc:first-of-type { border-top: 0; }
+.doc [id] { scroll-margin-top: calc(var(--nav-h) + var(--s3)); }
+.doc > * + * { margin-top: var(--s3); }
+.doc > .doc-h { margin-top: var(--s2); }
+.doc > .doc-lede { margin-top: var(--s2); }
+.doc > .doc-h3 { margin-top: var(--s6); }
+.doc > .doc-h3 + * { margin-top: var(--s2); }
+.doc > p + p { margin-top: var(--s2); }
+.doc > .doc-src { margin-top: var(--s6); }
+
+.doc-label { font: 500 12px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.doc-label strong { color: var(--ink-strong); font-weight: 600; }
+.doc-h {
+  font-family: var(--display); font-stretch: 112%; font-weight: 700; line-height: 1.06; letter-spacing: -.02em;
+  font-size: clamp(28px, 3.2vw, 40px); color: var(--ink-strong); text-wrap: balance;
+}
+.doc-lede { font-size: clamp(18px, 1.5vw, 20px); line-height: 1.5; color: var(--ink); }
+.doc-h3 {
+  padding-top: var(--s3); border-top: 1px solid var(--line);
+  font-family: var(--display); font-stretch: 100%; font-weight: 650; line-height: 1.25; letter-spacing: -.01em; font-size: 21px; color: var(--ink-strong);
+}
+.doc p, .doc li, .doc td, .doc figcaption { overflow-wrap: break-word; }
+.doc p { line-height: 1.65; }
+.doc b, .doc strong { color: var(--ink-strong); font-weight: 650; }
+.doc em { font-style: italic; }
+
+/* links in running text: underlined in the ink, crimson on hover */
+.doc p a:not(.gh), .doc li a, .doc td a, .doc figcaption a {
+  color: var(--ink-strong); text-decoration: underline; text-decoration-color: var(--line-strong);
+  text-underline-offset: 3px; text-decoration-thickness: 1px; transition: color .15s, text-decoration-color .15s;
+}
+.doc p a:not(.gh):hover, .doc li a:hover, .doc td a:hover, .doc figcaption a:hover { color: var(--primary); text-decoration-color: var(--primary); }
+
+/* inline code and keys */
+.doc code, .docs-hero code {
+  font-family: var(--mono); font-size: .84em; line-height: 1.4; padding: .1em .35em;
+  border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); color: var(--ink-strong);
+  overflow-wrap: anywhere;
+}
+.doc kbd {
+  display: inline-block; font: 600 .76em/1.5 var(--mono); letter-spacing: .02em; padding: 0 .45em; min-width: 1.8em; text-align: center;
+  border: 1px solid var(--line-strong); border-radius: var(--r); background: var(--bg); color: var(--ink-strong); vertical-align: .08em;
+}
+
+/* bullets: small squares */
+.doc-list { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s1); }
+.doc-list li { position: relative; min-width: 0; padding-left: 22px; line-height: 1.6; }
+.doc-list li::before { content: ""; position: absolute; left: 3px; top: .68em; width: 6px; height: 6px; background: var(--muted); }
+.doc-list li > * + * { margin-top: var(--s1); }
+
+/* steps: numbered hairline boxes on a thin rail */
+.doc-steps { display: grid; grid-template-columns: minmax(0, 1fr); gap: var(--s3); counter-reset: dstep; }
+.doc-steps > li { position: relative; min-width: 0; padding-left: 46px; min-height: 28px; line-height: 1.6; counter-increment: dstep; }
+.doc-steps > li::before {
+  content: counter(dstep, decimal-leading-zero); position: absolute; left: 0; top: 0;
+  display: grid; place-items: center; width: 28px; height: 28px;
+  border: 1px solid var(--line-strong); border-radius: var(--r); background: var(--bg);
+  font: 600 11px/1 var(--mono); letter-spacing: .02em; color: var(--ink-strong);
+}
+.doc-steps > li:not(:last-child)::after { content: ""; position: absolute; left: 14px; top: 34px; bottom: calc(var(--s3) * -1 + 6px); width: 1px; background: var(--line); }
+.doc-steps > li > * + * { margin-top: var(--s1); }
+.doc-steps > li > .code-box, .doc-steps > li > pre.code, .doc-steps > li > .callout, .doc-steps > li > .dtable-wrap { margin-top: var(--s2); }
+
+/* code blocks: a surface slab that scrolls sideways inside itself. docs.js wraps each one in .code-box with a
+   head strip: an optional label (pre[data-label], e.g. "PowerShell") on the left, «Copia» on the right */
+pre.code {
+  margin: 0; padding: var(--s2); overflow-x: auto; -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--line-strong); border-radius: var(--r); background: var(--surface);
+  font: 400 13px/1.65 var(--mono); color: var(--ink-strong); tab-size: 2; white-space: pre; scrollbar-width: thin;
+}
+pre.code code { font: inherit; padding: 0; border: 0; background: none; color: inherit; overflow-wrap: normal; }
+.code-box { min-width: 0; border: 1px solid var(--line-strong); border-radius: var(--r); background: var(--surface); overflow: hidden; }
+.code-head { display: flex; align-items: center; justify-content: space-between; gap: var(--s2); height: 38px; padding: 0 5px 0 var(--s2); border-bottom: 1px solid var(--line); }
+.code-k { min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font: 500 11px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.code-box > pre.code { border: 0; border-radius: 0; background: none; }
+.code-copy {
+  flex: 0 0 auto; margin-left: auto; height: 28px; padding: 0 10px;
+  border: 1px solid var(--line-strong); border-radius: var(--r); background: var(--bg); color: var(--muted);
+  font: 600 10.5px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase;
+  transition: color .15s, border-color .15s;
+}
+.code-copy:hover { color: var(--ink-strong); border-color: var(--primary); }
+.code-copy.is-done { color: var(--proof); border-color: var(--proof); }
+
+/* callouts: a hairline box with a 3px rule on the left — crimson note, amber warning, emerald ok */
+.callout {
+  padding: var(--s2) var(--s3); border: 1px solid var(--line-strong); border-left: 3px solid var(--primary);
+  border-radius: var(--r); background: var(--surface);
+}
+.callout.is-warn { border-left-color: var(--warn); }
+.callout.is-ok { border-left-color: var(--proof); }
+.callout > * + * { margin-top: var(--s1); }
+.callout p { font-size: 16px; line-height: 1.6; }
+.callout.is-warn > p:first-child > b:first-child { color: var(--warn); }
+.callout.is-ok > p:first-child > b:first-child { color: var(--proof); }
+
+/* tables: a hairline grid, mono column labels; wide ones scroll inside their frame */
+.dtable-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; border: 1px solid var(--line-strong); border-radius: var(--r); scrollbar-width: thin; }
+.dtable { width: 100%; border-collapse: collapse; font-size: 15px; line-height: 1.5; }
+.dtable th, .dtable td { min-width: 120px; padding: 11px 14px; text-align: left; vertical-align: top; }
+.dtable th {
+  font: 600 11px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+  background: var(--surface); border-bottom: 1px solid var(--line-strong);
+}
+.dtable th + th, .dtable td + td { border-left: 1px solid var(--line); }
+.dtable tbody tr + tr td { border-top: 1px solid var(--line); }
+.dtable td:first-child { color: var(--ink-strong); }
+.dtable code { font-size: .8em; }
+/* the first column names things (a folder, a variable, a size): those names wrap between words, never inside one */
+.dtable td:first-child code { overflow-wrap: break-word; }
+@media (min-width: 561px) { .dtable td:first-child code { white-space: nowrap; } }
+
+/* cards: small doors to another chapter */
+.doc-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr)); gap: var(--s2); }
+.doc-card {
+  position: relative; display: grid; align-content: start; gap: 6px; padding: var(--s3) var(--s3) 20px;
+  border: 1px solid var(--line-strong); border-radius: var(--r); background: var(--bg); color: inherit;
+  transition: border-color .15s, background-color .15s;
+}
+.doc-card::after {
+  content: "\2192"; position: absolute; top: 20px; right: var(--s2);
+  font: 700 18px/1 var(--display); color: var(--muted); transition: color .15s, translate .2s cubic-bezier(.2, .7, .2, 1);
+}
+.doc-card b { padding-right: 28px; font-family: var(--display); font-stretch: 106%; font-weight: 700; font-size: 18px; line-height: 1.25; letter-spacing: -.01em; color: var(--ink-strong); }
+.doc-card > span { font-size: 14px; line-height: 1.45; color: var(--muted); }
+.doc-card:hover { text-decoration: none; border-color: var(--primary); background: var(--surface); }
+.doc-card:hover::after { color: var(--primary); translate: 3px 0; }
+/* two or four doors sit two by two (never three and an orphan); a lone door keeps a card's width */
+.doc-cards:has(> .doc-card:nth-child(2):last-child),
+.doc-cards:has(> .doc-card:nth-child(4):last-child) { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.doc-cards:has(> .doc-card:only-child) { grid-template-columns: minmax(0, 400px); }
+
+/* figures: a real screenshot in a hairline frame, a mono caption under it */
+.doc-fig img { width: 100%; height: auto; border: 1px solid var(--line-strong); border-radius: var(--r); background: var(--surface); }
+.doc-fig figcaption { margin-top: 10px; font: 500 12px/1.55 var(--mono); letter-spacing: .02em; color: var(--muted); }
+.doc > .doc-fig { margin-block-start: var(--s4); }
+
+/* the source line that closes every chapter */
+.doc-src {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px var(--s2);
+  padding-top: var(--s3); border-top: 1px solid var(--line);
+  font: 500 12px/1.5 var(--mono); letter-spacing: .04em; color: var(--muted);
+}
+.doc-src > span { min-width: 0; }
+.doc-src code { font-size: 12px; padding: 0; border: 0; background: none; color: var(--ink); }
+.doc-src .gh {
+  display: inline-flex; align-items: center; gap: 8px; height: 32px; padding: 0 12px; flex: 0 0 auto;
+  border: 1px solid var(--line-strong); border-radius: var(--r); background: var(--bg);
+  font: 600 11px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-strong); text-decoration: none;
+  transition: border-color .15s, color .15s;
+}
+.doc-src .gh .ic { width: 16px; height: 16px; color: currentColor; }
+.doc-src .gh:hover { text-decoration: none; border-color: var(--primary); }
+
+/* ---------- widths ---------- */
+@media (max-width: 1100px) {
+  .docs { --side: 232px; --sheet-pad: var(--s4); }
+  .docs-hero-in { grid-template-columns: minmax(0, 1fr) 300px; gap: var(--s6); }
+}
+
+/* tablets and phones: one column; the chapters become a bar pinned under the navbar */
+@media (max-width: 960px) {
+  .docs-hero { padding: calc(var(--nav-h) + var(--s6)) 0 var(--s6); }
+  .docs-hero-in { grid-template-columns: minmax(0, 1fr); gap: var(--s4); }
+  .gh-panel { grid-template-columns: auto minmax(0, 1fr) auto; }
+  .gh-panel .gh-btn { grid-column: auto; grid-row: 1 / 3; grid-column-start: 3; }
+  .gh-note { grid-column: 2 / 3; }
+  .gh-mark { grid-row: 1 / 3; }
+  .docs-layout { grid-template-columns: minmax(0, 1fr); padding-bottom: var(--s8); }
+  .docs-side { display: none; }
+  .docs-article { margin-inline: calc(var(--gutter) * -1); padding: 0 var(--gutter) var(--s4); border: 0; border-bottom: 1px solid var(--line); }
+  .doc { max-width: none; padding-block: var(--s6); scroll-margin-top: calc(var(--nav-h) + var(--toc-h) - var(--s4)); }
+  .doc [id] { scroll-margin-top: calc(var(--nav-h) + var(--toc-h) + var(--s2)); }
+
+  .docs-toc {
+    display: block; position: sticky; top: var(--nav-h); z-index: 20;
+    margin-inline: calc(var(--gutter) * -1); background: var(--bg); border-bottom: 1px solid var(--line-strong);
+  }
+  .docs-toc > summary {
+    display: flex; align-items: center; gap: 12px; height: var(--toc-h); padding: 0 var(--gutter);
+    list-style: none; cursor: pointer; user-select: none;
+  }
+  .docs-toc > summary::-webkit-details-marker { display: none; }
+  .toc-k { flex: 0 0 auto; font: 600 11px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-strong); }
+  .toc-now { flex: 1 1 auto; min-width: 0; overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-size: 15px; color: var(--muted); }
+  .toc-now:not(:empty)::before { content: "/"; margin-right: 10px; font-family: var(--mono); color: var(--line-strong); }
+  .toc-plus { position: relative; flex: 0 0 auto; width: 30px; height: 30px; margin-left: auto; border: 1px solid var(--line-strong); border-radius: var(--r); transition: background-color .15s, border-color .15s; }
+  .toc-plus::before, .toc-plus::after { content: ""; position: absolute; left: 50%; top: 50%; width: 11px; height: 1.5px; margin: -.75px 0 0 -5.5px; background: var(--ink-strong); transition: rotate .25s cubic-bezier(.2, .7, .2, 1); }
+  .toc-plus::after { rotate: 90deg; }
+  .docs-toc[open] .toc-plus { background: var(--primary); border-color: var(--primary); }
+  .docs-toc[open] .toc-plus::before, .docs-toc[open] .toc-plus::after { background: var(--on-primary); rotate: 45deg; }
+  .docs-toc[open] .toc-plus::after { rotate: 135deg; }
+  .docs-toc > .toc {
+    position: absolute; left: 0; right: 0; top: 100%;
+    max-height: calc(100svh - var(--nav-h) - var(--toc-h)); overflow-y: auto; overscroll-behavior: contain;
+    padding: var(--s2) var(--gutter) var(--s3); background: var(--bg); border-bottom: 1px solid var(--line-strong);
+  }
+  .docs-toc .toc-g { margin: var(--s2) 0 6px; }
+  .docs-toc .toc-g:first-child { margin-top: 0; }
+  .docs-toc .toc a { padding-block: 7px; }
+}
+
+@media (max-width: 720px) {
+  .doc-cards.docs-quick { grid-template-columns: minmax(0, 1fr); }
+  .gh-panel { grid-template-columns: auto minmax(0, 1fr); }
+  .gh-panel .gh-btn { grid-column: 1 / -1; grid-row: auto; }
+  .gh-mark { grid-row: auto; }
+  .gh-note { grid-column: 1 / -1; }
+  .doc-h3 { font-size: 19px; }
+  .doc-src { flex-direction: column; align-items: flex-start; }
+}
+
+/* phones: a table with three or more columns would squeeze every column to 120px and chop paths every few
+   letters, so each row stacks into a small block: the first cell as its title, the others under the name of
+   their column (docs.js copies each <th> into data-th and marks the table .is-stack) */
+@media (max-width: 560px) {
+  .doc-cards:has(> .doc-card:nth-child(2):last-child),
+  .doc-cards:has(> .doc-card:nth-child(4):last-child) { grid-template-columns: minmax(0, 1fr); }
+  .dtable.is-stack, .dtable.is-stack tbody, .dtable.is-stack tr, .dtable.is-stack td { display: block; }
+  .dtable.is-stack thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .dtable.is-stack tbody tr { padding: 12px 14px 14px; }
+  .dtable.is-stack tbody tr + tr { border-top: 1px solid var(--line-strong); }
+  .dtable.is-stack td { min-width: 0; padding: 0; border: 0; }
+  .dtable.is-stack td:first-child { font-weight: 650; }
+  .dtable.is-stack td + td { margin-top: 10px; }
+  .dtable.is-stack td + td[data-th]::before {
+    content: attr(data-th); display: block; margin-bottom: 2px;
+    font: 600 10.5px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+  }
+}
+
+@media (max-width: 420px) {
+  .docs-title { font-stretch: 112%; font-size: clamp(30px, 9.4vw, 40px); }
+  pre.code { font-size: 12.5px; }
+  .callout { padding: 14px var(--s2); }
+  .doc-steps > li { padding-left: 40px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gh-btn .gh-arrow, .side-gh .gh-arrow, .doc-card::after, .toc-plus::before, .toc-plus::after { transition: none; }
+}

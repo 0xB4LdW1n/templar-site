@@ -1,0 +1,1106 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Templar Wallet — Documentazione</title>
+<meta name="description" content="La documentazione di Templar Wallet, il wallet Bitcoin e Liquid in alpha sulla rete di prova: installazione, verifica del download, primo wallet, multisig, hardware wallet, Liquid, collegamento a Templar Protocol e codice sorgente.">
+<link rel="canonical" href="https://templar.red/wallet/docs/">
+<link rel="alternate" hreflang="it" href="https://templar.red/wallet/docs/">
+<link rel="alternate" hreflang="en" href="https://templar.red/en/wallet/docs/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Templar Protocol">
+<meta property="og:title" content="Templar Wallet — Documentazione">
+<meta property="og:description" content="Come installare Templar Wallet e usarlo, un passo alla volta. Alpha, solo rete di prova.">
+<meta property="og:locale" content="it_IT">
+<meta property="og:image" content="https://templar.red/assets/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#F2F5F4" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0A0E0D" media="(prefers-color-scheme: dark)">
+<link rel="icon" href="../../assets/img/favicon.svg" type="image/svg+xml">
+<script>try{var t=localStorage.getItem('sp-theme');if(t==='dark'||t==='light')document.documentElement.setAttribute('data-theme',t)}catch(e){}document.documentElement.classList.add('js')</script>
+<link rel="preload" href="../../assets/fonts/Archivo-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="../../assets/fonts/JetBrainsMono-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="../../assets/css/style.css">
+<link rel="stylesheet" href="../../assets/css/docs.css">
+</head>
+<body class="docs">
+<a class="skip" href="#main">Vai al contenuto</a>
+
+<header class="nav" data-open="false">
+  <div class="wrap">
+    <a class="brand" href="../" aria-label="Templar Wallet, la pagina del wallet">
+      <img class="brand-mark" src="../../assets/img/templar-cross.svg" alt="" width="26" height="26">
+      <span class="word">Templar Wallet</span>
+    </a>
+    <span class="tag tag-warn nav-net"><i class="dot"></i>Testnet</span>
+    <nav class="nav-links" id="menu" aria-label="Sezioni">
+      <a href="../#funzioni">Funzioni</a>
+      <a href="../#tour">Tour</a>
+      <a href="../#confronto">Confronto</a>
+      <a href="../#scarica">Scarica</a>
+      <a href="./" aria-current="page">Docs</a>
+      <a class="only-menu" href="../../">Templar Protocol &#8594;</a>
+      <div class="menu-tools only-menu">
+        <div class="seg seg-nav" aria-label="Lingua"><a href="./" aria-current="page" hreflang="it">IT</a><a href="../../en/wallet/docs/" hreflang="en" lang="en">EN</a></div>
+        <button type="button" class="nav-theme" data-theme-toggle aria-label="Cambia tema"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 2.5a7.5 7.5 0 0 1 0 15Z" fill="currentColor"/></svg></button>
+      </div>
+    </nav>
+    <div class="nav-ctl">
+      <div class="seg seg-nav" aria-label="Lingua">
+        <a href="./" aria-current="page" hreflang="it">IT</a>
+        <a href="../../en/wallet/docs/" hreflang="en" lang="en">EN</a>
+      </div>
+      <button type="button" class="nav-theme" data-theme-toggle aria-label="Cambia tema">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7.5" fill="none" stroke="currentColor" stroke-width="1.5"/><path d="M10 2.5a7.5 7.5 0 0 1 0 15Z" fill="currentColor"/></svg>
+      </button>
+      <a class="nav-x" href="../../">Templar Protocol<span aria-hidden="true">&#8594;</span></a>
+      <a class="cta cta-sm" href="../#scarica"><span>Scarica</span><span class="cta-arrow" aria-hidden="true">&#8594;</span></a>
+      <button type="button" class="menu-btn" aria-expanded="false" aria-controls="menu">Menu</button>
+    </div>
+  </div>
+</header>
+
+<!-- icons: i-github from UIcons (Flaticon); m-* are brand marks from Simple Icons (simpleicons.org, CC0 drawings; the marks belong to their owners) -->
+<svg class="sprite" width="0" height="0" aria-hidden="true" focusable="false"><defs>
+  <symbol id="i-github" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.28Q8.99 1.28 6.46 2.75Q3.93 4.22 2.47 6.75Q1 9.28 1 12.28Q1 14.63 1.95 16.76Q2.91 18.88 4.63 20.42Q6.35 21.96 8.55 22.7Q8.92 22.77 9.1 22.59Q9.29 22.4 9.29 22.18V20.13Q8.19 20.35 7.38 20.2Q6.72 20.06 6.28 19.69Q5.91 19.47 5.69 19.1L5.55 18.81Q5.25 18 4.74 17.56Q4.52 17.27 4.3 17.2Q3.86 16.9 3.9 16.76Q3.93 16.61 4.15 16.54H4.37Q5.11 16.61 5.69 17.12Q5.91 17.42 6.06 17.71Q6.72 18.81 7.82 18.88Q8.55 18.96 9.29 18.59Q9.43 17.64 10.02 17.12Q7.75 16.9 6.57 15.88Q4.96 14.56 4.96 11.7Q4.96 10.01 6.13 8.76Q5.91 8.32 5.91 7.74Q5.84 6.78 6.21 5.83H6.57Q6.94 5.83 7.53 6.05Q8.33 6.34 9.21 6.93Q10.53 6.56 12 6.56Q13.47 6.56 14.79 6.93Q16.03 6.05 17.06 5.83Q17.57 5.76 17.79 5.83Q18.16 6.78 18.09 7.74Q18.09 8.32 17.87 8.76Q19.04 9.94 19.04 11.7Q19.04 14.56 17.43 15.88Q16.25 16.83 13.98 17.12Q14.71 17.78 14.71 19.18V22.18Q14.71 22.4 14.9 22.59Q15.08 22.77 15.52 22.7Q17.65 21.96 19.37 20.42Q21.09 18.88 22.05 16.76Q23 14.63 23 12.28Q23 9.28 21.53 6.75Q20.07 4.22 17.54 2.75Q15.01 1.28 12 1.28ZM5.18 17.05Q5.11 17.12 4.96 17.09Q4.81 17.05 4.85 16.94Q4.89 16.83 5.03 16.9Q5.18 16.98 5.18 17.05ZM5.62 17.56Q5.55 17.64 5.4 17.49Q5.25 17.34 5.36 17.27Q5.47 17.2 5.58 17.34Q5.69 17.49 5.62 17.56ZM6.06 18.15Q5.91 18.3 5.8 18.11Q5.69 17.93 5.8 17.82Q5.91 17.71 6.02 17.89Q6.13 18.08 6.06 18.15ZM6.65 18.81Q6.5 18.96 6.35 18.77Q6.21 18.59 6.32 18.48Q6.43 18.37 6.57 18.52Q6.72 18.66 6.65 18.81ZM7.45 19.18Q7.38 19.32 7.16 19.25Q6.94 19.18 7.01 19.03Q7.09 18.88 7.31 18.96Q7.53 19.03 7.45 19.18ZM8.33 19.25Q8.33 19.4 8.11 19.4Q7.89 19.4 7.89 19.21Q7.89 19.03 8.11 19.03Q8.33 19.03 8.33 19.25ZM9.21 19.1Q9.21 19.25 8.99 19.29Q8.77 19.32 8.74 19.18Q8.7 19.03 8.92 18.96Q9.14 18.88 9.21 19.1Z"/></symbol>
+  <symbol id="m-apple" viewBox="0 0 24 24" fill="currentColor"><path d="M12.152 6.896c-.948 0-2.415-1.078-3.96-1.04-2.04.027-3.91 1.183-4.961 3.014-2.117 3.675-.546 9.103 1.519 12.09 1.013 1.454 2.208 3.09 3.792 3.039 1.52-.065 2.09-.987 3.935-.987 1.831 0 2.35.987 3.96.948 1.637-.026 2.676-1.48 3.676-2.948 1.156-1.688 1.636-3.325 1.662-3.415-.039-.013-3.182-1.221-3.22-4.857-.026-3.04 2.48-4.494 2.597-4.559-1.429-2.09-3.623-2.324-4.39-2.376-2-.156-3.675 1.09-4.61 1.09zM15.53 3.83c.843-1.012 1.4-2.427 1.245-3.83-1.207.052-2.662.805-3.532 1.818-.78.896-1.454 2.338-1.273 3.714 1.338.104 2.715-.688 3.559-1.701"/></symbol>
+  <symbol id="m-windows" viewBox="0 0 24 24" fill="currentColor"><path d="M0,0H11.377V11.372H0ZM12.623,0H24V11.372H12.623ZM0,12.623H11.377V24H0Zm12.623,0H24V24H12.623"/></symbol>
+  <symbol id="m-linux" viewBox="0 0 24 24" fill="currentColor"><path d="M12.504 0c-.155 0-.315.008-.48.021-4.226.333-3.105 4.807-3.17 6.298-.076 1.092-.3 1.953-1.05 3.02-.885 1.051-2.127 2.75-2.716 4.521-.278.832-.41 1.684-.287 2.489a.424.424 0 00-.11.135c-.26.268-.45.6-.663.839-.199.199-.485.267-.797.4-.313.136-.658.269-.864.68-.09.189-.136.394-.132.602 0 .199.027.4.055.536.058.399.116.728.04.97-.249.68-.28 1.145-.106 1.484.174.334.535.47.94.601.81.2 1.91.135 2.774.6.926.466 1.866.67 2.616.47.526-.116.97-.464 1.208-.946.587-.003 1.23-.269 2.26-.334.699-.058 1.574.267 2.577.2.025.134.063.198.114.333l.003.003c.391.778 1.113 1.132 1.884 1.071.771-.06 1.592-.536 2.257-1.306.631-.765 1.683-1.084 2.378-1.503.348-.199.629-.469.649-.853.023-.4-.2-.811-.714-1.376v-.097l-.003-.003c-.17-.2-.25-.535-.338-.926-.085-.401-.182-.786-.492-1.046h-.003c-.059-.054-.123-.067-.188-.135a.357.357 0 00-.19-.064c.431-1.278.264-2.55-.173-3.694-.533-1.41-1.465-2.638-2.175-3.483-.796-1.005-1.576-1.957-1.56-3.368.026-2.152.236-6.133-3.544-6.139zm.529 3.405h.013c.213 0 .396.062.584.198.19.135.33.332.438.533.105.259.158.459.166.724 0-.02.006-.04.006-.06v.105a.086.086 0 01-.004-.021l-.004-.024a1.807 1.807 0 01-.15.706.953.953 0 01-.213.335.71.71 0 00-.088-.042c-.104-.045-.198-.064-.284-.133a1.312 1.312 0 00-.22-.066c.05-.06.146-.133.183-.198.053-.128.082-.264.088-.402v-.02a1.21 1.21 0 00-.061-.4c-.045-.134-.101-.2-.183-.333-.084-.066-.167-.132-.267-.132h-.016c-.093 0-.176.03-.262.132a.8.8 0 00-.205.334 1.18 1.18 0 00-.09.4v.019c.002.089.008.179.02.267-.193-.067-.438-.135-.607-.202a1.635 1.635 0 01-.018-.2v-.02a1.772 1.772 0 01.15-.768c.082-.22.232-.406.43-.533a.985.985 0 01.594-.2zm-2.962.059h.036c.142 0 .27.048.399.135.146.129.264.288.344.465.09.199.14.4.153.667v.004c.007.134.006.2-.002.266v.08c-.03.007-.056.018-.083.024-.152.055-.274.135-.393.2.012-.09.013-.18.003-.267v-.015c-.012-.133-.04-.2-.082-.333a.613.613 0 00-.166-.267.248.248 0 00-.183-.064h-.021c-.071.006-.13.04-.186.132a.552.552 0 00-.12.27.944.944 0 00-.023.33v.015c.012.135.037.2.08.334.046.134.098.2.166.268.01.009.02.018.034.024-.07.057-.117.07-.176.136a.304.304 0 01-.131.068 2.62 2.62 0 01-.275-.402 1.772 1.772 0 01-.155-.667 1.759 1.759 0 01.08-.668 1.43 1.43 0 01.283-.535c.128-.133.26-.2.418-.2zm1.37 1.706c.332 0 .733.065 1.216.399.293.2.523.269 1.052.468h.003c.255.136.405.266.478.399v-.131a.571.571 0 01.016.47c-.123.31-.516.643-1.063.842v.002c-.268.135-.501.333-.775.465-.276.135-.588.292-1.012.267a1.139 1.139 0 01-.448-.067 3.566 3.566 0 01-.322-.198c-.195-.135-.363-.332-.612-.465v-.005h-.005c-.4-.246-.616-.512-.686-.71-.07-.268-.005-.47.193-.6.224-.135.38-.271.483-.336.104-.074.143-.102.176-.131h.002v-.003c.169-.202.436-.47.839-.601.139-.036.294-.065.466-.065zm2.8 2.142c.358 1.417 1.196 3.475 1.735 4.473.286.534.855 1.659 1.102 3.024.156-.005.33.018.513.064.646-1.671-.546-3.467-1.089-3.966-.22-.2-.232-.335-.123-.335.59.534 1.365 1.572 1.646 2.757.13.535.16 1.104.021 1.67.067.028.135.06.205.067 1.032.534 1.413.938 1.23 1.537v-.043c-.06-.003-.12 0-.18 0h-.016c.151-.467-.182-.825-1.065-1.224-.915-.4-1.646-.336-1.77.465-.008.043-.013.066-.018.135-.068.023-.139.053-.209.064-.43.268-.662.669-.793 1.187-.13.533-.17 1.156-.205 1.869v.003c-.02.334-.17.838-.319 1.35-1.5 1.072-3.58 1.538-5.348.334a2.645 2.645 0 00-.402-.533 1.45 1.45 0 00-.275-.333c.182 0 .338-.03.465-.067a.615.615 0 00.314-.334c.108-.267 0-.697-.345-1.163-.345-.467-.931-.995-1.788-1.521-.63-.4-.986-.87-1.15-1.396-.165-.534-.143-1.085-.015-1.645.245-1.07.873-2.11 1.274-2.763.107-.065.037.135-.408.974-.396.751-1.14 2.497-.122 3.854a8.123 8.123 0 01.647-2.876c.564-1.278 1.743-3.504 1.836-5.268.048.036.217.135.289.202.218.133.38.333.59.465.21.201.477.335.876.335.039.003.075.006.11.006.412 0 .73-.134.997-.268.29-.134.52-.334.74-.4h.005c.467-.135.835-.402 1.044-.7zm2.185 8.958c.037.6.343 1.245.882 1.377.588.134 1.434-.333 1.791-.765l.211-.01c.315-.007.577.01.847.268l.003.003c.208.199.305.53.391.876.085.4.154.78.409 1.066.486.527.645.906.636 1.14l.003-.007v.018l-.003-.012c-.015.262-.185.396-.498.595-.63.401-1.746.712-2.457 1.57-.618.737-1.37 1.14-2.036 1.191-.664.053-1.237-.2-1.574-.898l-.005-.003c-.21-.4-.12-1.025.056-1.69.176-.668.428-1.344.463-1.897.037-.714.076-1.335.195-1.814.12-.465.308-.797.641-.984l.045-.022zm-10.814.049h.01c.053 0 .105.005.157.014.376.055.706.333 1.023.752l.91 1.664.003.003c.243.533.754 1.064 1.189 1.637.434.598.77 1.131.729 1.57v.006c-.057.744-.48 1.148-1.125 1.294-.645.135-1.52.002-2.395-.464-.968-.536-2.118-.469-2.857-.602-.369-.066-.61-.2-.723-.4-.11-.2-.113-.602.123-1.23v-.004l.002-.003c.117-.334.03-.752-.027-1.118-.055-.401-.083-.71.043-.94.16-.334.396-.4.69-.533.294-.135.64-.202.915-.47h.002v-.002c.256-.268.445-.601.668-.838.19-.201.38-.336.663-.336zm7.159-9.074c-.435.201-.945.535-1.488.535-.542 0-.97-.267-1.28-.466-.154-.134-.28-.268-.373-.335-.164-.134-.144-.333-.074-.333.109.016.129.134.199.2.096.066.215.2.36.333.292.2.68.467 1.167.467.485 0 1.053-.267 1.398-.466.195-.135.445-.334.648-.467.156-.136.149-.267.279-.267.128.016.034.134-.147.332a8.097 8.097 0 01-.69.468zm-1.082-1.583V5.64c-.006-.02.013-.042.029-.05.074-.043.18-.027.26.004.063 0 .16.067.15.135-.006.049-.085.066-.135.066-.055 0-.092-.043-.141-.068-.052-.018-.146-.008-.163-.065zm-.551 0c-.02.058-.113.049-.166.066-.047.025-.086.068-.14.068-.05 0-.13-.02-.136-.068-.01-.066.088-.133.15-.133.08-.031.184-.047.259-.005.019.009.036.03.03.05v.02h.003z"/></symbol>
+  <symbol id="m-android" viewBox="0 0 24 24" fill="currentColor"><path d="M18.4395 5.5586c-.675 1.1664-1.352 2.3318-2.0274 3.498-.0366-.0155-.0742-.0286-.1113-.043-1.8249-.6957-3.484-.8-4.42-.787-1.8551.0185-3.3544.4643-4.2597.8203-.084-.1494-1.7526-3.021-2.0215-3.4864a1.1451 1.1451 0 0 0-.1406-.1914c-.3312-.364-.9054-.4859-1.379-.203-.475.282-.7136.9361-.3886 1.5019 1.9466 3.3696-.0966-.2158 1.9473 3.3593.0172.031-.4946.2642-1.3926 1.0177C2.8987 12.176.452 14.772 0 18.9902h24c-.119-1.1108-.3686-2.099-.7461-3.0683-.7438-1.9118-1.8435-3.2928-2.7402-4.1836a12.1048 12.1048 0 0 0-2.1309-1.6875c.6594-1.122 1.312-2.2559 1.9649-3.3848.2077-.3615.1886-.7956-.0079-1.1191a1.1001 1.1001 0 0 0-.8515-.5332c-.5225-.0536-.9392.3128-1.0488.5449zm-.0391 8.461c.3944.5926.324 1.3306-.1563 1.6503-.4799.3197-1.188.0985-1.582-.4941-.3944-.5927-.324-1.3307.1563-1.6504.4727-.315 1.1812-.1086 1.582.4941zM7.207 13.5273c.4803.3197.5506 1.0577.1563 1.6504-.394.5926-1.1038.8138-1.584.4941-.48-.3197-.5503-1.0577-.1563-1.6504.4008-.6021 1.1087-.8106 1.584-.4941z"/></symbol>
+  <symbol id="m-github" viewBox="0 0 24 24" fill="currentColor"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></symbol>
+</defs></svg>
+
+<main id="main">
+
+<!-- HERO · what this page is, the three doors most people need, the code -->
+<section class="docs-hero" id="top" aria-labelledby="h-docs">
+  <div class="docs-wrap docs-hero-in">
+    <div class="docs-hero-text">
+      <p class="label">Templar Wallet &mdash; <strong>Documentazione</strong></p>
+      <h1 class="docs-title" id="h-docs">Documentazione.</h1>
+      <p class="lede">Come installare Templar Wallet e usarlo, un passo alla volta.</p>
+      <p class="docs-tags"><span class="tag">Alpha</span><span class="tag tag-warn"><i class="dot"></i>Solo testnet</span></p>
+    </div>
+    <aside class="gh-panel" aria-labelledby="h-gh">
+      <svg class="gh-mark" aria-hidden="true"><use href="#m-github"/></svg>
+      <p class="label" id="h-gh">Codice sorgente</p>
+      <p class="gh-note">Il codice &egrave; su GitHub, aperto, con licenza MIT.</p>
+      <!-- TODO(url-repo): indirizzo del repository di Templar Wallet -->
+      <a class="gh-btn" href="https://github.com/0xB4LdW1n/TemplarWallet" rel="noopener"><svg aria-hidden="true"><use href="#m-github"/></svg><span>Il repository</span><span class="gh-arrow" aria-hidden="true">&#8594;</span></a>
+    </aside>
+    <div class="doc-cards docs-quick">
+      <a class="doc-card" href="#installa"><b>Scarica e installa</b><span>Per macOS, Windows, Linux e Android.</span><i class="doc-card-os" aria-hidden="true"><svg><use href="#m-apple"/></svg><svg><use href="#m-windows"/></svg><svg><use href="#m-linux"/></svg><svg><use href="#m-android"/></svg></i></a>
+      <a class="doc-card" href="#primo-wallet"><b>Il primo wallet</b><span>Creane uno nuovo o ripristinalo dalla frase.</span></a>
+      <a class="doc-card" href="#sorgente"><b>Codice sorgente e build</b><span>Dove sta il codice e come si compila.</span></a>
+    </div>
+  </div>
+</section>
+
+<div class="docs-wrap docs-layout">
+
+  <!-- the chapters, desktop: a sticky column; docs.js marks the one you are reading -->
+  <aside class="docs-side" aria-label="Capitoli">
+    <nav class="toc" aria-label="Capitoli della documentazione">
+      <p class="toc-g">Inizia</p>
+      <ol>
+        <li><a href="#installa"><i>01</i><span>Scarica e installa</span></a></li>
+        <li><a href="#verifica"><i>02</i><span>Verifica il download</span></a></li>
+        <li><a href="#android"><i>03</i><span>Su Android</span></a></li>
+        <li><a href="#primo-wallet"><i>04</i><span>Il primo wallet</span></a></li>
+      </ol>
+      <p class="toc-g">Usa il wallet</p>
+      <ol>
+        <li><a href="#ricevi-invia"><i>05</i><span>Ricevere e inviare</span></a></li>
+        <li><a href="#monete"><i>06</i><span>Attivit&agrave;, monete e Wallet Info</span></a></li>
+        <li><a href="#sicurezza"><i>07</i><span>Sicurezza e impostazioni</span></a></li>
+      </ol>
+      <p class="toc-g">Avanzato</p>
+      <ol>
+        <li><a href="#multisig"><i>08</i><span>Multisig e co-firma</span></a></li>
+        <li><a href="#hardware"><i>09</i><span>Hardware wallet</span></a></li>
+        <li><a href="#liquid"><i>10</i><span>Liquid: asset, LiquiDEX e Peg</span></a></li>
+        <li><a href="#protocollo"><i>11</i><span>Collegare Templar Protocol</span></a></li>
+      </ol>
+      <p class="toc-g">Aiuto</p>
+      <ol>
+        <li><a href="#problemi"><i>12</i><span>Problemi e segnalazioni</span></a></li>
+      </ol>
+      <p class="toc-g">Sviluppatori</p>
+      <ol>
+        <li><a href="#sorgente"><i>13</i><span>Codice sorgente e build</span></a></li>
+      </ol>
+    </nav>
+    <a class="side-gh" href="https://github.com/0xB4LdW1n/TemplarWallet" rel="noopener"><svg aria-hidden="true"><use href="#m-github"/></svg><span>Il repository</span><span class="gh-arrow" aria-hidden="true">&#8594;</span></a>
+  </aside>
+
+  <article class="docs-article">
+
+    <!-- the chapters, phones and tablets: a bar under the navbar that opens the same list -->
+    <details class="docs-toc">
+      <summary><span class="toc-k">Capitoli</span><span class="toc-now" data-toc-now></span><span class="toc-plus" aria-hidden="true"></span></summary>
+      <nav class="toc" aria-label="Capitoli della documentazione">
+        <p class="toc-g">Inizia</p>
+        <ol>
+          <li><a href="#installa"><i>01</i><span>Scarica e installa</span></a></li>
+          <li><a href="#verifica"><i>02</i><span>Verifica il download</span></a></li>
+          <li><a href="#android"><i>03</i><span>Su Android</span></a></li>
+          <li><a href="#primo-wallet"><i>04</i><span>Il primo wallet</span></a></li>
+        </ol>
+        <p class="toc-g">Usa il wallet</p>
+        <ol>
+          <li><a href="#ricevi-invia"><i>05</i><span>Ricevere e inviare</span></a></li>
+          <li><a href="#monete"><i>06</i><span>Attivit&agrave;, monete e Wallet Info</span></a></li>
+          <li><a href="#sicurezza"><i>07</i><span>Sicurezza e impostazioni</span></a></li>
+        </ol>
+        <p class="toc-g">Avanzato</p>
+        <ol>
+          <li><a href="#multisig"><i>08</i><span>Multisig e co-firma</span></a></li>
+          <li><a href="#hardware"><i>09</i><span>Hardware wallet</span></a></li>
+          <li><a href="#liquid"><i>10</i><span>Liquid: asset, LiquiDEX e Peg</span></a></li>
+          <li><a href="#protocollo"><i>11</i><span>Collegare Templar Protocol</span></a></li>
+        </ol>
+        <p class="toc-g">Aiuto</p>
+        <ol>
+          <li><a href="#problemi"><i>12</i><span>Problemi e segnalazioni</span></a></li>
+        </ol>
+        <p class="toc-g">Sviluppatori</p>
+        <ol>
+          <li><a href="#sorgente"><i>13</i><span>Codice sorgente e build</span></a></li>
+        </ol>
+      </nav>
+    </details>
+
+<section class="doc" id="installa" aria-labelledby="h-installa">
+  <p class="doc-label">01 &mdash; <strong>Inizia</strong></p>
+  <h2 class="doc-h" id="h-installa">Scarica e installa.</h2>
+  <p class="doc-lede">Scegli il file del tuo sistema, installalo e supera l'avviso del primo avvio.</p>
+  <div class="doc-cards">
+    <a class="doc-card" href="https://github.com/0xB4LdW1n/TemplarWallet/releases/latest/download/TemplarWallet-macos.dmg" rel="noopener"><b>macOS</b><span>.dmg &middot; Apple Silicon e Intel</span></a>
+    <a class="doc-card" href="https://github.com/0xB4LdW1n/TemplarWallet/releases/latest/download/TemplarWallet-windows-x64-setup.exe" rel="noopener"><b>Windows</b><span>Installer .exe &middot; 64 bit</span></a>
+    <a class="doc-card" href="https://github.com/0xB4LdW1n/TemplarWallet/releases/latest/download/TemplarWallet-linux-x64.tar.gz" rel="noopener"><b>Linux</b><span>.tar.gz &middot; x86_64</span></a>
+    <a class="doc-card" href="#android"><b>Android</b><span>L'APK ha un capitolo suo</span></a>
+  </div>
+  <p>Templar Wallet &egrave; un'alpha e lavora solo su Bitcoin testnet e Liquid testnet. Le monete non hanno valore.</p>
+
+  <h3 class="doc-h3" id="installa-requisiti">Cosa serve</h3>
+  <div class="dtable-wrap"><table class="dtable">
+    <thead><tr><th>Sistema</th><th>Minimo</th><th>Serve anche</th></tr></thead>
+    <tbody>
+      <tr><td>macOS</td><td>10.15 Catalina o successivo, Apple Silicon o Intel</td><td>Niente</td></tr>
+      <tr><td>Windows</td><td>10 (versione 1809 o successiva) o 11, 64 bit (x64)</td><td>Di norma niente</td></tr>
+      <tr><td>Linux</td><td>x86_64: Ubuntu 22.04 o successiva, Debian 12 o successiva</td><td>GTK 3, libudev e libEGL: i desktop li hanno gi&agrave;</td></tr>
+    </tbody>
+  </table></div>
+  <p>Per sincronizzare e inviare serve internet: l'app si collega in TLS ai server testnet pubblici di Blockstream. Aprire un wallet e preparare una transazione funziona anche offline.</p>
+  <p>Non servono account, chiavi API o un nodo tuo.</p>
+  <p>La cifratura del vault usa molta memoria: quando scrivi la password servono almeno 2&nbsp;GB di RAM libera.</p>
+  <div class="callout is-warn"><p><b>Attenzione.</b> Le build non sono firmate con un certificato Apple o Microsoft, quindi al primo avvio macOS e Windows mostrano un avviso. &Egrave; previsto: qui sotto trovi come superarlo. Prima, <a href="#verifica">verifica il file</a>.</p></div>
+
+  <h3 class="doc-h3" id="installa-macos">macOS</h3>
+  <p>L'app non &egrave; notarizzata da Apple, quindi macOS la blocca con &laquo;Apple non &egrave; riuscita a verificare&hellip;&raquo; o dice che &egrave; &laquo;danneggiata&raquo;. La causa &egrave; la quarantena che il browser mette sui file scaricati.</p>
+  <p><b>Metodo 1</b>, dal Terminale. Toglie la quarantena e funziona sempre, anche su macOS 26 Tahoe.</p>
+  <ol class="doc-steps">
+    <li><b>Apri il Terminale.</b> <kbd>Cmd</kbd>+<kbd>Spazio</kbd>, scrivi &laquo;Terminale&raquo;, <kbd>Invio</kbd>.</li>
+    <li><b>Sblocca il .dmg.</b> Scrivi <code>xattr -d com.apple.quarantine</code> e uno spazio, trascina il .dmg nella finestra e premi <kbd>Invio</kbd>. Se risponde <code>No such xattr</code>, va bene lo stesso.</li>
+    <li><b>Installa.</b> Apri il .dmg, trascina Templar Wallet in Applicazioni ed espelli il disco.</li>
+    <li><b>Sblocca l'app e aprila</b> con questi due comandi. La <code>-r</code> serve: la quarantena sta anche sui file dentro l'app.
+      <pre class="code"><code>xattr -r -d com.apple.quarantine "/Applications/Templar Wallet.app"
+open "/Applications/Templar Wallet.app"</code></pre></li>
+  </ol>
+  <p><b>Metodo 2</b>, fino a macOS 15 Sequoia. Trascina l'app in Applicazioni e aprila: macOS la blocca. Chiudi l'avviso con <b>Fine</b>. Poi Impostazioni di Sistema &rarr; Privacy e sicurezza &rarr; <b>Apri comunque</b>, e conferma con la password del Mac o Touch ID.</p>
+  <p>Il tasto destro &rarr; Apri funziona solo fino a macOS 14 Sonoma. Su Tahoe, se <b>Apri comunque</b> non compare o l'app risulta &laquo;danneggiata&raquo;, usa il Metodo 1.</p>
+  <p>Hai anche lo script <code>install-macos.sh</code>? Mettilo accanto al .dmg e lancia <code>bash install-macos.sh</code>: fa il Metodo 1 da solo. Se trova una versione precedente la sostituisce, e non tocca i dati dei wallet.</p>
+  <p>La prima volta che usi <b>Scan QR</b>, macOS chiede l'accesso alla fotocamera. Concedilo, o l'anteprima resta nera.</p>
+
+  <h3 class="doc-h3" id="installa-windows">Windows</h3>
+  <p>Il file consigliato &egrave; l'installer. La procedura guidata &egrave; in inglese.</p>
+  <ol class="doc-steps">
+    <li><b>Avvia il setup.</b> SmartScreen dice &laquo;Windows ha protetto il PC&raquo;: scegli <b>Ulteriori informazioni</b> &rarr; <b>Esegui comunque</b>.</li>
+    <li><b>Scegli per chi.</b> Se te lo chiede: <b>Install for all users</b> (serve un amministratore) o <b>Install for me only</b>.</li>
+    <li><b>Select Destination Location.</b> &Egrave; la cartella del programma. Ogni aggiornamento la sostituisce.</li>
+    <li><b>Select Wallet Data Location.</b> Qui stanno wallet, vault cifrato e cache. La proposta &egrave; <code>%APPDATA%\templar_wallet</code>. Deve stare fuori dalla cartella del programma: gli aggiornamenti non la toccano e resta anche se disinstalli.</li>
+    <li><b>Installa.</b> L'icona sul desktop &egrave; facoltativa e spenta di serie (<b>Create a desktop shortcut</b>). Poi <b>Install</b>.</li>
+  </ol>
+  <div class="callout"><p><b>Nota.</b> L'app legge la cartella dati al primo avvio e poi la ricorda. Se reinstalli e scegli un'altra cartella, i wallet che hai gi&agrave; non si spostano. La cartella in uso la vedi in <b>Settings &rarr; Security &rarr; Storage</b>.</p></div>
+  <p>L'installer non aggiunge servizi n&eacute; driver, e niente parte con Windows. Solo l'installer, non lo zip, registra i link <code>templar://</code> del <a href="#protocollo">protocollo</a>.</p>
+  <p><b>Versione portabile (zip).</b> Tasto destro sullo zip &rarr; <b>Estrai tutto&hellip;</b> in una cartella vera. Non avviare l'app dall'anteprima dello zip: accanto all'eseguibile servono la cartella <code>data\</code> e le DLL. Poi doppio clic su <code>templar_wallet.exe</code>. SmartScreen avvisa allo stesso modo. I dati vanno in <code>%APPDATA%\templar_wallet</code>.</p>
+  <p>Manca <code>VCRUNTIME140.dll</code> o <code>MSVCP140.dll</code>? Installa il <a href="https://aka.ms/vs/17/release/vc_redist.x64.exe">Visual C++ Redistributable x64</a> e riprova.</p>
+
+  <h3 class="doc-h3" id="installa-linux">Linux</h3>
+  <p>Estrai l'archivio e avvia il programma. Al posto dei nomi tra <code>&lt; &gt;</code> metti quelli veri.</p>
+  <pre class="code"><code>tar xzf &lt;file scaricato&gt;.tar.gz
+./&lt;cartella estratta&gt;/templar_wallet</code></pre>
+  <p>La cartella contiene tutto. Spostala dove vuoi, ma tienila intera. Se mancano librerie, su Debian e Ubuntu:</p>
+  <pre class="code"><code>sudo apt install libgtk-3-0 libudev1 libegl1</code></pre>
+  <p>Su Fedora:</p>
+  <pre class="code"><code>sudo dnf install gtk3 systemd-libs libglvnd-egl</code></pre>
+  <p>L'errore <code>version `GLIBC_2.xx' not found</code> vuol dire che la distribuzione &egrave; troppo vecchia. <a href="#problemi">Segnalacelo</a>, con il nome della distribuzione.</p>
+  <p><b>Voce nel menu</b>, facoltativa. Registra anche i link <code>templar://</code>. Apri il terminale dentro la cartella estratta e lancia:</p>
+  <pre class="code"><code>mkdir -p ~/.local/share/applications
+sed -e "s|^Exec=.*|Exec=$PWD/templar_wallet %u|" \
+    -e "s|^Icon=.*|Icon=$PWD/templar_wallet.png|" \
+    dev.templarwallet.templar_wallet.desktop \
+    &gt; ~/.local/share/applications/dev.templarwallet.templar_wallet.desktop
+update-desktop-database ~/.local/share/applications</code></pre>
+  <p>Se sposti la cartella, rilancia i comandi dalla nuova posizione.</p>
+
+  <h3 class="doc-h3" id="installa-aggiorna">Aggiornare e disinstallare</h3>
+  <p>Per aggiornare, installa la versione nuova sopra la vecchia. I dati e i wallet restano.</p>
+  <div class="dtable-wrap"><table class="dtable">
+    <thead><tr><th>Sistema</th><th>Aggiornare</th><th>Disinstallare</th></tr></thead>
+    <tbody>
+      <tr><td>macOS</td><td>Ripeti il Metodo 1, o lo script</td><td>Trascina l'app nel Cestino</td></tr>
+      <tr><td>Windows</td><td>Lancia il nuovo installer. Portabile: estrai in una cartella nuova</td><td>Impostazioni &rarr; App &rarr; App installate &rarr; Templar Wallet &rarr; Disinstalla. Portabile: cancella la cartella</td></tr>
+      <tr><td>Linux</td><td>Estrai la cartella nuova, cancella la vecchia</td><td>Cancella la cartella e, se l'hai creato, il file <code>.desktop</code></td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout is-warn"><p><b>Attenzione.</b> Prima di ogni aggiornamento, controlla di avere la frase di recupero su carta.</p></div>
+  <p>Sul computer la cartella dati resta anche dopo la disinstallazione. Dove si trova e come cancellarla: <a href="#problemi">Problemi e segnalazioni</a>.</p>
+
+  <p class="doc-src"><span>Fonte: <code>docs/INSTALLAZIONE.md</code> e <code>docs/guide.md</code></span><a class="gh" href="https://github.com/0xB4LdW1n/TemplarWallet/blob/main/docs/INSTALLAZIONE.md" rel="noopener" data-path="docs/INSTALLAZIONE.md"><svg class="ic" aria-hidden="true"><use href="#i-github"/></svg>Leggi su GitHub</a></p>
+</section>
+
+<section class="doc" id="verifica" aria-labelledby="h-verifica">
+  <p class="doc-label">02 &mdash; <strong>Inizia</strong></p>
+  <h2 class="doc-h" id="h-verifica">Verifica il download.</h2>
+  <p class="doc-lede">Un'impronta SHA-256 ti dice se il file che hai &egrave; quello pubblicato.</p>
+  <p>Le impronte stanno in <a href="https://github.com/0xB4LdW1n/TemplarWallet/releases/latest/download/SHA256SUMS.txt" rel="noopener"><code>SHA256SUMS.txt</code></a>, allegato a ogni rilascio, una riga per ogni file. Il pacchetto dei tester lo contiene. Se accanto al tuo download c'&egrave;, controllalo prima di installare. Se l'impronta non coincide, il file &egrave; corrotto o non &egrave; quello pubblicato.</p>
+  <ol class="doc-steps">
+    <li><b>Metti i file insieme.</b> Salva <code>SHA256SUMS.txt</code> nella cartella del file scaricato.</li>
+    <li><b>Apri un terminale in quella cartella.</b> Il Terminale su macOS e Linux, PowerShell su Windows.</li>
+    <li><b>Lancia il comando</b> del tuo sistema, qui sotto.</li>
+  </ol>
+  <p>macOS e Linux:</p>
+  <pre class="code"><code>shasum -a 256 -c SHA256SUMS.txt</code></pre>
+  <p>Su Linux va bene anche <code>sha256sum -c SHA256SUMS.txt</code>. Accanto al tuo file deve comparire <code>OK</code>. Le righe dei file che non hai scaricato danno errore: ignorale.</p>
+  <p>Windows, in PowerShell:</p>
+  <pre class="code"><code>Get-FileHash .\&lt;nome del file&gt; -Algorithm SHA256</code></pre>
+  <p>Confronta il risultato con la riga di quel file in <code>SHA256SUMS.txt</code>. Maiuscole e minuscole non contano.</p>
+  <p>L'APK per Android puoi controllarlo allo stesso modo su un computer, prima di passarlo al telefono.</p>
+  <div class="callout is-warn"><p><b>Attenzione.</b> Oggi l'elenco delle impronte non &egrave; firmato, n&eacute; con GPG n&eacute; in altro modo. L'impronta dice che il file &egrave; uguale a quello dell'elenco. Non dice chi ha scritto l'elenco.</p></div>
+  <div class="callout"><p><b>Nota.</b> Le build non hanno un certificato. L'app per macOS &egrave; firmata solo ad-hoc e non &egrave; notarizzata. L'installer Windows non ha la firma Authenticode. L'APK &egrave; firmato in modalit&agrave; debug e non passa dal Play Store. Per questo il sistema avvisa al primo avvio. L'avviso non vuol dire che il file sia stato manomesso: per quello c'&egrave; l'impronta. Come superarlo: <a href="#installa">Scarica e installa</a> e <a href="#android">Su Android</a>.</p></div>
+
+  <h3 class="doc-h3" id="verifica-versione">Quale versione hai</h3>
+  <p>La versione giusta la mostrano l'installer di Windows, le informazioni app di Android e il Finder. Il Finder la scrive corta: per esempio 0.1.0.15 sta per 0.1.0-alpha.15.</p>
+  <p>Non guardare <b>Settings &rarr; About</b>: per un errore noto mostra sempre <code>v0.1.0-alpha.1</code>.</p>
+
+  <p class="doc-src"><span>Fonte: <code>docs/RELEASE_NOTES.md</code></span><a class="gh" href="https://github.com/0xB4LdW1n/TemplarWallet/blob/main/docs/RELEASE_NOTES.md" rel="noopener" data-path="docs/RELEASE_NOTES.md"><svg class="ic" aria-hidden="true"><use href="#i-github"/></svg>Leggi su GitHub</a></p>
+</section>
+
+<section class="doc" id="android" aria-labelledby="h-android">
+  <p class="doc-label">03 &mdash; <strong>Inizia</strong></p>
+  <h2 class="doc-h" id="h-android">Su Android.</h2>
+  <p class="doc-lede">Come installare Templar Wallet sul telefono e cosa cambia rispetto al computer.</p>
+  <div class="callout is-warn"><p><b>In lavorazione.</b> L'app per Android è un'alpha. Funziona solo su testnet, come quella per computer.</p></div>
+  <p>Serve Android 7.0 o successivo. L'APK si installa a mano, fuori dal Play Store.</p>
+  <div class="doc-cards">
+    <a class="doc-card" href="https://github.com/0xB4LdW1n/TemplarWallet/releases/latest/download/TemplarWallet-android-arm64.apk" rel="noopener"><b>Scarica l'APK</b><span>arm64 &middot; Android 7.0 o successivo</span></a>
+  </div>
+  <p>Su telefono o tablet scegli sempre l'APK <b>arm64</b>. Quello <b>x86_64</b> serve solo agli emulatori Android su PC Intel o AMD. Non esiste una versione a 32 bit.</p>
+
+  <h3 class="doc-h3" id="android-installa">Installare l'APK</h3>
+  <ol class="doc-steps">
+    <li><b>Porta l'APK sul telefono.</b> Scaricalo dal telefono, oppure copialo con il cavo, un cloud o una chat.</li>
+    <li><b>Aprilo.</b> Tocca il file nell'app <b>File</b>, o nella notifica del download.</li>
+    <li><b>Consenti l'installazione.</b> La prima volta Android la blocca. Tocca <b>Impostazioni</b>, attiva <b>Consenti da questa fonte</b> e torna indietro.</li>
+    <li><b>Installa.</b> Tocca <b>Installa</b>. Se Google Play Protect avvisa, scegli <b>Altri dettagli &rarr; Installa comunque</b>.</li>
+    <li><b>Apri l'app.</b> Trovi <b>Templar Wallet</b> nel cassetto delle app.</li>
+  </ol>
+  <p>L'avviso arriva perché l'APK non viene dal Play Store.</p>
+
+  <h3 class="doc-h3" id="android-differenze">Cosa cambia sul telefono</h3>
+  <div class="dtable-wrap"><table class="dtable">
+    <thead><tr><th>Funzione</th><th>Su Android</th></tr></thead>
+    <tbody>
+      <tr><td>Navigazione</td><td>Barra in basso: <b>Dashboard &middot; Activity &middot; UTXOs &middot; Liquid &middot; Settings</b>. <b>Send</b> e <b>Receive</b> stanno nella Dashboard, <b>Wallet info</b> in Settings. <b>Liquid</b> compare se il wallet ha Liquid, con le schede <b>Assets &middot; LiquiDEX &middot; Peg</b>.</td></tr>
+      <tr><td>Fotocamera</td><td>Legge tutti i QR: indirizzi, chiavi, transazioni. La prima volta Android chiede il permesso.</td></tr>
+      <tr><td>Hardware wallet</td><td>Niente USB. Si collegano solo via QR, per esempio SeedSigner o Jade in modalità QR. Un Jade via QR gestisce solo Bitcoin. Vedi <a href="#hardware">Hardware wallet</a>.</td></tr>
+      <tr><td>Co-firma multisig</td><td>Il telefono firma e restituisce la copia firmata. Non la trasmette in rete: lo fa chi ha avviato la transazione.</td></tr>
+      <tr><td>Sblocco biometrico</td><td><b>Biometric unlock</b>, nell'elenco di <b>Settings</b>, apre l'archivio dei wallet con l'impronta. Per firmare e per vedere la frase di recupero serve comunque la password dell'app.</td></tr>
+      <tr><td>Blocco automatico</td><td>Di serie dopo 1 minuto in secondo piano. Si cambia in <b>Settings &rarr; Auto-lock</b>.</td></tr>
+      <tr><td>Schermate protette</td><td>La frase di recupero e la chiave privata non si possono catturare con uno screenshot.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout is-warn"><p><b>Attenzione.</b> I wallet stanno nella memoria privata dell'app e non finiscono nei backup del telefono. Se disinstalli l'app o ne cancelli i dati, i wallet spariscono. Tieni la frase di recupero su carta. Per aggiornare, installa il nuovo APK sopra il vecchio: i wallet restano.</p></div>
+
+  <h3 class="doc-h3" id="android-problemi">Se qualcosa non va</h3>
+  <ul class="doc-list">
+    <li><b>«App non installata».</b> Sul telefono c'è già una versione firmata in modo diverso. Controlla di avere la frase di recupero su carta, poi disinstalla e riprova.</li>
+    <li><b>«Camera unavailable».</b> Tocca <b>Try again</b>, oppure <b>Open app settings</b> e consenti la fotocamera.</li>
+    <li><b>Segnalare un problema.</b> Su Android il log non si può esportare. Manda screenshot, i passi fatti e l'ora circa. Altro in <a href="#problemi">Problemi</a>.</li>
+  </ul>
+
+  <p class="doc-src"><span>Fonte: <code>docs/ANDROID_PORT.md</code></span><a class="gh" href="https://github.com/0xB4LdW1n/TemplarWallet/blob/main/docs/ANDROID_PORT.md" rel="noopener" data-path="docs/ANDROID_PORT.md"><svg class="ic" aria-hidden="true"><use href="#i-github"/></svg>Leggi su GitHub</a></p>
+</section>
+
+<section class="doc" id="primo-wallet" aria-labelledby="h-primo-wallet">
+  <p class="doc-label">04 &mdash; <strong>Inizia</strong></p>
+  <h2 class="doc-h" id="h-primo-wallet">Il primo wallet.</h2>
+  <p class="doc-lede">Crea un wallet, scrivi la frase su carta e ricevi le prime monete di test.</p>
+  <p>L'app è in inglese. Qui trovi pulsanti e schermate scritti come li vedi.</p>
+  <figure class="doc-fig"><picture><source srcset="../../assets/img/wallet/welcome.webp" type="image/webp"><img src="../../assets/img/wallet/welcome.jpg" alt="La schermata di benvenuto di Templar Wallet, con i pulsanti Create new wallet e Restore an existing wallet" width="1280" height="800" loading="lazy" decoding="async"></picture><figcaption>La schermata di benvenuto. In fondo il promemoria <i>Testnet only &middot; No mainnet funds</i>.</figcaption></figure>
+  <p>Al primo avvio scegli <b>Create new wallet</b> per crearne uno nuovo. Con <b>Restore an existing wallet</b> ne ripristini uno dalla frase di recupero.</p>
+
+  <h3 class="doc-h3" id="primo-wallet-crea">Creare un wallet</h3>
+  <p>Per un wallet a una chiave su questo dispositivo i passi sono 8. Sono 7 se la password dell'app esiste già.</p>
+  <ol class="doc-steps">
+    <li><b>What kind of wallet?</b> <b>One key</b> è la strada più semplice. <b>Several keys must agree (multisig)</b> chiede più firme: vedi <a href="#multisig">Multisig</a>. <b>Custom rules (policy)</b> è segnato <i>Coming soon</i> e non si può scegliere. <b>Somewhere else &mdash; just watch it</b> segue un wallet che hai altrove: mostra saldo e storico, non può spendere.</li>
+    <li><b>Where do your keys live?</b> <b>On this computer</b> (sul telefono <b>On this device</b>) oppure <b>On a hardware wallet</b>: vedi <a href="#hardware">Hardware wallet</a>.</li>
+    <li><b>Which coins?</b> <b>Bitcoin + Liquid</b> aggiunge Liquid dalla stessa frase, senza niente in più da scrivere. Oppure <b>Bitcoin only</b>. Come rete si può scegliere solo <b>Testnet</b>.</li>
+    <li><b>Protect this app with a password.</b> Solo la prima volta. Almeno 8 caratteri, scritti due volte. Poi <b>Start setup</b>.</li>
+    <li><b>Name &amp; seed length.</b> Dai un nome al wallet. <b>24 words</b> è la scelta consigliata. <b>12 words</b> è più comoda da copiare a mano.</li>
+    <li><b>Back up your seed.</b> Le parole compaiono una volta sola, numerate. Scrivile su carta.</li>
+    <li><b>Verify your backup.</b> L'app ti chiede tre parole. Poi <b>Confirm &amp; Finish</b>.</li>
+    <li><b>Wallet created.</b> Scegli <b>Get receive address</b> o <b>Open Wallet</b>.</li>
+  </ol>
+
+  <h3 class="doc-h3" id="primo-wallet-password">La password dell'app</h3>
+  <p>Serve quando la frase di recupero resta su questo dispositivo, e per ogni multisig. Cifra i dati salvati (Argon2id + XChaCha20-Poly1305). L'app la chiede a ogni avvio e prima delle azioni delicate. Una sola password vale per tutti i wallet.</p>
+  <p>Ne fanno a meno solo i wallet con la chiave su un hardware wallet e quelli watch-only, con <b>Skip &mdash; don't encrypt wallet storage</b>. Non è la passphrase BIP39 e non fa parte della frase di recupero.</p>
+  <div class="callout is-warn"><p><b>Attenzione.</b> Se perdi la password, l'app non riapre i wallet salvati qui. Solo la frase di 12 o 24 parole scritta su carta li riporta indietro. In questa alpha la password non si può cambiare né togliere. Altro in <a href="#sicurezza">Sicurezza</a>.</p></div>
+
+  <h3 class="doc-h3" id="primo-wallet-frase">La frase di recupero</h3>
+  <p>Le 12 o 24 parole sono il wallet. Chi le ha può spendere.</p>
+  <ul class="doc-list">
+    <li><b>Su carta</b>, non su uno schermo. Niente foto, file o chat.</li>
+    <li><b>Nell'ordine esatto.</b> Numera le parole mentre le scrivi.</li>
+    <li><b>Due copie</b> in due posti diversi.</li>
+    <li><b>Mai dettarla</b> a nessuno. Chi te la chiede sta rubando.</li>
+  </ul>
+
+  <h3 class="doc-h3" id="primo-wallet-monete">Le prime monete di test</h3>
+  <p>Apri <b>Receive</b>, copia l'indirizzo e incollalo in un faucet. Le monete di test sono gratuite e non hanno valore.</p>
+  <ul class="doc-list">
+    <li>Bitcoin testnet: <a href="https://coinfaucet.eu/en/btc-testnet/">coinfaucet.eu/en/btc-testnet</a></li>
+    <li>Liquid testnet: <a href="https://liquidtestnet.com/faucet">liquidtestnet.com/faucet</a> o <a href="https://faucet.vulpem.com">faucet.vulpem.com</a></li>
+  </ul>
+  <p>La prima sincronizzazione Liquid è una scansione completa. Può volerci qualche minuto.</p>
+
+  <h3 class="doc-h3" id="primo-wallet-elenco">Aprire, cambiare, bloccare</h3>
+  <p>Con almeno un wallet, l'app si apre sull'elenco <b>Your Wallets</b>. Ogni scheda dice tipo e monete, per esempio <i>Software &middot; BTC + Liquid</i>. Un multisig mostra la soglia, per esempio <i>2-of-3</i>. Da qui partono anche <b>Restore</b> e <b>New Wallet</b>.</p>
+  <ul class="doc-list">
+    <li><b>Sbloccare.</b> Se compare <b>Unlock wallet storage</b>, scrivi la password in <b>Vault passphrase</b> e premi <b>Unlock</b>. Se li hai attivati, puoi usare <b>Use Touch ID</b> sul Mac o <b>Use fingerprint</b> su Android.</li>
+    <li><b>Cambiare wallet.</b> Sul computer, la doppia freccia accanto al nome del wallet riporta all'elenco. Sul telefono tocca il nome del wallet in alto.</li>
+    <li><b>Bloccare.</b> Sul computer <b>Settings &rarr; Security &rarr; Lock now</b>, sul telefono <b>Settings &rarr; Lock now</b>. Sul computer c'è anche il lucchetto in fondo alla barra laterale e nell'elenco dei wallet.</li>
+  </ul>
+
+  <h3 class="doc-h3" id="primo-wallet-ripristina">Ripristinare un wallet</h3>
+  <ol class="doc-steps">
+    <li><b>Apri Restore Wallet.</b> Dal benvenuto con <b>Restore an existing wallet</b>, dall'elenco con <b>Restore</b>.</li>
+    <li><b>Seed phrase.</b> Scrivi le 12 o 24 parole, separate da uno spazio.</li>
+    <li><b>Wallet name e Coins.</b> Dai un nome e scegli <b>Bitcoin + Liquid</b> o <b>Bitcoin only</b>.</li>
+    <li><b>Restore Wallet.</b> Premi il pulsante.</li>
+  </ol>
+  <p>Se la password dell'app non esiste ancora, prima si apre <b>Encrypt wallet storage</b> per crearla.</p>
+  <div class="callout is-warn"><p><b>Attenzione.</b> Scrivi la frase solo su un dispositivo di cui ti fidi.</p></div>
+
+  <p class="doc-src"><span>Fonte: <code>docs/INSTALLAZIONE.md</code></span><a class="gh" href="https://github.com/0xB4LdW1n/TemplarWallet/blob/main/docs/INSTALLAZIONE.md" rel="noopener" data-path="docs/INSTALLAZIONE.md"><svg class="ic" aria-hidden="true"><use href="#i-github"/></svg>Leggi su GitHub</a></p>
+</section>
+
+<section class="doc" id="ricevi-invia" aria-labelledby="h-ricevi-invia">
+  <p class="doc-label">05 &mdash; <strong>Usa il wallet</strong></p>
+  <h2 class="doc-h" id="h-ricevi-invia">Ricevere e inviare.</h2>
+  <p class="doc-lede">Dove trovi le cose, come dai un indirizzo e come mandi una transazione.</p>
+
+  <h3 class="doc-h3" id="ricevi-invia-finestra">La finestra</h3>
+  <p>Su computer, a sinistra c'&egrave; la barra laterale. In cima trovi il wallet aperto: la doppia freccia torna all'elenco dei wallet.</p>
+  <ul class="doc-list">
+    <li><b>WALLET</b>: <b>Dashboard</b>, <b>Send</b>, <b>Receive</b>, <b>Activity</b>, <b>UTXOs</b>. Un wallet watch-only non ha <b>Send</b>: pu&ograve; solo guardare.</li>
+    <li><b>LIQUID</b>: <b>Liquid</b>, <b>LiquiDEX</b>, <b>Peg</b>. Compare solo se il wallet ha Liquid. <b>Peg</b> compare solo se il wallet ha anche Bitcoin.</li>
+    <li><b>SYSTEM</b>: <b>Wallet Info</b>, <b>Settings</b>.</li>
+  </ul>
+  <p>In fondo alla barra un pallino dice lo stato: <b>Synced</b>, <b>Partial sync</b>, <b>Sync Error</b> o <b>Idle</b>. Sotto ci sono <b>Sync now</b> e il tema chiaro o scuro. Quando l'archivio &egrave; aperto c'&egrave; anche il lucchetto <b>Lock wallet storage</b>, che lo richiude subito.</p>
+  <p>La <b>Dashboard</b> riassume il wallet: valore totale, grafico, filtri <b>All</b> / <b>BTC</b> / <b>Liquid</b>, valuta o sats, le schede Bitcoin e Liquid. L'occhio nasconde gli importi. <b>Send</b> e <b>Receive</b> stanno sotto il grafico. In alto a destra il badge <b>TESTNET</b> ti ricorda la rete.</p>
+
+  <h3 class="doc-h3" id="ricevi-invia-ricevi">Ricevere</h3>
+  <p><b>Receive</b> ti d&agrave; un indirizzo Bitcoin nuovo (Native SegWit), il suo QR e <b>Copy address</b>.</p>
+  <ul class="doc-list">
+    <li><b>New address</b> ne crea un altro. Usane uno per pagamento: riusare un indirizzo lega i pagamenti tra loro.</li>
+    <li><b>Previous addresses</b> mostra gli ultimi 8. <b>Show all</b> apre l'elenco completo.</li>
+    <li>Con il selettore in alto passi a Liquid. L'indirizzo &egrave; confidential: importi e asset restano nascosti sulla catena, e puoi riusarlo.</li>
+    <li><b>Request an amount</b> aggiunge un importo e una nota facoltativa. QR e link diventano un link di pagamento (BIP21) e il pulsante diventa <b>Copy payment link</b>. <b>Share</b> lo manda con le app del sistema.</li>
+  </ul>
+  <p>Dopo aver incollato l'indirizzo altrove, controlla i primi e gli ultimi caratteri. Quando il pagamento &egrave; confermato, puoi dargli un nome con <b>Tag</b> nella schermata <a href="#monete-utxo">UTXOs</a>.</p>
+
+  <h3 class="doc-h3" id="ricevi-invia-invia">Inviare</h3>
+  <p><b>Send</b> ha sei passi, uno per scelta. Niente viene firmato prima dell'ultimo.</p>
+  <ol class="doc-steps">
+    <li><b>Type.</b> <b>Standard transaction</b> crea una transazione nuova. In un multisig si chiama <b>Create a partial transaction</b>. <b>Cosign a transaction</b> aggiunge la tua firma a una transazione preparata da altri: vedi <a href="#multisig">Multisig</a>.</li>
+    <li><b>Network.</b> Bitcoin o Liquid Network, con il saldo disponibile. Su Liquid scegli anche l'asset.</li>
+    <li><b>Inputs.</b> <b>Automatic</b> lascia scegliere al wallet. <b>Manual coin control</b> ti fa scegliere quali monete spendere. Su Liquid la scelta &egrave; solo automatica.</li>
+    <li><b>Outputs.</b> Indirizzo e importo. Dal campo indirizzo puoi scansionare un QR (su macOS e Android), incollare o usare un indirizzo di questo wallet. <b>MAX</b> spende tutto, tolta la commissione. La freccia accanto all'unit&agrave; passa alla valuta. <b>Add output</b> aggiunge un destinatario. Un link di pagamento compila indirizzo e importo insieme.</li>
+    <li><b>Fee.</b> <b>Slow</b>, <b>Normal</b>, <b>Fast</b> o <b>Custom</b> (minimo 0,1 sat/vB). Su Liquid la commissione &egrave; fissa e minima: non c'&egrave; niente da impostare.</li>
+    <li><b>Review.</b> Uno schema mostra ingressi e uscite: destinatario, resto (<b>CHANGE</b>, torna a te) e commissione, poi il totale. Nel caso pi&ugrave; comune, Bitcoin con la chiave salvata nell'app, <b>Review &amp; sign</b> apre <b>Review transaction</b>. <b>Sign</b> chiede la password dell'app, o Touch ID sul Mac se l'hai attivato. <b>Broadcast</b> manda la transazione in rete.</li>
+  </ol>
+  <p>Negli altri casi il pulsante per firmare cambia. Su Liquid &egrave; <b>Sign &amp; send</b>. In un multisig &egrave; <b>Sign &amp; continue</b>: se servono altre firme, passi la transazione ai cofirmatari (vedi <a href="#multisig">Multisig</a>). Con un hardware wallet &egrave; <b>Sign on device</b>, con un dispositivo air-gap <b>Export PSBT</b>.</p>
+
+  <figure class="doc-fig">
+    <picture>
+      <source srcset="../../assets/img/wallet/send-review.webp" type="image/webp">
+      <img src="../../assets/img/wallet/send-review.jpg" alt="Passo Review di Send: a sinistra la moneta spesa, a destra il destinatario, il resto marcato CHANGE e la commissione di rete; sotto fee, tariffa, dimensione, tempo stimato, spesa totale e il pulsante Review &amp; sign." width="1280" height="800" loading="lazy" decoding="async">
+    </picture>
+    <figcaption>Il passo Review, con dati dimostrativi. Nulla &egrave; ancora firmato.</figcaption>
+  </figure>
+
+  <div class="callout"><p><b>Limiti.</b> Su Bitcoin il wallet rifiuta una commissione pi&ugrave; alta sia di 0,01 BTC sia del 10% di quanto sposta la transazione. Ogni transazione Bitcoin segnala replace-by-fee, ma per ora non c'&egrave; una schermata per alzare la commissione.</p></div>
+
+  <div class="callout is-warn"><p><b>Attenzione.</b> Prima di firmare, controlla l'indirizzo carattere per carattere. &Egrave; l'ultima occasione per scoprire un errore di battitura o un malware che cambia l'indirizzo copiato negli appunti.</p></div>
+
+  <p class="doc-src"><span>Fonte: <code>src/templar_wallet/lib/features/</code></span><a class="gh" href="https://github.com/0xB4LdW1n/TemplarWallet/tree/main/src/templar_wallet/lib/features" rel="noopener" data-path="src/templar_wallet/lib/features"><svg class="ic" aria-hidden="true"><use href="#i-github"/></svg>Leggi su GitHub</a></p>
+</section>
+
+<section class="doc" id="monete" aria-labelledby="h-monete">
+  <p class="doc-label">06 &mdash; <strong>Usa il wallet</strong></p>
+  <h2 class="doc-h" id="h-monete">Attivit&agrave;, monete e Wallet Info.</h2>
+  <p class="doc-lede">Lo storico, le singole monete e le chiavi pubbliche del wallet.</p>
+
+  <h3 class="doc-h3" id="monete-attivita">Activity</h3>
+  <p><b>Activity</b> mette insieme lo storico Bitcoin e Liquid, diviso per giorno, con conferme, nota e controvalore. Puoi cercare per txid o per nota. I filtri <b>All</b> / <b>Bitcoin</b> / <b>Liquid</b> isolano una catena. L'occhio nasconde gli importi.</p>
+  <p>Apri una riga per il dettaglio: da l&igrave; copi il txid o premi <b>View on Explorer</b>.</p>
+
+  <h3 class="doc-h3" id="monete-utxo">UTXOs</h3>
+  <p>Un wallet non ha &laquo;un saldo&raquo;. Ha monete separate, gli UTXO. Vederle una per una ti fa scegliere quali spendere.</p>
+  <p>Ogni riquadro &egrave; una moneta, con la sua taglia e la sua quota del totale. In alto vedi quante monete hai, quante ne hai selezionate e il totale selezionato. A destra ci sono <b>Consolidate</b> e le viste <b>Notes</b> / <b>List</b>.</p>
+
+  <figure class="doc-fig">
+    <picture>
+      <source srcset="../../assets/img/wallet/utxos.webp" type="image/webp">
+      <img src="../../assets/img/wallet/utxos.jpg" alt="Schermata UTXOs: quattro monete come riquadri, una grigia Incoming in attesa di conferma, poi HUGE, BIG e DUST; in alto il conteggio, il totale selezionato, Consolidate e le viste Notes e List." width="1280" height="800" loading="lazy" decoding="async">
+    </picture>
+    <figcaption>Le monete di un wallet dimostrativo. La prima &egrave; ancora in arrivo.</figcaption>
+  </figure>
+
+  <div class="dtable-wrap"><table class="dtable">
+    <thead><tr><th>Taglia</th><th>Cosa vuol dire</th></tr></thead>
+    <tbody>
+      <tr><td><code>DUST</code></td><td>Fino a 546 sats. Spenderla pu&ograve; costare pi&ugrave; di quanto vale.</td></tr>
+      <tr><td><code>SMALL</code></td><td>Meno del 5% del saldo.</td></tr>
+      <tr><td><code>BIG</code></td><td>Tra il 5% e il 25% del saldo.</td></tr>
+      <tr><td><code>HUGE</code></td><td>Oltre il 25% del saldo.</td></tr>
+      <tr><td><code>WHALE</code></td><td>1 BTC o pi&ugrave;.</td></tr>
+    </tbody>
+  </table></div>
+  <p>Un token non &egrave; mai DUST o WHALE per la sua quantit&agrave;: 500 unit&agrave; di una stablecoin non sono 500 sats.</p>
+
+  <ul class="doc-list">
+    <li>Una moneta appena arrivata &egrave; grigia, con la scritta <b>Incoming</b>. Non puoi selezionarla finch&eacute; un blocco non la include.</li>
+    <li>La <b>i</b> apre i dettagli: importo, taglia, conferme, outpoint, indirizzo e <b>Open in explorer</b>.</li>
+    <li>Seleziona una o pi&ugrave; monete e premi <b>Tag</b> per scrivere una nota. La nota ricompare quando scegli le monete da spendere.</li>
+    <li><b>Consolidate</b> unisce pi&ugrave; monete in una. Funziona solo su Bitcoin e con almeno 2 monete. Costa una transazione, ma rende pi&ugrave; economiche quelle dopo.</li>
+  </ul>
+
+  <h3 class="doc-h3" id="monete-info">Wallet Info</h3>
+  <p>In alto c'&egrave; l'identit&agrave; del wallet: nome, rete, master fingerprint, percorso di derivazione e tipo di script. Sotto ci sono i descriptor pubblici. Ogni riga ha un pulsante per copiare e uno per il QR.</p>
+  <ul class="doc-list">
+    <li><b>For other apps</b>: <b>Copy descriptor bundle</b>, <b>Export JSON</b> e <b>Show QR</b> esportano una copia watch-only per un altro programma. L'app nomina Sparrow, Specter, BlueWallet, Jade e SeedSigner.</li>
+    <li>Se il wallet non ha ancora Liquid, la scheda <b>Liquid Network</b> offre <b>Enable Liquid</b>. Con un Jade il pulsante &egrave; <b>Add Liquid from my Jade</b>.</li>
+    <li>L'XPUB <code>m/84'/1'/0'</code> &egrave; la chiave del wallet a firma singola. Non &egrave; una chiave da cofirmatario.</li>
+    <li>Per entrare nel multisig di qualcun altro, un wallet a firma singola ha la scheda <b>Use this wallet as a cosigner</b>: la chiave Bitcoin (BIP48) e la chiave Liquid (BIP87), ognuna con copia e QR. Se le chiavi stanno su un hardware wallet, le leggi dal dispositivo nella procedura multisig. Vedi <a href="#multisig">Multisig</a>.</li>
+  </ul>
+
+  <div class="callout"><p><b>Nota.</b> Un xpub non permette di spendere, ma mostra tutti gli indirizzi e tutto lo storico del wallet. Condividilo solo con chi ha motivo di vederli.</p></div>
+
+  <p class="doc-src"><span>Fonte: <code>CHANGELOG.md</code></span><a class="gh" href="https://github.com/0xB4LdW1n/TemplarWallet/blob/main/CHANGELOG.md" rel="noopener" data-path="CHANGELOG.md"><svg class="ic" aria-hidden="true"><use href="#i-github"/></svg>Leggi su GitHub</a></p>
+</section>
+
+<section class="doc" id="sicurezza" aria-labelledby="h-sicurezza">
+  <p class="doc-label">07 &mdash; <strong>Usa il wallet</strong></p>
+  <h2 class="doc-h" id="h-sicurezza">Sicurezza e impostazioni.</h2>
+  <p class="doc-lede">Come si blocca il wallet, cosa c'è in <em>Settings</em> e le abitudini che proteggono la frase.</p>
+
+  <h3 class="doc-h3" id="sicurezza-blocco">Bloccare e sbloccare</h3>
+  <p>Quando l'archivio è bloccato compare <em>Unlock wallet storage</em>. Scrivi la password dell'app e premi <b>Unlock</b>. Se hai attivato l'impronta, puoi usare anche <b>Use Touch ID</b> sul Mac o <b>Use fingerprint</b> su Android.</p>
+  <p>Per bloccare: il lucchetto in fondo alla barra laterale, oppure <b>Lock now</b> in <em>Settings</em>. Il blocco cancella dalla memoria le chiavi decifrate.</p>
+  <p><b>Auto-lock</b> blocca da solo. Sul telefono conta il tempo in secondo piano. Su computer conta anche il tempo senza tastiera né mouse. Quando scatta, torni all'elenco dei wallet e serve di nuovo la password. Funziona solo se la password dell'app è impostata.</p>
+  <p>Su computer <b>Lock now</b> e <b>Auto-lock</b> sono in <em>Settings &rarr; Security</em>. Sul telefono sono nell'elenco di <em>Settings</em>.</p>
+  <div class="dtable-wrap"><table class="dtable">
+    <thead><tr><th>Auto-lock</th><th>Quando blocca</th></tr></thead>
+    <tbody>
+      <tr><td><b>Immediately</b></td><td>Appena l'app esce dallo schermo.</td></tr>
+      <tr><td><b>After 1 minute</b></td><td>Dopo un minuto. Predefinita sul telefono.</td></tr>
+      <tr><td><b>After 5 minutes</b></td><td>Dopo cinque minuti.</td></tr>
+      <tr><td><b>After 15 minutes</b></td><td>Dopo 15 minuti. Predefinita su computer.</td></tr>
+      <tr><td><b>Never</b></td><td>Mai. Blocchi tu.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="doc-h3" id="sicurezza-touchid">Sblocco con l'impronta</h3>
+  <p>Sul Mac: <em>Settings &rarr; Security &rarr; Touch ID unlock</em>. Il dito apre l'archivio all'avvio e dopo <b>Lock now</b>.</p>
+  <p>Sotto compare <b>Also confirm with Touch ID</b>, acceso di serie. Il dito sostituisce la password anche per firmare, condividere i dati del wallet e mostrare la frase. La password funziona sempre.</p>
+  <p>Su Android: <b>Biometric unlock</b>, nell'elenco di <em>Settings</em>. Il dito apre l'archivio. Per firmare e per mostrare la frase serve ancora la password.</p>
+  <p>Se cambi le impronte registrate nel sistema, lo sblocco si spegne da solo. Windows e Linux non hanno sblocco con l'impronta.</p>
+
+  <h3 class="doc-h3" id="sicurezza-security">La sezione Security</h3>
+  <p>Su computer è <em>Settings &rarr; Security</em>. Sul telefono le stesse voci stanno in <em>Settings &rarr; Vault &amp; backup</em>.</p>
+  <figure class="doc-fig"><picture><source srcset="../../assets/img/wallet/settings-security.webp" type="image/webp"><img src="../../assets/img/wallet/settings-security.jpg" alt="Settings, sezione Security su computer: Encrypt wallet storage con il pulsante Set passphrase, Touch ID unlock, Auto-lock, Recovery phrase backup" width="1280" height="800" loading="lazy" decoding="async"></picture><figcaption><em>Settings &rarr; Security</em> su un Mac, da una build precedente: manca ancora la voce <em>Squid Protocol</em>. L'archivio non è cifrato, per questo compare <b>Set passphrase</b>.</figcaption></figure>
+  <div class="dtable-wrap"><table class="dtable">
+    <thead><tr><th>Voce</th><th>A cosa serve</th></tr></thead>
+    <tbody>
+      <tr><td><b>Encrypt wallet storage</b></td><td>Cifra le frasi dei wallet con la password dell'app, di almeno 8 caratteri. Senza password l'app non crea né ripristina wallet con la frase salvata qui. Se perdi la password, i wallet tornano solo dalle frasi di recupero.</td></tr>
+      <tr><td><b>Recovery phrase backup</b></td><td><b>Verify backup</b>: riscrivi la frase e l'app controlla che ricostruisca questo wallet. Non rivela nulla.</td></tr>
+      <tr><td><b>Seed Phrase</b></td><td><b>View</b> mostra la frase, <b>Private key</b> la chiave privata. Aprili solo in un posto riservato. C'è solo se la frase sta in questa app.</td></tr>
+      <tr><td><b>Wallet password</b></td><td>Un blocco facoltativo per aprire questo wallet dall'elenco. Non cifra nulla.</td></tr>
+      <tr><td><b>Storage</b></td><td>La cartella dati in uso.</td></tr>
+      <tr><td><b>DANGER ZONE</b></td><td><b>Delete wallet</b> toglie il wallet e le sue chiavi da questa app, senza ritorno. Senza la frase su carta, le monete sono perse. Aspetti 5 secondi e scrivi <code>confirm delete</code>.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="doc-h3" id="sicurezza-sezioni">Le sezioni di Settings</h3>
+  <p>Su computer: <em>Network &amp; Sync</em>, <em>Squid Protocol</em>, <em>Security</em>, <em>Appearance</em>, <em>About</em>.</p>
+  <p>Sul telefono un solo elenco: <em>Wallet info · Biometric unlock · Auto-lock · Vault &amp; backup · Lock now · Theme &amp; units · Reduce effects · Nodes &amp; explorers · Squid Protocol · Auto-sync · About</em>.</p>
+  <ul class="doc-list">
+    <li><b>Network &amp; Sync.</b> Sincronizzazione all'avvio. Rete Liquid <b>Testnet</b>. <b>Regtest</b> serve solo a chi sviluppa con un nodo locale. Il server Bitcoin è fisso, gli explorer si possono cambiare. Tor è annunciato, non ancora pronto.</li>
+    <li><b>Squid Protocol.</b> Siti collegati e richieste di firma: vedi <a href="#protocollo">Templar Protocol</a>.</li>
+    <li><b>Appearance.</b> Nome e colore del wallet, valuta, BTC o sats, tema <em>Dark</em>, <em>Light</em> o <em>System</em>. In un multisig c'è <em>Cosigner labels</em>: nomi e colori delle chiavi, salvati solo su questo dispositivo. <em>Language</em> non ha ancora effetto: l'app è solo in inglese.</li>
+    <li><b>About.</b> Mostra per errore <code>v0.1.0-alpha.1</code>: la versione vera è la <code>0.1.0-alpha.15</code>. <em>Source code</em> porta al repository GitHub.</li>
+  </ul>
+
+  <h3 class="doc-h3" id="sicurezza-abitudini">Buone abitudini</h3>
+  <ul class="doc-list">
+    <li>La frase sta su carta, controllata almeno una volta con <b>Verify backup</b>.</li>
+    <li>La password dell'app non è la frase. Servono tutte e due.</li>
+    <li>Controlla l'indirizzo prima di inviare, anche in testnet.</li>
+    <li>Non firmare ciò che non capisci.</li>
+    <li>Aggiorna con calma: prima il backup.</li>
+  </ul>
+  <div class="callout is-warn"><p><b>Cosa non fare mai.</b> Scrivere la frase in siti o app che la chiedono. Fotografarla. Usare qui una frase che protegge fondi veri. Fidarti di chi ti «aiuta» chiedendo parole, chiavi o accesso allo schermo.</p></div>
+
+  <p class="doc-src"><span>Fonte: <code>docs/RELEASE_NOTES.md</code></span><a class="gh" href="https://github.com/0xB4LdW1n/TemplarWallet/blob/main/docs/RELEASE_NOTES.md" rel="noopener" data-path="docs/RELEASE_NOTES.md"><svg class="ic" aria-hidden="true"><use href="#i-github"/></svg>Leggi su GitHub</a></p>
+</section>
+
+<section class="doc" id="multisig" aria-labelledby="h-multisig">
+  <p class="doc-label">08 &mdash; <strong>Avanzato</strong></p>
+  <h2 class="doc-h" id="h-multisig">Multisig e co-firma.</h2>
+  <p class="doc-lede">Un multisig M-su-N spende solo quando M chiavi diverse hanno firmato.</p>
+  <p>Le chiavi possono stare su dispositivi o persone diverse. Templar prepara la transazione, raccoglie le firme e la trasmette.</p>
+
+  <h3 class="doc-h3" id="multisig-crea">Creare il wallet</h3>
+  <ol class="doc-steps">
+    <li><b>Tipo.</b> <em>What kind of wallet?</em> &rarr; <b>Several keys must agree (multisig)</b>, poi <em>Which coins?</em>.</li>
+    <li><b>Password dell'app.</b> Se non c'è ancora, l'app la chiede. Per un multisig è obbligatoria.</li>
+    <li><b>Soglia.</b> In <em>Choose your threshold</em> scegli il nome, le firme richieste (M) e le chiavi totali (N, da 2 a 9). Con <b>I hold one of these keys here</b> acceso, l'app crea qui la tua chiave e te ne fa fare il backup. Spento, importi tutte le chiavi.</li>
+    <li><b>Chiavi.</b> In <em>Import the keys</em> ogni chiave può avere nome, icona e colore. Poi scegli da dove arriva.</li>
+    <li><b>Crea.</b> <em>Review &amp; create</em> &rarr; <b>Create Wallet</b>.</li>
+  </ol>
+  <figure class="doc-fig"><picture><source srcset="../../assets/img/wallet/multisig-threshold.webp" type="image/webp"><img src="../../assets/img/wallet/multisig-threshold.jpg" alt="Passo Choose your threshold: Signatures required 2, Total keys 3, interruttore I hold one of these keys here spento" width="1280" height="800" loading="lazy" decoding="async"></picture><figcaption>Un 2-su-3 con l'interruttore spento: le tre chiavi verranno importate.</figcaption></figure>
+  <div class="dtable-wrap"><table class="dtable">
+    <thead><tr><th>Provenienza</th><th>Quando</th></tr></thead>
+    <tbody>
+      <tr><td><b>Paste or scan a key</b></td><td>La xpub di un cofirmatario, da un altro software o da un dispositivo air-gap (SeedSigner, Jade in modalità QR e sbloccato). Poi <b>Done with this key</b>.</td></tr>
+      <tr><td><b>App wallet</b></td><td>Un wallet software già in questa app. Spunta <b>Sign with this key from this app</b> per firmare da qui.</td></tr>
+      <tr><td><b>USB device</b></td><td>Un hardware wallet collegato: <b>Read xpub from device</b>. Solo su computer.</td></tr>
+      <tr><td><b>New key</b></td><td>Una chiave nuova, con il suo backup. Firma da qui.</td></tr>
+      <tr><td><b>Seed phrase</b></td><td>Una frase che hai già. Firma da qui.</td></tr>
+    </tbody>
+  </table></div>
+  <p>Ogni chiave viene controllata prima dell'uso. Una chiave con percorso mainnet viene rifiutata.</p>
+  <p>In Dashboard la scheda <em>Keys</em> mostra un anello, una fetta per chiave nel suo colore, e la regola <em>Any M of N keys can sign.</em></p>
+
+  <h3 class="doc-h3" id="multisig-liquid">Bitcoin e Liquid insieme</h3>
+  <p>Un solo wallet, due catene. Ogni cofirmatario dà due chiavi: quella Bitcoin (BIP48) e la <em>Cosigner Liquid key (BIP87)</em>. Se la chiave è in questa app o su un Jade, l'app legge da sola anche la seconda.</p>
+  <ul class="doc-list">
+    <li>Una chiave Ledger, Trezor, Coldcard o KeepKey rende il wallet solo Bitcoin. Tra gli hardware wallet, solo il Jade firma su Liquid.</li>
+    <li>Un multisig solo Bitcoin non si allarga a Liquid. Ricrealo con le stesse chiavi: stessi indirizzi Bitcoin, stessi fondi.</li>
+    <li>Le stesse chiavi danno lo stesso wallet Liquid su ogni dispositivo.</li>
+  </ul>
+  <p>Per entrare nel multisig di un altro, apri un tuo wallet a chiave singola: <em>Wallet info &rarr; Use this wallet as a cosigner</em>. Ci sono le due chiavi, ognuna con copia e QR. Si possono condividere: nessuna delle due può spendere.</p>
+  <p>Per seguire un multisig senza firmare: <b>Somewhere else — just watch it</b> &rarr; <b>Build from cosigner keys</b>.</p>
+
+  <h3 class="doc-h3" id="multisig-avvia">Avviare una spesa</h3>
+  <ol class="doc-steps">
+    <li><b>Prepara.</b> <em>Send &rarr; Create a partial transaction</em>, poi firma con la tua chiave.</li>
+    <li><b>Fai girare.</b> Si apre <em>Co-signatures needed</em>. Il grafico <em>SIGNATURE QUORUM</em> ha una fetta per chiave e dice chi ha già firmato. La transazione esce come QR animato, con <b>Copy PSBT</b> o con <b>Save .psbt file</b> (<b>Share .psbt</b> sul telefono).</li>
+    <li><b>Raccogli.</b> <b>Paste signed copy</b> &rarr; <b>Add signature</b>. Oppure <b>Scan signed QR</b> (su macOS e Android) o il file firmato. Ogni copia si unisce alle altre, non le sostituisce. Una copia senza firme nuove viene rifiutata, con il motivo.</li>
+    <li><b>Trasmetti.</b> Al quorum: <b>Review &amp; Broadcast</b> &rarr; <em>Review signed transaction</em> &rarr; <b>Broadcast</b>.</li>
+  </ol>
+  <p>Su Liquid la transazione è un PSET. I passi sono gli stessi, QR compreso.</p>
+  <p>Una chiave segnata come <em>USB hardware wallet</em> firma dal computer: <b>Sign with USB hardware wallet</b> &rarr; <b>Sign on device</b>. Vedi <a href="#hardware">Hardware wallet</a>.</p>
+
+  <h3 class="doc-h3" id="multisig-firma">Firmare la spesa di un altro</h3>
+  <ol class="doc-steps">
+    <li><b>Apri.</b> <em>Send &rarr; Cosign a transaction</em>. In <em>WHICH CHAIN?</em> scegli Bitcoin o Liquid.</li>
+    <li><b>Carica.</b> <b>Paste</b>, <b>File</b> o <b>Scan QR</b> (su macOS e Android), poi <b>Load &amp; Inspect</b>.</li>
+    <li><b>Controlla.</b> Importi e indirizzi. Se qualcosa non torna, <b>Decline</b>.</li>
+    <li><b>Firma.</b> <b>Sign &amp; Export</b>. Su computer c'è anche <b>Sign with device</b>.</li>
+    <li><b>Restituisci.</b> <b>Show QR</b>, <b>Copy PSBT</b> o il file. Su Liquid il pulsante dice <b>Copy PSET</b>.</li>
+  </ol>
+  <div class="callout"><p><b>Sul telefono.</b> Qui firmi e basta: la trasmissione spetta a chi ha avviato la spesa. Ridagli la copia firmata.</p></div>
+  <div class="callout is-warn"><p><b>Importo «unknown» o «UNVERIFIABLE amount — do not sign».</b> La transazione nasconde quanto spende davvero e l'app non la firma. Avvisa chi te l'ha mandata.</p></div>
+
+  <p class="doc-src"><span>Fonte: <code>docs/guides/LIQUID_MULTISIG.md</code></span><a class="gh" href="https://github.com/0xB4LdW1n/TemplarWallet/blob/main/docs/guides/LIQUID_MULTISIG.md" rel="noopener" data-path="docs/guides/LIQUID_MULTISIG.md"><svg class="ic" aria-hidden="true"><use href="#i-github"/></svg>Leggi su GitHub</a></p>
+</section>
+
+<section class="doc" id="hardware" aria-labelledby="h-hardware">
+  <p class="doc-label">09 &mdash; <strong>Avanzato</strong></p>
+  <h2 class="doc-h" id="h-hardware">Hardware wallet.</h2>
+  <p class="doc-lede">La chiave resta sul dispositivo: Templar prepara il pagamento, il dispositivo lo approva.</p>
+  <p>È facoltativo. Se usi solo wallet software, salta questo capitolo.</p>
+
+  <h3 class="doc-h3" id="hardware-dispositivi">Quali dispositivi</h3>
+  <div class="dtable-wrap"><table class="dtable">
+    <thead><tr><th>Dispositivo</th><th>Collegamento</th><th>Monete</th></tr></thead>
+    <tbody>
+      <tr><td>Ledger (Nano S / S Plus / X, Stax, Flex)</td><td>USB su macOS, Windows e Linux. Driver integrato, HWI non serve.</td><td>Solo Bitcoin</td></tr>
+      <tr><td>Blockstream Jade</td><td>USB su computer, driver integrato. Oppure QR, anche su Android.</td><td>Bitcoin e Liquid via USB, solo Bitcoin via QR</td></tr>
+      <tr><td>SeedSigner e altri dispositivi air-gap</td><td>QR con la fotocamera, su macOS e Android.</td><td>Solo Bitcoin</td></tr>
+      <tr><td>Trezor, Coldcard, KeepKey, BitBox02</td><td>USB su Windows e Linux, con lo strumento HWI. Non su macOS: la sandbox di sistema blocca HWI.</td><td>Solo Bitcoin</td></tr>
+    </tbody>
+  </table></div>
+  <p>Su Windows e Linux, se HWI manca, la schermata del dispositivo mostra il riquadro <em>HWI toolkit required</em>. <b>Install HWI</b> scarica la versione ufficiale e ne controlla lo SHA-256. Per Ledger e Jade non serve.</p>
+
+  <h3 class="doc-h3" id="hardware-prepara">Prima di collegarlo</h3>
+  <ul class="doc-list">
+    <li><b>Ledger.</b> Sbloccalo, apri l'app <b>Bitcoin Testnet</b> (non «Bitcoin») e chiudi Ledger Live.</li>
+    <li><b>Jade.</b> Firmware aggiornato e testnet attiva, da <em>Options → Settings → Device → Enable Testnet</em>. Via USB chiudi Blockstream Green, perché la porta la usa un'app alla volta. Tieni il computer online: serve per lo sblocco con il PIN.</li>
+    <li><b>Jade via QR.</b> Sbloccalo prima con l'app di Blockstream: Templar non fa da tramite per il PIN.</li>
+  </ul>
+
+  <h3 class="doc-h3" id="hardware-crea">Creare il wallet</h3>
+  <ol class="doc-steps">
+    <li><b>Dove stanno le chiavi.</b> Alla domanda <em>Where do your keys live?</em> scegli <b>On a hardware wallet</b>.</li>
+    <li><b>Cavo o fotocamera.</b> Alla domanda <em>How does your device connect?</em> scegli <b>By cable (USB)</b> o <b>By camera (air-gapped QR)</b>. Su Android c'è solo la fotocamera.</li>
+    <li><b>Segui i passi.</b> Via USB: <em>Connect your device → Confirm what this device will hold → Name your wallet</em>. Via QR: <em>Choose your device → Export descriptor → Paste descriptor &amp; name</em>. Alla fine <em>Pairing summary</em> mostra lo stato di ogni rete e i controlli fatti.</li>
+  </ol>
+  <div class="callout is-warn"><p><b>Attenzione.</b> Con un dispositivo USB, in <b>Receive</b> il pulsante <b>Verify on Ledger</b> mostra l'indirizzo Bitcoin sullo schermo del dispositivo. Il nome resta quello anche con un Jade. L'indirizzo deve coincidere con quello dell'app, carattere per carattere. Se non coincide, fermati e segnalalo.</p></div>
+
+  <h3 class="doc-h3" id="hardware-invia">Firmare un invio</h3>
+  <ul class="doc-list">
+    <li><b>Via USB.</b> In <b>Send</b> premi <b>Sign on device</b>. L'app accetta solo il dispositivo con l'impronta di questo wallet. Prima il dispositivo ti fa confermare un indirizzo del wallet. Poi mostra uscite e commissione, e tu approvi lì.</li>
+    <li><b>Via QR.</b> Premi <b>Export PSBT</b> e l'app mostra la transazione come QR animato. Inquadralo con il dispositivo e approva. Riporta la copia firmata con <b>Scan signed QR</b>, con un file <code>.psbt</code> o incollandola. Prima di <b>Broadcast</b> l'app ti mostra cosa paga davvero. Solo Bitcoin.</li>
+  </ul>
+  <p>La scansione dei QR c'è su macOS e Android. Su Windows e Linux i pulsanti di scansione non compaiono: incolla la copia o carica il file.</p>
+
+  <h3 class="doc-h3" id="hardware-liquid">Liquid: solo Jade via USB</h3>
+  <p>Jade è l'unico hardware wallet che firma Liquid, e solo via cavo. Se scegli <b>Bitcoin + Liquid</b>, la creazione guidata te lo ricorda: <em>For Liquid, the device must be a Blockstream Jade</em>. Con altri dispositivi il wallet nasce solo Bitcoin.</p>
+  <p>Hai creato un wallet Jade solo Bitcoin? Apri <b>Wallet Info</b> e premi <b>Add Liquid from my Jade</b>. Templar apre il Jade solo quando firmi, così tra un invio e l'altro Blockstream Green può usarlo.</p>
+
+  <h3 class="doc-h3" id="hardware-linux">Linux: permessi USB</h3>
+  <p>Se compare il riquadro <em>Device permissions needed</em>, premi <b>Fix device permissions</b>: chiede la password una volta sola. Poi scollega e ricollega il dispositivo. La prima volta esci anche dalla sessione e rientra.</p>
+
+  <div class="callout"><p><b>Nota.</b> Con un hardware wallet la password dell'app è facoltativa, perché la chiave resta sul dispositivo. Protegge però il file del wallet su questo computer, con descriptor e chiavi pubbliche. Senza password il file resta in chiaro: chi legge i tuoi file vede saldo e storico, chi li modifica può cambiare gli indirizzi che Templar ti mostra.</p></div>
+
+  <p class="doc-src"><span>Fonte: <code>docs/guides/HARDWARE_TESTING.md</code></span><a class="gh" href="https://github.com/0xB4LdW1n/TemplarWallet/blob/main/docs/guides/HARDWARE_TESTING.md" rel="noopener" data-path="docs/guides/HARDWARE_TESTING.md"><svg class="ic" aria-hidden="true"><use href="#i-github"/></svg>Leggi su GitHub</a></p>
+</section>
+
+<section class="doc" id="liquid" aria-labelledby="h-liquid">
+  <p class="doc-label">10 &mdash; <strong>Avanzato</strong></p>
+  <h2 class="doc-h" id="h-liquid">Liquid: asset, LiquiDEX e Peg.</h2>
+  <p class="doc-lede">Cosa fa la parte Liquid del wallet, oltre a ricevere e inviare.</p>
+  <p>Liquid è una sidechain di Bitcoin. Ha un blocco ogni minuto, transazioni confidenziali e asset che chiunque può emettere.</p>
+  <p>Queste schermate compaiono solo se il wallet ha Liquid. Per aggiungerlo a un wallet software: <b>Wallet Info</b> → <em>Liquid Network</em> → <b>Enable Liquid</b>. Usa la stessa frase di recupero, non c'è altro da annotare. Per un Jade vedi <a href="#hardware-liquid">Hardware wallet</a>.</p>
+
+  <h3 class="doc-h3" id="liquid-asset">Gli asset</h3>
+  <p>La schermata <b>Liquid</b> elenca gli asset che hai, per esempio L-BTC. Il dettaglio di un asset mostra l'<em>Asset ID</em> con il pulsante <b>Copy ID</b> e, quando sono noti, <em>Ticker</em>, <em>Precision</em> e <em>Domain</em>.</p>
+  <ul class="doc-list">
+    <li><b>Issue Asset</b> crea un asset nuovo.</li>
+    <li><b>Reissue</b> emette altre unità di un asset di cui hai il token di riemissione.</li>
+    <li><b>Burn</b> distrugge unità dell'asset. Non si torna indietro.</li>
+  </ul>
+  <figure class="doc-fig"><picture><source srcset="../../assets/img/wallet/liquid.webp" type="image/webp"><img src="../../assets/img/wallet/liquid.jpg" alt="La schermata Liquid di Templar Wallet: in alto le operazioni Issue Asset, Reissue e Burn, sotto due asset di test, L-BTC e USDt." width="1280" height="800" loading="lazy" decoding="async"></picture><figcaption>La schermata Liquid su computer: sopra le operazioni, sotto gli asset che hai. Testnet.</figcaption></figure>
+
+  <h3 class="doc-h3" id="liquid-emetti">Emettere un asset</h3>
+  <ol class="doc-steps">
+    <li><b>Define asset.</b> Nome, ticker, precisione (da 0 a 8) e dominio, tutti obbligatori. Sono permanenti: dopo l'emissione non si cambiano.</li>
+    <li><b>Initial supply.</b> Quante unità emettere. Attiva <em>Create reissuance token</em> se vuoi poterne emettere altre più avanti. Senza token l'offerta resta fissa per sempre. Se perdi il token, non puoi più riemettere.</li>
+    <li><b>Review &amp; sign.</b> Rileggi tutto e premi <b>Sign &amp; Issue</b>.</li>
+    <li><b>Il risultato.</b> L'app mostra Asset ID, TxID e, se l'hai creato, l'ID del token di riemissione. Se compare <em>Domain proof required</em>, pubblica sul tuo dominio il file indicato: serve a registrare l'asset nell'explorer di Liquid testnet.</li>
+  </ol>
+
+  <h3 class="doc-h3" id="liquid-liquidex">LiquiDEX</h3>
+  <p>Un order book di swap atomici: due persone si scambiano asset in una sola transazione. <b>Make offer</b> pubblica una proposta, <b>Take</b> la accetta, <b>Import proposal</b> carica una proposta ricevuta. Le offerte segnate <em>MAINNET · VIEW ONLY</em> si possono solo guardare: il wallet firma solo su testnet.</p>
+  <div class="callout is-warn"><p><b>Attenzione.</b> LiquiDEX è sperimentale. La guida della alpha.14 segnala due problemi noti: un'offerta creata da te può non essere accettabile correttamente, e annullare un'offerta di token non riesce.</p></div>
+
+  <h3 class="doc-h3" id="liquid-peg">Peg</h3>
+  <p><b>Peg-in</b> porta BTC su Liquid come L-BTC. <b>Peg-out</b> fa il contrario. L'indirizzo di destinazione è già compilato con uno di questo wallet.</p>
+  <div class="callout is-warn"><p><b>Attenzione.</b> Il provider del peg è simulato: nessun fondo vero si muove. Lo ricorda la striscia gialla in cima alla schermata. L'app dice che un provider vero arriverà in un aggiornamento successivo.</p></div>
+  <p>Il peg ha bisogno di una parte Bitcoin. In un wallet solo Liquid il Peg non si può usare.</p>
+
+  <div class="doc-cards">
+    <a class="doc-card" href="#ricevi-invia"><b>Ricevere e inviare</b><span>Su Liquid l'indirizzo è confidenziale e si può riusare.</span></a>
+    <a class="doc-card" href="#hardware-liquid"><b>Hardware wallet</b><span>Liquid su hardware: solo con un Jade via USB.</span></a>
+  </div>
+
+  <p class="doc-src"><span>Fonte: <code>docs/INSTALLAZIONE.md</code></span><a class="gh" href="https://github.com/0xB4LdW1n/TemplarWallet/blob/main/docs/INSTALLAZIONE.md" rel="noopener" data-path="docs/INSTALLAZIONE.md"><svg class="ic" aria-hidden="true"><use href="#i-github"/></svg>Leggi su GitHub</a></p>
+</section>
+
+<section class="doc" id="protocollo" aria-labelledby="h-protocollo">
+  <p class="doc-label">11 &mdash; <strong>Avanzato</strong></p>
+  <h2 class="doc-h" id="h-protocollo">Collegare Templar Protocol.</h2>
+  <p class="doc-lede">Templar Wallet firma i passi dei tuoi prestiti su un sito Templar Protocol. Le chiavi restano nel wallet.</p>
+  <p>Il sito costruisce le transazioni del prestito. Templar te le mostra e firma solo dopo la tua conferma. A trasmetterle in rete è il sito, mai il wallet.</p>
+  <p>Nell'app il protocollo si chiama <b>Templar Protocol</b>. I link iniziano con <code>templar://</code>.</p>
+
+  <h3 class="doc-h3" id="protocollo-prima">Prima di iniziare</h3>
+  <ul class="doc-list">
+    <li><b>Installa nel modo giusto.</b> Su Windows usa l'<b>installer</b>: lo zip portabile non registra i link <code>templar://</code>. Su macOS basta copiare l'app in Applicazioni dal <code>.dmg</code>. Su Linux servono i comandi qui sotto.</li>
+    <li><b>Imposta la password dell'app.</b> Te la chiede prima di ogni firma. Su Mac, con Touch ID attivo, può bastare il dito.</li>
+    <li><b>Usa un wallet software con Liquid attivo.</b> Hardware, watch-only e multisig non si collegano ancora.</li>
+    <li><b>Usa la rete del sito.</b> Il wallet parte su Liquid <b>Testnet</b>. La rete si cambia in <b>Settings › Network &amp; Sync › Liquid network</b>. Il cambio chiude il wallet aperto: riaprilo e sincronizza.</li>
+  </ul>
+  <p>Solo Linux. Da un terminale aperto nella cartella estratta, questi comandi creano la voce nel menu e registrano i link <code>templar://</code>. Se sposti la cartella, ripetili.</p>
+  <pre class="code"><code>mkdir -p ~/.local/share/applications
+sed -e "s|^Exec=.*|Exec=$PWD/templar_wallet %u|" \
+    -e "s|^Icon=.*|Icon=$PWD/templar_wallet.png|" \
+    dev.templarwallet.templar_wallet.desktop \
+    &gt; ~/.local/share/applications/dev.templarwallet.templar_wallet.desktop
+update-desktop-database ~/.local/share/applications
+xdg-mime default dev.templarwallet.templar_wallet.desktop x-scheme-handler/squid</code></pre>
+
+  <h3 class="doc-h3" id="protocollo-collega">Collegare il wallet</h3>
+  <ol class="doc-steps">
+    <li><b>Parti dal sito.</b> Nella pagina Wallet premi «Collega Templar Wallet».</li>
+    <li><b>Templar si apre.</b> Compare la schermata <b>Connect wallet</b>. Se l'archivio dei wallet è bloccato, prima ti chiede la password dell'app.</li>
+    <li><b>Scegli il wallet.</b> Templar propone solo quelli adatti.</li>
+    <li><b>Leggi cosa riceve il sito.</b> Una vista <b>watch-only</b> di Liquid: vede saldo e storico, non può spendere. La <b>chiave escrow</b> <code>m/2121'/1'/0'</code>, un conto a parte usato solo nei contratti di prestito. Un indirizzo di ricezione e il nome del wallet.</li>
+    <li><b>Conferma.</b> Spunta la frase, premi <b>Share with …</b> e inserisci la password dell'app.</li>
+    <li><b>Torna al sito.</b> Compare <b>Wallet connected</b>. <b>Open in browser</b> ti riporta alla pagina, che si aggiorna da sola.</li>
+  </ol>
+  <div class="callout is-ok"><p>Niente di segreto lascia il computer.</p></div>
+
+  <h3 class="doc-h3" id="protocollo-firma">Firmare un passo del prestito</h3>
+  <p>La firma serve quando il prestito si apre, per le rate e il rimborso, in caso di default e di liquidazione.</p>
+  <ol class="doc-steps">
+    <li><b>Apri la richiesta.</b> Nella pagina del prestito premi «Firma con Templar Wallet».</li>
+    <li><b>Confronta le due colonne.</b> A sinistra <b>What … says</b>: ruolo, importi e durata come li racconta il sito. A destra <b>What "…" reads</b>: quello che il wallet legge nella transazione stessa.</li>
+    <li><b>Firma.</b> Spunta «I compared the site's summary with the wallet's reading…», premi <b>Sign and send to …</b> e inserisci la password.</li>
+    <li><b>Fatto.</b> Compare <b>Signature sent</b>. Quando tutte le parti hanno firmato, il sito trasmette la transazione. La pagina del prestito ne mostra l'id.</li>
+  </ol>
+  <div class="dtable-wrap"><table class="dtable">
+    <thead><tr><th>Nella colonna del wallet</th><th>Vuol dire</th></tr></thead>
+    <tbody>
+      <tr><td><b>escrow · your key</b></td><td>Il contratto del prestito chiede la tua firma.</td></tr>
+      <tr><td><b>your coin</b></td><td>Una moneta tua.</td></tr>
+      <tr><td><b>not yours</b> · <b>contract · not yours</b></td><td>Serve la chiave di qualcun altro.</td></tr>
+      <tr><td><b>This wallet</b> · <b>Escrow contract</b> · <b>External</b> · <b>Network fee</b></td><td>Dove vanno le monete: a te, nel contratto, a un altro indirizzo, in commissione.</td></tr>
+    </tbody>
+  </table></div>
+  <p>In fondo alla colonna trovi commissione, rete e firme già raccolte. Sotto le due colonne, il riquadro <b>Request</b> mostra il <b>Request id</b>.</p>
+  <div class="callout is-warn"><p><b>Attenzione.</b> Se le due colonne descrivono cose diverse, premi <b>Cancel</b> e segnalalo. Se nessun input porta una tua chiave, il pulsante resta spento: la richiesta è per un altro wallet.</p></div>
+
+  <h3 class="doc-h3" id="protocollo-impostazioni">Settings › Squid Protocol</h3>
+  <p>Ci arrivi anche con un tocco dal pannello Liquid della Dashboard.</p>
+  <ul class="doc-list">
+    <li><b>Status</b>: la rete per cui il wallet è pronto, e <b>Change network</b>.</li>
+    <li><b>Open a request</b>: incolla un link <code>templar://</code> o, dove c'è la fotocamera, inquadrane il QR. È la via di riserva quando il sito non apre Templar.</li>
+    <li><b>Connected sites</b>: chi vede un tuo wallet in sola lettura, e cosa ha ricevuto.</li>
+    <li><b>Signing history</b>: le ultime 50 richieste, con l'esito. <b>Clear history</b> la svuota.</li>
+    <li><b>Preferred wallet for Squid requests</b>: il wallet che risponde alle richieste e viene proposto per primo. Password e spunta servono comunque.</li>
+    <li><b>How it works</b>: il riassunto in tre passi.</li>
+  </ul>
+  <div class="callout"><p><b>Nota.</b> <b>Forget</b> cancella il sito solo da questo dispositivo. Il sito vede il wallet finché non lo rimuovi dal sito stesso. Questi dati restano qui e non contengono transazioni, importi o chiavi.</p></div>
+
+  <h3 class="doc-h3" id="protocollo-link">Se il link non apre il wallet</h3>
+  <ol class="doc-steps">
+    <li><b>Copia il link.</b> Sul sito, tasto destro sul pulsante e copia l'indirizzo del link.</li>
+    <li><b>Incollalo in Templar.</b> In <b>Settings › Squid Protocol › Open a request</b>, poi premi <b>Open</b>.</li>
+  </ol>
+  <p>Perché Templar si apra da solo: su Windows reinstalla con l'installer, su Linux esegui i comandi di <a href="#protocollo-prima">Prima di iniziare</a>.</p>
+
+  <h3 class="doc-h3" id="protocollo-messaggi">Messaggi che puoi vedere</h3>
+  <p>Sono tutti previsti e nessuno mette a rischio le monete.</p>
+  <div class="dtable-wrap"><table class="dtable">
+    <thead><tr><th>Messaggio</th><th>Cosa fare</th></tr></thead>
+    <tbody>
+      <tr><td>«This site runs on Liquid … This wallet is on Liquid …»</td><td>Il primo pulsante porta il wallet sulla rete del sito e riapre la richiesta: scegli di nuovo il wallet. Se non c'è una rete su cui passare, trovi solo <b>Open Network settings</b>.</td></tr>
+      <tr><td>«This request expired at …»</td><td>Torna al sito e rifai il passo.</td></tr>
+      <tr><td>«… rejected the answer (HTTP …)»</td><td>Il sito ha rifiutato la risposta: firma già arrivata, richiesta sbagliata o scaduta. Riprova dal sito.</td></tr>
+      <tr><td>«Could not reach …»</td><td>Il sito non risponde o sei offline. Non è partito nulla.</td></tr>
+      <tr><td>«Nothing here is for this wallet to sign»</td><td>Apri il wallet che ha partecipato al prestito.</td></tr>
+      <tr><td>«Signing failed: …»</td><td>Segnalalo con il riferimento del prestito e uno screenshot del messaggio (vedi <a href="#problemi-segnala">Segnalare un problema</a>).</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="doc-h3" id="protocollo-limiti">Limiti di questa alpha</h3>
+  <ul class="doc-list">
+    <li>Si collegano solo i wallet software.</li>
+    <li>Il wallet non mette d'accordo le due colonne da solo: il confronto tocca a te.</li>
+    <li>Il wallet non ha schermate per i prestiti e non usa la mainnet.</li>
+    <li>Un sito remoto deve usare <code>https</code>.</li>
+    <li>La cronologia delle firme è solo di questo dispositivo. I prestiti stanno sul sito e sulla blockchain.</li>
+    <li>La registrazione dei link su Windows e Linux non è ancora stata provata da chi sviluppa il wallet. Incollare il link funziona sempre.</li>
+    <li>Su Android il collegamento con i siti non è ancora pronto.</li>
+  </ul>
+  <p>La rete Regtest serve solo a chi sviluppa con un nodo locale.</p>
+
+  <p class="doc-src"><span>Fonte: <code>docs/guides/PROTOCOL_CONNECTOR.md</code> · per chi prova: <code>docs/guide.md</code></span><a class="gh" href="https://github.com/0xB4LdW1n/TemplarWallet/blob/main/docs/guides/PROTOCOL_CONNECTOR.md" rel="noopener" data-path="docs/guides/PROTOCOL_CONNECTOR.md"><svg class="ic" aria-hidden="true"><use href="#i-github"/></svg>Leggi su GitHub</a></p>
+</section>
+
+<section class="doc" id="problemi" aria-labelledby="h-problemi">
+  <p class="doc-label">12 &mdash; <strong>Aiuto</strong></p>
+  <h2 class="doc-h" id="h-problemi">Problemi e segnalazioni.</h2>
+  <p class="doc-lede">I problemi più comuni, dove stanno i dati e come mandarci una segnalazione utile.</p>
+
+  <h3 class="doc-h3" id="problemi-avvio">Installazione e avvio</h3>
+  <div class="dtable-wrap"><table class="dtable">
+    <thead><tr><th>Sintomo</th><th>Cosa fare</th></tr></thead>
+    <tbody>
+      <tr><td>macOS: «Apple non è riuscita a verificare…» o «è danneggiata»</td><td>La build non è notarizzata. Togli la quarantena dal Terminale, come in <a href="#installa">Scarica e installa</a>.</td></tr>
+      <tr><td>Windows: «Windows ha protetto il PC»</td><td>La build non è firmata. Premi <b>Ulteriori informazioni › Esegui comunque</b>.</td></tr>
+      <tr><td>Windows: manca <code>VCRUNTIME140.dll</code> o <code>MSVCP140.dll</code></td><td>Installa il <a href="https://aka.ms/vs/17/release/vc_redist.x64.exe">Visual C++ Redistributable x64</a> e riprova.</td></tr>
+      <tr><td>Linux: <code>error while loading shared libraries</code></td><td>Installa GTK 3, libudev e libEGL. Debian e Ubuntu: <code>sudo apt install libgtk-3-0 libudev1 libegl1</code>. Fedora: <code>sudo dnf install gtk3 systemd-libs libglvnd-egl</code>.</td></tr>
+      <tr><td>Linux: <code>version `GLIBC_2.xx' not found</code></td><td>La distribuzione è più vecchia di Ubuntu 22.04, su cui è compilata la build. Dicci quale usi.</td></tr>
+      <tr><td>Android: «App non installata»</td><td>C'è già una versione firmata in modo diverso. Annota la frase di recupero, disinstallala e riprova.</td></tr>
+      <tr><td>«The wallet engine could not be loaded»</td><td>L'installazione è incompleta. Reinstalla. Windows portabile: estrai tutto lo zip. Linux: tieni intera la cartella.</td></tr>
+      <tr><td>«Could not load your wallets» con «Another Templar Wallet instance is already using this wallet data»</td><td>È aperta un'altra finestra dell'app, e ne può girare una sola. Chiudila e riapri.</td></tr>
+      <tr><td>«Wrong passphrase. Try again.»</td><td>Serve la password dell'app, non la passphrase BIP39. Se l'hai persa, i wallet si recuperano solo dalla frase di recupero: vedi <a href="#problemi-azzera">Ripartire da zero</a>.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="doc-h3" id="problemi-uso">Nell'uso</h3>
+  <div class="dtable-wrap"><table class="dtable">
+    <thead><tr><th>Sintomo</th><th>Cosa fare</th></tr></thead>
+    <tbody>
+      <tr><td>Il saldo non si aggiorna</td><td>Premi <b>Sync now</b> in fondo alla barra laterale. Poi controlla la connessione e che un firewall non blocchi i server Blockstream.</td></tr>
+      <tr><td>La prima sincronizzazione Liquid è lenta</td><td>È una scansione completa. La prima volta può volerci qualche minuto.</td></tr>
+      <tr><td>Non vedi la sezione LIQUID</td><td><b>Wallet Info › Liquid Network › Enable Liquid</b>.</td></tr>
+      <tr><td>Non vedi <b>Send</b></td><td>Il wallet è watch-only: guarda, non spende.</td></tr>
+      <tr><td>Co-firma: «This wallet's key signs none of the inputs…»</td><td>Forse è il wallet sbagliato, o ha già firmato questa copia. Apri il wallet che possiede la chiave.</td></tr>
+      <tr><td>Co-firma: «No signature was added…»</td><td>La tua firma c'è già, o la chiave non è tra quelle del multisig.</td></tr>
+      <tr><td>«UNVERIFIABLE amount — do not sign»</td><td>La transazione nasconde gli importi. Non firmarla e segnalalo.</td></tr>
+      <tr><td>Android: la fotocamera non si apre</td><td>Premi <b>Try again</b>. Se l'accesso è negato, premi <b>Open app settings</b> e consenti la fotocamera.</td></tr>
+      <tr><td>Linux: l'hardware wallet non viene visto</td><td>Premi <b>Fix device permissions</b>, poi scollega e ricollega il dispositivo.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="doc-h3" id="problemi-dati">Dove stanno i dati</h3>
+  <div class="dtable-wrap"><table class="dtable">
+    <thead><tr><th>Sistema</th><th>Cartella dati</th><th>Configurazione</th></tr></thead>
+    <tbody>
+      <tr><td>macOS</td><td><code>~/Library/Containers/dev.templarwallet.templarWallet/Data/Library/Application Support/templar_wallet</code></td><td><code>templar_wallet.json</code> accanto alla cartella</td></tr>
+      <tr><td>Windows</td><td><code>%APPDATA%\templar_wallet</code>, o quella scelta nell'installer</td><td><code>%APPDATA%\templar_wallet.json</code></td></tr>
+      <tr><td>Linux</td><td><code>~/.local/share/templar_wallet</code></td><td><code>~/.config/templar_wallet.json</code></td></tr>
+      <tr><td>Android</td><td>Memoria privata dell'app, non accessibile</td><td>Nella stessa memoria</td></tr>
+    </tbody>
+  </table></div>
+  <p>La cartella in uso si vede in <b>Settings › Security › Storage</b>. Su Android la sezione si chiama <b>Vault &amp; backup</b>.</p>
+
+  <h3 class="doc-h3" id="problemi-azzera">Ripartire da zero</h3>
+  <div class="callout is-warn"><p><b>Attenzione.</b> Cancellare la cartella dati elimina i wallet e le frasi di recupero salvate. Prima annota la frase: su computer <b>Settings › Security › Seed Phrase › View</b>, su Android <b>Settings › Vault &amp; backup › Recovery phrase › View</b>.</p></div>
+  <p>Chiudi l'app. Poi, su macOS:</p>
+  <pre class="code"><code>rm -rf ~/Library/Containers/dev.templarwallet.templarWallet</code></pre>
+  <p>Su Linux:</p>
+  <pre class="code"><code>rm -rf ~/.local/share/templar_wallet ~/.config/templar_wallet.json</code></pre>
+  <p>Su Windows, in PowerShell:</p>
+  <pre class="code"><code>Remove-Item -Recurse -Force "$env:APPDATA\templar_wallet"
+Remove-Item -Force "$env:APPDATA\templar_wallet.json"</code></pre>
+  <p>Su Android: Impostazioni del telefono › App › Templar Wallet › Spazio di archiviazione › Cancella dati.</p>
+
+  <h3 class="doc-h3" id="problemi-segnala">Segnalare un problema</h3>
+  <p>Il repository è pubblico: apri una segnalazione nelle <a href="https://github.com/0xB4LdW1n/TemplarWallet/issues" rel="noopener" data-path="issues">Issues su GitHub</a>. Se no, scrivi a chi ti ha mandato la build o nel gruppo dei tester. Indica:</p>
+  <ul class="doc-list">
+    <li>sistema operativo e versione;</li>
+    <li>quale build hai installato, dal nome del file scaricato: <b>About</b> nell'app mostra per errore <code>v0.1.0-alpha.1</code>;</li>
+    <li>cosa stavi facendo, cosa ti aspettavi e cosa è successo;</li>
+    <li>uno screenshot, se puoi.</li>
+  </ul>
+  <p>Per un problema con <a href="#protocollo">Templar Protocol</a> aggiungi la rete Liquid, il riferimento del prestito, il <b>Request id</b> e uno screenshot della schermata di firma con tutte e due le colonne.</p>
+
+  <h3 class="doc-h3" id="problemi-log">Allega il log</h3>
+  <p>Su computer il log è <code>logs/templar.log</code> nella cartella dati, più <code>templar.log.1</code> se c'è. Per copiarlo sulla Scrivania, su macOS:</p>
+  <pre class="code"><code>cp ~/Library/Containers/dev.templarwallet.templarWallet/Data/Library/Application\ Support/templar_wallet/logs/templar.log ~/Desktop/</code></pre>
+  <p>Su Linux:</p>
+  <pre class="code"><code>cp ~/.local/share/templar_wallet/logs/templar.log ~/Desktop/</code></pre>
+  <p>Su Windows il log sta in <code>%APPDATA%\templar_wallet\logs</code>, o nella cartella scelta nell'installer. Su Android non si può esportare: manda screenshot, i passi fatti e l'ora approssimativa del problema.</p>
+  <p>Per vedere gli errori mentre accadono, su macOS avvia l'app dal Terminale:</p>
+  <pre class="code"><code>"/Applications/Templar Wallet.app/Contents/MacOS/templar_wallet"</code></pre>
+  <p>Su Linux avvia <code>./templar_wallet</code> da un terminale aperto nella cartella estratta. Su Windows l'app non scrive nulla sulla console: copia il testo esatto dell'errore o fai uno screenshot.</p>
+
+  <h3 class="doc-h3" id="problemi-limiti">Limiti noti</h3>
+  <ul class="doc-list">
+    <li>Solo testnet, nessun percorso verso la mainnet.</li>
+    <li>App solo in inglese. <b>About</b> mostra una versione sbagliata.</li>
+    <li>Scansione dei QR con la fotocamera solo su macOS e Android. <b>Paste</b> e <b>File</b> funzionano ovunque.</li>
+    <li>Niente USB su Android. Con un hardware wallet, Liquid funziona solo con Jade via USB.</li>
+    <li>Trezor, Coldcard, KeepKey e BitBox02 richiedono HWI su Windows e Linux. Su macOS non funzionano.</li>
+    <li>Nessuna schermata per alzare la commissione (RBF) di una transazione già inviata.</li>
+    <li>La password dell'app non si può cambiare né togliere.</li>
+    <li>LiquiDEX è sperimentale. Il Peg è simulato.</li>
+    <li>I wallet con regole personalizzate (policy) non sono ancora disponibili.</li>
+    <li>Una sola istanza dell'app per volta.</li>
+    <li>Niente notarizzazione Apple, niente certificato Authenticode, APK fuori dal Play Store: al primo avvio macOS, Windows e Android mostrano un avviso.</li>
+  </ul>
+
+  <p class="doc-src"><span>Fonte: <code>docs/INSTALLAZIONE.md</code></span><a class="gh" href="https://github.com/0xB4LdW1n/TemplarWallet/blob/main/docs/INSTALLAZIONE.md" rel="noopener" data-path="docs/INSTALLAZIONE.md"><svg class="ic" aria-hidden="true"><use href="#i-github"/></svg>Leggi su GitHub</a></p>
+</section>
+
+<section class="doc" id="sorgente" aria-labelledby="h-sorgente">
+  <p class="doc-label">13 &mdash; <strong>Sviluppatori</strong></p>
+  <h2 class="doc-h" id="h-sorgente">Codice sorgente e build.</h2>
+  <p class="doc-lede">Cosa c'&egrave; nel repository e come compilare Templar Wallet da te.</p>
+
+  <div class="callout is-warn"><p><b>Stato.</b> Il codice &egrave; su GitHub, in un repository pubblico con licenza MIT. Il wallet &egrave; in alpha e lavora solo su testnet.</p><p>Questa pagina segue <code>main</code>, il ramo pubblico del repository.</p></div>
+
+  <div class="doc-cards">
+    <a class="doc-card" href="https://github.com/0xB4LdW1n/TemplarWallet/blob/main/README.md" rel="noopener" data-path="README.md"><b>Templar Wallet su GitHub</b><span>Il repository: struttura, build, sviluppo.</span></a>
+  </div>
+
+  <h3 class="doc-h3" id="sorgente-contenuto">Cosa c'&egrave; dentro</h3>
+  <div class="dtable-wrap"><table class="dtable">
+    <thead><tr><th>Cartella</th><th>Cosa contiene</th></tr></thead>
+    <tbody>
+      <tr><td><code>crates/templar-core/</code></td><td>Il motore: BDK 0.30 per Bitcoin, LWK 0.9 per Liquid, regole di spesa Miniscript, cassaforte cifrata. Senza interfaccia grafica.</td></tr>
+      <tr><td><code>src/wallet-ffi/</code></td><td>Il ponte tra motore e app, con un'interfaccia C. Produce <code>libwallet_ffi.dylib</code>, <code>libwallet_ffi.so</code> o <code>wallet_ffi.dll</code>.</td></tr>
+      <tr><td><code>src/templar_wallet/</code></td><td>L'app Flutter per macOS, Linux, Windows e Android.</td></tr>
+      <tr><td><code>assets/brand/</code></td><td>I loghi in SVG. Tutte le icone nascono da qui.</td></tr>
+      <tr><td><code>scripts/</code></td><td>Build per sistema, DMG, icone, configurazione di HWI.</td></tr>
+      <tr><td><code>packaging/</code></td><td>I file dei pacchetti: DMG, installer Windows, voce di menu Linux.</td></tr>
+      <tr><td><code>docs/</code></td><td>La documentazione tecnica.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="doc-h3" id="sorgente-docs">La documentazione nel repository</h3>
+  <p>Parti da <code>docs/README.md</code>: dice dove trovi cosa.</p>
+  <div class="doc-cards">
+    <a class="doc-card" href="https://github.com/0xB4LdW1n/TemplarWallet/tree/main/docs/guides" rel="noopener" data-path="docs/guides"><b>guides/</b><span>Prove con hardware wallet, multisig su Liquid, connettore del protocollo.</span></a>
+    <a class="doc-card" href="https://github.com/0xB4LdW1n/TemplarWallet/tree/main/docs/build" rel="noopener" data-path="docs/build"><b>build/</b><span>Linux, Windows, build con uno script, rilasci.</span></a>
+  </div>
+
+  <h3 class="doc-h3" id="sorgente-prima">Prima di compilare</h3>
+  <p>L'app &egrave; fatta di due pezzi che viaggiano insieme: la libreria Rust e il pacchetto Flutter. Se all'avvio la libreria manca, l'app di release si ferma su una schermata di errore.</p>
+  <p>Ogni sistema si compila su quel sistema: Flutter desktop non fa cross-compilazione. Ti servono:</p>
+  <ul class="doc-list">
+    <li>Rust stable (edition 2021), da <a href="https://rustup.rs">rustup.rs</a>.</li>
+    <li>Flutter 3.44.1 stable, con Dart <code>^3.12.0</code>.</li>
+  </ul>
+  <p>I comandi partono dalla radice del repository, dove c'&egrave; <code>Cargo.toml</code>. La prima build Rust compila circa 500 crate e richiede alcuni minuti.</p>
+
+  <h3 class="doc-h3" id="sorgente-macos">macOS</h3>
+  <p>Serve Xcode con gli strumenti da riga di comando (<code>xcode-select --install</code>).</p>
+  <pre class="code"><code>cd src/templar_wallet
+flutter pub get
+flutter build macos --release
+open build/macos/Build/Products/Release/templar_wallet.app</code></pre>
+  <p>Non serve altro: una fase Run Script di Xcode compila <code>libwallet_ffi.dylib</code> e la mette nell'app.</p>
+  <p>Vuoi che la tua build giri anche sui Mac Intel? Prima aggiungi i target: <code>rustup target add x86_64-apple-darwin aarch64-apple-darwin</code>.</p>
+  <p>Per un DMG lancia <code>./scripts/make_dmg.sh</code> dalla radice. Il file finisce in <code>dist/</code>.</p>
+
+  <h3 class="doc-h3" id="sorgente-linux">Linux</h3>
+  <p>Su Debian o Ubuntu, dalla 22.04 in poi, installa i pacchetti:</p>
+  <pre class="code"><code>sudo apt update
+sudo apt install -y build-essential clang cmake ninja-build pkg-config \
+    libgtk-3-dev libssl-dev libudev-dev curl git unzip xz-utils zip
+flutter config --enable-linux-desktop</code></pre>
+  <div class="callout is-warn"><p><b>Non saltare <code>libudev-dev</code>.</b> Senza, la build riesce lo stesso, ma l'app non riconosce mai una Jade.</p></div>
+  <p>Poi compila, copia la libreria accanto all'eseguibile e avvia:</p>
+  <pre class="code"><code>cargo build --release -p wallet-ffi
+cd src/templar_wallet
+flutter pub get
+flutter build linux --release
+cp ../../target/release/libwallet_ffi.so build/linux/x64/release/bundle/lib/
+./build/linux/x64/release/bundle/templar_wallet</code></pre>
+  <p>Si distribuisce tutta la cartella <code>bundle/</code>. Sul computer di arrivo serve GTK 3, e una glibc non pi&ugrave; vecchia di quella del computer che ha compilato.</p>
+  <p>Fedora e altri dettagli: <a href="https://github.com/0xB4LdW1n/TemplarWallet/blob/main/docs/build/LinuxBuild.md" rel="noopener" data-path="docs/build/LinuxBuild.md">LinuxBuild.md</a>.</p>
+
+  <h3 class="doc-h3" id="sorgente-windows">Windows</h3>
+  <p>Installa prima:</p>
+  <ul class="doc-list">
+    <li>Visual Studio 2022 con il carico di lavoro <b>Desktop development with C++</b>. VS Code da solo non basta.</li>
+    <li>Git for Windows.</li>
+    <li>Rust con <code>rustup-init.exe</code>, toolchain <code>stable-x86_64-pc-windows-msvc</code>.</li>
+  </ul>
+  <p>OpenSSL non serve. In PowerShell, dalla radice del repository:</p>
+  <pre class="code"><code>flutter config --enable-windows-desktop
+flutter doctor
+cargo build --release -p wallet-ffi
+cd src\templar_wallet
+flutter pub get
+flutter build windows --release
+Copy-Item ..\..\target\release\wallet_ffi.dll build\windows\x64\runner\Release\
+.\build\windows\x64\runner\Release\templar_wallet.exe</code></pre>
+  <p><code>flutter doctor</code> deve mostrare Visual Studio in verde.</p>
+  <p>Si distribuisce tutta la cartella <code>Release\</code>. Su un PC senza Visual Studio pu&ograve; servire anche il VC++ Redistributable.</p>
+  <p>L'installer si crea con Inno Setup 6, dalla radice:</p>
+  <pre class="code"><code>ISCC.exe /DMyAppVersion=&lt;versione&gt; packaging\windows\templar-wallet.iss</code></pre>
+  <p>Altri dettagli: <a href="https://github.com/0xB4LdW1n/TemplarWallet/blob/main/docs/build/WindowsBuild.md" rel="noopener" data-path="docs/build/WindowsBuild.md">WindowsBuild.md</a>.</p>
+
+  <h3 class="doc-h3" id="sorgente-script">Con uno script solo</h3>
+  <p>Su Linux e Windows uno script fa tutto, con gli stessi passi della build automatica.</p>
+  <div class="dtable-wrap"><table class="dtable">
+    <thead><tr><th>Sistema</th><th>Comando</th><th>Ti serve</th><th>Prima volta</th></tr></thead>
+    <tbody>
+      <tr><td>Linux x64</td><td><code>bash scripts/build_linux.sh</code></td><td>Docker o Podman</td><td>circa 15 GB, circa un'ora</td></tr>
+      <tr><td>Windows 10/11 x64</td><td>doppio clic su <code>scripts\build_windows.cmd</code></td><td>niente: propone di installare ci&ograve; che manca</td><td>circa 25 GB, un'ora o pi&ugrave;</td></tr>
+    </tbody>
+  </table></div>
+  <p>Lo script Linux lavora in un'immagine Ubuntu 22.04, qualunque distribuzione tu usi. Altri dettagli: <a href="https://github.com/0xB4LdW1n/TemplarWallet/blob/main/docs/build/HELPER_BUILDS.md" rel="noopener" data-path="docs/build/HELPER_BUILDS.md">HELPER_BUILDS.md</a>.</p>
+
+  <h3 class="doc-h3" id="sorgente-android">Android</h3>
+  <p>Serve l'SDK Android con l'NDK 28.2.13676358 e Flutter con la toolchain Android.</p>
+  <pre class="code"><code>rustup target add aarch64-linux-android x86_64-linux-android
+cargo install cargo-ndk
+./scripts/build_android.sh --release</code></pre>
+  <p>Esce un APK per architettura in <code>src/templar_wallet/build/app/outputs/flutter-apk/</code>: <code>app-arm64-v8a-release.apk</code> per i telefoni, <code>app-x86_64-release.apk</code> per l'emulatore.</p>
+  <p>Su Android restano fuori gli hardware wallet USB: per firmare fuori dal telefono c'&egrave; il QR. Per ora anche la release &egrave; firmata con la chiave di debug.</p>
+
+  <h3 class="doc-h3" id="sorgente-sviluppo">Test e sviluppo</h3>
+  <pre class="code"><code>cargo test -p templar-core -p wallet-ffi
+cargo clippy --workspace -- -W clippy::all
+cargo fmt --all
+cd src/templar_wallet
+flutter analyze --no-fatal-infos
+flutter test
+flutter run -d macos</code></pre>
+  <p>I test Rust girano offline, in una decina di secondi. Con <code>flutter run</code> scegli <code>-d macos</code>, <code>-d linux</code> o <code>-d windows</code>.</p>
+  <p>Queste variabili d'ambiente cambiano alcune scelte all'avvio, senza ricompilare:</p>
+  <div class="dtable-wrap"><table class="dtable">
+    <thead><tr><th>Variabile</th><th>Cosa cambia</th></tr></thead>
+    <tbody>
+      <tr><td><code>TEMPLAR_ELECTRUM_URL</code></td><td>Il server Electrum per Bitcoin testnet.</td></tr>
+      <tr><td><code>TEMPLAR_LIQUID_ELECTRUM_URL</code></td><td>Il server Electrum per Liquid.</td></tr>
+      <tr><td><code>TEMPLAR_DATA_DIR</code></td><td>La cartella dei dati.</td></tr>
+      <tr><td><code>TEMPLAR_HWI_BIN</code></td><td>Il programma <code>hwi</code> da usare per gli hardware wallet.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3 class="doc-h3" id="sorgente-ci">Build automatiche</h3>
+  <p>Il workflow <code>build-desktop</code> parte a ogni push su un ramo <code>build-*</code>, a ogni tag <code>v*</code> o a mano. Prima girano i test: una build rotta non arriva ai pacchetti.</p>
+  <p>macOS e Android si compilano sul Mac del progetto. Linux (Ubuntu 22.04) e Windows sui runner di GitHub: quando i minuti gratuiti finiscono, si usano <a href="#sorgente-script">gli script</a>. Con un tag <code>v*</code> i pacchetti finiscono in una release in bozza.</p>
+
+  <h3 class="doc-h3" id="sorgente-demo">Demo locale del protocollo</h3>
+  <p>Facoltativa. Gira su regtest, una catena privata sul tuo computer. Nel repository del protocollo lancia:</p>
+  <pre class="code"><code>cargo run -p squid-ops -- up
+set -a; . data/regtest/regtest.env; set +a
+cargo run -p squid-lend-server</code></pre>
+  <p>La prima volta <code>up</code> scarica <code>elementsd</code>.</p>
+  <ol class="doc-steps">
+    <li><b>Apri il sito.</b> Risponde su <code>http://127.0.0.1:8087</code>.</li>
+    <li><b>Passa Templar su regtest.</b> Vai in <b>Settings &rsaquo; Network &amp; Sync &rsaquo; Liquid network</b>, scegli <b>Regtest</b> e premi <b>Apply</b>. Il wallet aperto si chiude: riaprilo e sincronizza.</li>
+    <li><b>Ricevi monete di prova.</b> Sempre nel repository del protocollo: <code>cargo run -p squid-ops -- fund &lt;indirizzo&gt; 1.0</code>, con un indirizzo Liquid regtest di Templar.</li>
+    <li><b>Collega il wallet.</b> Sul sito premi <b>Collega Templar Wallet</b>. Se il link non apre l'app, incollalo in <b>Settings &rsaquo; Squid Protocol &rsaquo; Open a request</b>. Il resto funziona come in <a href="#protocollo">Collegare Templar Protocol</a>.</li>
+  </ol>
+
+  <p class="doc-src"><span>Fonti: <code>README.md</code>, <code>docs/build/</code>, <code>docs/guides/PROTOCOL_CONNECTOR.md</code></span><a class="gh" href="https://github.com/0xB4LdW1n/TemplarWallet/blob/main/README.md" rel="noopener" data-path="README.md"><svg class="ic" aria-hidden="true"><use href="#i-github"/></svg>Leggi su GitHub</a></p>
+</section>
+
+  </article>
+</div>
+
+</main>
+
+<footer class="foot">
+  <div class="foot-grid">
+    <div class="foot-brand foot-anim">
+      <a class="brand" href="../../">
+        <img class="brand-mark" src="../../assets/img/templar-cross.svg" alt="" width="26" height="26">
+        <span class="word">Templar Protocol</span>
+      </a>
+      <p class="disclaimer">Templar Wallet &egrave; una alpha e funziona solo sulla rete di prova: le monete di prova non hanno valore. L'uso &egrave; sotto la responsabilit&agrave; di chi lo usa. Il codice &egrave; su GitHub, con licenza MIT.</p>
+      <p class="foot-copy">&copy; 2026 Templar Protocol. Tutti i diritti riservati.</p>
+    </div>
+    <div class="foot-cols">
+      <div class="foot-col foot-anim"><h3>Wallet</h3><ul><li><a href="../#funzioni">Funzioni</a></li><li><a href="../#tour">Tour</a></li><li><a href="../#confronto">Confronto</a></li><li><a href="../#scarica">Scarica</a></li><li><a href="../#codice">Codice</a></li><li><a href="./" aria-current="page">Documentazione</a></li></ul></div>
+      <div class="foot-col foot-anim"><h3>Protocollo</h3><ul><li><a href="../../">Il sito del protocollo</a></li><li><a href="../../#protocollo">Le quattro mosse</a></li><li><a href="#protocollo">Il wallet e il protocollo</a></li><li><span class="foot-soon">App testnet <em>in arrivo</em></span></li></ul></div>
+      <div class="foot-col foot-anim"><h3>Contatto</h3><ul><li><a href="mailto:biz.vasco@proton.me">biz.vasco@proton.me</a></li><li><a href="../../en/wallet/docs/" hreflang="en" lang="en">English</a></li></ul></div>
+    </div>
+  </div>
+  <div class="foot-bottom"><p class="foot-small">Icone: <a href="https://www.flaticon.com/uicons" rel="noopener">UIcons &middot; Flaticon</a> &middot; Marchi: <a href="https://simpleicons.org" rel="noopener">Simple Icons</a> (CC0), di propriet&agrave; dei rispettivi titolari &middot; Font: Archivo, JetBrains Mono (OFL)</p></div>
+</footer>
+
+<script src="../../assets/js/wallet.js"></script>
+<script src="../../assets/js/docs.js"></script>
+</body>
+</html>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">
+  <url>
+    <loc>https://templar.red/</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://templar.red/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://templar.red/en/"/>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://templar.red/en/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://templar.red/en/"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://templar.red/"/>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://templar.red/wallet/</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://templar.red/wallet/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://templar.red/en/wallet/"/>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://templar.red/en/wallet/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://templar.red/en/wallet/"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://templar.red/wallet/"/>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://templar.red/wallet/docs/</loc>
+    <xhtml:link rel="alternate" hreflang="it" href="https://templar.red/wallet/docs/"/>
+    <xhtml:link rel="alternate" hreflang="en" href="https://templar.red/en/wallet/docs/"/>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://templar.red/en/wallet/docs/</loc>
+    <xhtml:link rel="alternate" hreflang="en" href="https://templar.red/en/wallet/docs/"/>
+    <xhtml:link rel="alternate" hreflang="it" href="https://templar.red/wallet/docs/"/>
+    <lastmod>2026-09-25</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+</urlset>

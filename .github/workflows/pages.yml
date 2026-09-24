@@ -1,0 +1,73 @@
+# Publishes the static site in site/ to GitHub Pages, on every push to main.
+#
+# There is no build step: site/ is plain HTML, CSS, JS, fonts and images, and
+# it is uploaded as it is. The custom domain lives in site/CNAME and in the
+# repository's Pages settings; .nojekyll keeps Pages from touching the files.
+#
+# Third-party actions are pinned to a commit SHA (the comment names the tag).
+name: pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+# The deploy job needs to write the Pages deployment; nothing else does.
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build and deploy
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # A missing file is a broken page in production: check the entry points
+      # and every asset the HTML asks for before anything is published.
+      - name: Check the pages and their assets
+        run: |
+          set -eu
+          for f in site/index.html site/en/index.html site/wallet/index.html \
+                   site/en/wallet/index.html site/wallet/docs/index.html \
+                   site/en/wallet/docs/index.html site/404.html site/CNAME \
+                   site/robots.txt site/sitemap.xml site/.nojekyll; do
+            test -e "$f" || { echo "missing: $f"; exit 1; }
+          done
+          python3 - <<'PY'
+          import os, pathlib, re, sys
+          root = pathlib.Path("site")
+          missing = []
+          for page in root.rglob("*.html"):
+              html = page.read_text(encoding="utf-8")
+              for ref in set(re.findall(r'(?:src|href)="((?!https?:|mailto:|#|data:)[^"]+)"', html)):
+                  ref = ref.split("#")[0].split("?")[0]
+                  if not ref: continue
+                  target = (root if ref.startswith("/") else page.parent) / ref.lstrip("/")
+                  if ref.endswith("/"): target = target / "index.html"
+                  if not target.exists(): missing.append(f"{page}: {ref}")
+          if missing:
+              print("\n".join(sorted(missing))); sys.exit(1)
+          print("every local reference resolves")
+          PY
+
+      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: site
+      - id: deploy
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1

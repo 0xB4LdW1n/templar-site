@@ -10,20 +10,23 @@ Italian first, English beside it. No app: the lending app is not published yet.
 | Documentation | `site/wallet/docs/index.html` | `site/en/wallet/docs/index.html` |
 
 Everything else is in `site/assets/` (one stylesheet per page family, two small scripts, the fonts
-and the screenshots) plus `404.html`, `robots.txt`, `sitemap.xml`, `CNAME` and `.nojekyll`.
+and the screenshots), `site/_astro/` (the two React islands: the tilting wallet showcase on the landing and the
+phone carousel on the wallet page, plus their stylesheet) and `404.html`, `robots.txt`, `sitemap.xml`, `CNAME`,
+`.nojekyll`.
+
+**The pages are not edited here.** They are built with Astro from `LendingPage/` in the private monorepo
+(`npm run build` there), and its `dist/` is copied into `site/` as it is
+(`rsync -a --delete --exclude .DS_Store dist/ ../templar-site/site/`). A change made in this folder is lost at
+the next copy.
 
 ## How it goes online
 
 A push to `main` runs `.github/workflows/pages.yml`: it checks that every page and every local
-reference exists, then uploads one folder to GitHub Pages. No build step, no dependencies.
+reference exists, then uploads one folder to GitHub Pages. No build step here, no dependencies.
 
-**Right now the site is closed.** `PUBLISH_DIR` in that workflow is set to `soon`, so the only
-thing on the server is the holding page in `soon/` (plus its font, its mark and a `robots.txt`
-that asks not to be indexed). The real pages are in this repository but are never uploaded, so
-no URL reaches them.
-
-To open the site: set `PUBLISH_DIR: site` in `.github/workflows/pages.yml` and push. To close it
-again: set it back to `soon`. Nothing else changes.
+**The site is open:** `PUBLISH_DIR` in that workflow is `site`, so the whole site is on the server.
+To close it again behind the holding page in `soon/` (its font, its mark and a `robots.txt` that asks
+not to be indexed): set `PUBLISH_DIR: soon` and push. Nothing else changes.
 
 The custom domain is **templar.red**, kept in `site/CNAME` and in Settings → Pages.
 

@@ -31,7 +31,7 @@ concurrency:
 
 env:
   # `soon` = the holding page, `site` = the whole site. See the header.
-  PUBLISH_DIR: soon
+  PUBLISH_DIR: site
 
 jobs:
   deploy:

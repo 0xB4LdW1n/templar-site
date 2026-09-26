@@ -1,10 +1,10 @@
-/* Templar Wallet page — theme, menu, reveals, the hero carousel, the SCENE ENGINE and what drives the page around it
+/* Templar Wallet page — theme, menu, reveals, the SCENE ENGINE and what drives the page around it
    (LendingPage/plan.md, 2026-09-24, third pass). A scene has steps (.sc-step, data-d seconds, data-cam camera); the
    engine puts `at-K` and `past-K` on the scene root, the step's camera on the stage, `.is-on` on [data-on] elements,
    timed classes on [data-beat] elements ("3@1.2 is-on; 4@0 is-lost"), counts [data-count="from>to"] up, and paints the
    player (play/pause, a dash per step, previous/next, arrow keys). The seven scenes are the chapters of ONE tour
-   ([data-tour]): tabs pick a chapter, the clock hands over to the next one when a chapter ends, the arrows turn the
-   page at either edge, play/pause is shared. Around it: [data-go] links open a chapter, the download switch picks the
+   ([data-tour]): its rows pick a chapter (beside the stage on a wide screen, an accordion on phones), the clock
+   hands over to the next one when a chapter ends, the arrows turn the page at either edge, play/pause is shared. Around it: [data-go] links open a chapter, the download switch picks the
    visitor's system and reskins the monitor ([data-os-pick]), [data-copy] copies a line. Everything runs only while on
    screen and the tab is visible; reduced motion shows every step finished. Without JavaScript every chapter and
    every step's text is listed, and the download shows all three systems. */
@@ -78,35 +78,6 @@
   fitAll();
   window.addEventListener("load", fitAll);
   if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitAll);
-
-  /* ---------- the hero carousel: real screens in the tilted device, one every 3.5 s while on screen ---------- */
-  var car = $("[data-carousel]");
-  if (car) {
-    var shots = $$(".wh-shot", car), cdotsBox = $("[data-carousel-dots]"), ccap = $("[data-carousel-cap]");
-    var ci = 0, ctimer = null, cin = false, cdots = [], chold = false, cmine = false;   /* hold: pointer or focus on it; mine: a dash was chosen */
-    var cshow = function (i) {
-      ci = (i + shots.length) % shots.length;
-      shots.forEach(function (sh, k) { sh.classList.toggle("is-on", k === ci); });
-      cdots.forEach(function (d, k) { if (k === ci) d.setAttribute("aria-current", "true"); else d.removeAttribute("aria-current"); });
-      if (ccap) ccap.textContent = shots[ci].querySelector("img").alt;
-    };
-    var cstop = function () { if (ctimer) { clearInterval(ctimer); ctimer = null; } };
-    var cstart = function () { if (reduce || ctimer || !cin || chold || cmine || document.hidden) return; ctimer = setInterval(function () { cshow(ci + 1); }, 3500); };
-    if (cdotsBox) shots.forEach(function (sh, k) {
-      var b = document.createElement("button"); b.type = "button"; b.className = "wh-dot";
-      b.setAttribute("aria-label", sh.querySelector("img").alt);
-      b.addEventListener("click", function () { cmine = true; if (ccap) ccap.setAttribute("aria-live", "polite"); cshow(k); cstop(); });
-      cdotsBox.appendChild(b); cdots.push(b);
-    });
-    cshow(0);
-    if ("IntersectionObserver" in window) {
-      new IntersectionObserver(function (en) { cin = en[0].isIntersecting; if (cin) cstart(); else cstop(); }, { threshold: 0.3 }).observe(car);
-    } else { cin = true; cstart(); }
-    document.addEventListener("visibilitychange", function () { if (document.hidden) cstop(); else cstart(); });
-    var cbox = car.closest(".wh-stage") || car;
-    ["mouseenter", "focusin"].forEach(function (ev) { cbox.addEventListener(ev, function () { chold = true; cstop(); }); });
-    ["mouseleave", "focusout"].forEach(function (ev) { cbox.addEventListener(ev, function () { chold = false; cstart(); }); });
-  }
 
   /* ---------- helpers for the state vocabulary ---------- */
   function parseOn(spec) {
@@ -340,14 +311,16 @@
     };
   }
 
-  /* ---------- the tour: seven chapters, one on stage; the tabs pick, the clock walks them in order ---------- */
+  /* ---------- the tour: seven chapters, one on stage. The rows are its control centre (beside the stage on a wide
+     screen, an accordion on phones and tablets: CSS places the same [row, chapter] pairs); a row opens its chapter,
+     the clock walks them in order ---------- */
   var tour = $("[data-tour]");
-  var tourGo = null, tourHost = null, eng = {};
+  var tourGo = null, tourHost = null, tourBring = null, eng = {};
   if (tour) {
-    var chapters = $$(".chapter[data-scene]", tour), tabs = $$("[data-ch]", tour);
-    var tabStrip = $(".tour-tabs", tour);
+    var chapters = $$(".chapter[data-scene]", tour), rows = $$(".tr-h[data-ch]", tour);
+    var wide = window.matchMedia("(min-width: 1024px)");
     var order = [], on = null, tourIn = false;
-    var tabOf = function (id) { return tabs.filter(function (t) { return t.dataset.ch === id; })[0]; };
+    var rowOf = function (id) { return rows.filter(function (t) { return t.dataset.ch === id; })[0]; };
     var chOf = function (id) { return chapters.filter(function (c) { return c.dataset.scene === id; })[0]; };
     var host = {
       ended: function (sec) {
@@ -366,55 +339,63 @@
         carryFocus(was);
       },
       setWanted: function (w) { order.forEach(function (id) { eng[id].setWanted(w); }); },
-      progress: function (sec, f) { var t = tabOf(sec.dataset.scene); if (t) t.style.setProperty("--cp", Math.min(1, f).toFixed(3)); }
+      progress: function (sec, f) { var t = rowOf(sec.dataset.scene); if (t) t.parentNode.style.setProperty("--cp", Math.min(1, f).toFixed(3)); }
     };
     root.classList.add("has-tour");
     /* the keyboard stays where it was when the chapter changes under it: a dash on a dash, an arrow on the same
-       arrow, play on play; anything else lands on the chapter's tab */
+       arrow, play on play; anything else lands on the chapter's row */
     var focusIn = function (sec) { var ae = document.activeElement; return ae && sec.contains(ae) ? ae : null; };
     var carryFocus = function (was) {
       if (!was) return;
       if (was.classList.contains("pl-dot")) { eng[on].focusDot(); return; }
       var sel = was.hasAttribute("data-play") ? "[data-play]"
         : was.dataset.by ? (was.classList.contains("pl-side") ? ".pl-side" : ".pl-in") + '[data-by="' + was.dataset.by + '"]' : null;
-      var twin = sel ? $(".chapter.is-active " + sel, tour) : tabOf(on);
+      var twin = sel ? $(".chapter.is-active " + sel, tour) : rowOf(on);
       if (twin) twin.focus({ preventScroll: true });
     };
     chapters.forEach(function (c) { var api = scene(c, host); if (api) { eng[c.dataset.scene] = api; order.push(c.dataset.scene); } });
-    var keepTabVisible = function (t) {
-      if (!tabStrip || tabStrip.scrollWidth <= tabStrip.clientWidth) return;
-      var x = t.offsetLeft - (tabStrip.clientWidth - t.offsetWidth) / 2;
-      tabStrip.scrollTo({ left: Math.max(0, x), behavior: reduce ? "auto" : "smooth" });
+    var paintRow = function (id, open) {
+      var t = rowOf(id), box = t.parentNode;
+      t.setAttribute("aria-expanded", open ? "true" : "false");
+      box.classList.toggle("is-on", open);
+      if (!open) box.style.setProperty("--cp", "0");
     };
     var go = function (id, k) {
       if (!eng[id]) return;
       if (on !== id) {
-        if (on) {
-          eng[on].deactivate(); chOf(on).classList.remove("is-active");
-          var ot = tabOf(on); ot.setAttribute("aria-selected", "false"); ot.setAttribute("tabindex", "-1"); ot.style.setProperty("--cp", "0");
-        }
+        if (on) { eng[on].deactivate(); chOf(on).classList.remove("is-active"); paintRow(on, false); }
         on = id;
-        chOf(id).classList.add("is-active");
-        var nt = tabOf(id); nt.setAttribute("aria-selected", "true"); nt.removeAttribute("tabindex");
-        keepTabVisible(nt);
+        chOf(id).classList.add("is-active"); paintRow(id, true);
       }
       eng[id].setInView(tourIn);
       eng[id].activate(k);
     };
-    tourGo = go; tourHost = host;
+    /* bring a chapter into view: on a wide screen the whole tour; on phones and tablets its row comes to the top,
+       where it will sit once the rows above it have folded (they are still folding while the page scrolls) */
+    var bring = function (id, how) {
+      if (wide.matches) { tour.scrollIntoView({ behavior: how }); return; }
+      var t = rowOf(id); if (!t) return;
+      var fold = 0;
+      for (var i = 0; i < rows.length && rows[i] !== t; i++) fold += $(".tr-more", rows[i].parentNode).offsetHeight;
+      var y = t.getBoundingClientRect().top + window.scrollY - fold - (parseFloat(getComputedStyle(t).scrollMarginTop) || 0);
+      window.scrollTo({ top: Math.max(0, y), behavior: how });
+    };
+    tourGo = go; tourHost = host; tourBring = bring;
     chapters.forEach(function (c) { c.classList.remove("is-active"); });
+    rows.forEach(function (t) { paintRow(t.dataset.ch, false); });
     /* opening a real screenshot pauses the tour (the reader wants to look at it) */
     $$(".chapter details", tour).forEach(function (d) {
       d.addEventListener("toggle", function () { if (d.open && eng[on] && eng[on].isPlaying()) host.setWanted(false); });
     });
-    tabs.forEach(function (t, i) {
-      t.setAttribute("aria-selected", "false"); t.setAttribute("tabindex", "-1");
-      t.addEventListener("click", function (e) { e.preventDefault(); go(t.dataset.ch, 0); });
+    /* the rows: a click opens the chapter (again from its start); up/down, Home and End walk them */
+    var pickRow = function (t) { go(t.dataset.ch, 0); if (!wide.matches) bring(t.dataset.ch, reduce ? "auto" : "smooth"); };
+    rows.forEach(function (t, i) {
+      t.addEventListener("click", function () { pickRow(t); });
       t.addEventListener("keydown", function (e) {
-        var j = e.key === "ArrowRight" ? i + 1 : e.key === "ArrowLeft" ? i - 1 : e.key === "Home" ? 0 : e.key === "End" ? tabs.length - 1 : null;
+        var j = e.key === "ArrowDown" ? i + 1 : e.key === "ArrowUp" ? i - 1 : e.key === "Home" ? 0 : e.key === "End" ? rows.length - 1 : null;
         if (j === null) return;
         e.preventDefault();
-        var nt = tabs[(j + tabs.length) % tabs.length]; go(nt.dataset.ch, 0); nt.focus();
+        var nt = rows[(j + rows.length) % rows.length]; nt.focus({ preventScroll: true }); pickRow(nt);
       });
     });
     if ("IntersectionObserver" in window) {
@@ -428,22 +409,21 @@
     };
     var first = fromHash();
     go(first || order[0], 0);
-    if (first) { var tt = document.getElementById("tour"); if (tt) setTimeout(function () { tt.scrollIntoView({ behavior: "instant" }); }, 0); }
-    window.addEventListener("hashchange", function () { var id = fromHash(); if (id) { go(id, 0); document.getElementById("tour").scrollIntoView({ behavior: reduce ? "auto" : "smooth" }); } });
+    if (first) setTimeout(function () { bring(first, "instant"); }, 0);
+    window.addEventListener("hashchange", function () { var id = fromHash(); if (id) { go(id, 0); bring(id, reduce ? "auto" : "smooth"); } });
   } else {
     $$("[data-scene]").forEach(function (s) { scene(s); });
   }
 
-  /* links from elsewhere on the page (the feature squares) open a chapter and bring the tour into view */
+  /* links from elsewhere on the page (the footer) open a chapter and bring the tour into view */
   $$("[data-go]").forEach(function (a) {
     a.addEventListener("click", function (e) {
       if (!tourGo) return;
       e.preventDefault();
       tourGo(a.dataset.go, +a.dataset.step || 0);
       if (a.dataset.step && eng[a.dataset.go] && eng[a.dataset.go].isPlaying()) tourHost.setWanted(false);
-      var tt = document.getElementById("tour");
-      if (tt) tt.scrollIntoView({ behavior: reduce ? "instant" : "smooth" });
-      var tb = document.getElementById("tab-" + a.dataset.go);
+      tourBring(a.dataset.go, reduce ? "instant" : "smooth");
+      var tb = document.getElementById("tr-" + a.dataset.go);
       if (tb) tb.focus({ preventScroll: true });
     });
   });

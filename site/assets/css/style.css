@@ -2,6 +2,8 @@
    bitcoin is named, emerald and cyan for Liquid and proof; structure from Esempio1.
    Rules: 8pt grid, one radius (4px), one elevation (1px hairline), no gradients, no shadows, no glow. */
 
+@layer reset, theme, base, components, utilities;
+
 @font-face {
   font-family: "Archivo";
   src: url("../fonts/Archivo-var.woff2") format("woff2");
@@ -117,12 +119,18 @@ body {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
-h1, h2, h3, h4, p, ul, ol, figure, table { margin: 0; }
-ul, ol { padding: 0; list-style: none; }
-a { color: inherit; text-decoration: none; }
+/* The element reset sits in the first cascade layer, so the Tailwind utilities of the React islands
+   (src/styles/globals.css: theme, base, components, utilities) win over it, as they would over Preflight.
+   Every other rule of this file stays unlayered and still beats all of them. a:hover stays out of the layer:
+   at (0,1,1) it has always won over class-only rules on links (.brand…), and it must keep doing so. */
+@layer reset {
+  h1, h2, h3, h4, p, ul, ol, figure, table { margin: 0; }
+  ul, ol { padding: 0; list-style: none; }
+  a { color: inherit; text-decoration: none; }
+  button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
+  img, svg { display: block; max-width: 100%; }
+}
 a:hover { text-decoration: underline; text-underline-offset: 3px; text-decoration-thickness: 1px; }
-button { font: inherit; color: inherit; background: none; border: 0; padding: 0; cursor: pointer; }
-img, svg { display: block; max-width: 100%; }
 :focus-visible { outline: 2px solid var(--primary); outline-offset: 2px; }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 .skip { position: absolute; left: var(--s2); top: -100px; padding: var(--s1) var(--s2); background: var(--primary); color: var(--on-primary); border-radius: var(--r); z-index: 100; }
@@ -150,7 +158,7 @@ img, svg { display: block; max-width: 100%; }
 .body p + p { margin-top: var(--s2); }
 .muted { color: var(--muted); }
 .num { font-variant-numeric: tabular-nums; }
-.mark { background: var(--primary); color: var(--on-primary); padding: 0 .12em; }
+.mark { padding: 0 .12em; }   /* the hero's block is styled below; the 404 page styles its own */
 
 /* buttons */
 .btn {
@@ -193,7 +201,6 @@ img, svg { display: block; max-width: 100%; }
 .brand { display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; font-family: var(--display); font-stretch: 118%; font-weight: 800; letter-spacing: -.02em; font-size: 17px; color: var(--ink-strong); }
 .brand:hover { text-decoration: none; }
 .brand svg { width: 26px; height: 26px; }
-.nav-net { height: 22px; font-size: 10px; }
 @media (max-width: 520px) { .nav-net { display: none; } }
 .nav-links { display: flex; gap: var(--s4); margin-left: auto; }
 .nav-links > a { font: 500 12px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding: 6px 0; border-bottom: 1px solid transparent; transition: color .15s, border-color .15s; }
@@ -236,12 +243,20 @@ html:not(.js) .menu-btn, html:not(.js) .nav-theme { display: none !important; } 
 @media (max-width: 640px) {
   .nav-ctl > .seg-nav, .nav-ctl > .nav-theme { display: none; }
   .nav[data-open="true"] .nav-links .menu-tools { display: flex !important; align-items: center; gap: var(--s2); padding: 14px 0; border-top: 1px solid var(--line); }
-  .nav[data-open="true"] .nav-links .menu-tools .nav-theme { display: grid; }
+  .nav[data-open="true"] .nav-links .menu-tools .nav-theme { display: grid; width: 44px; height: 44px; }
+  .nav[data-open="true"] .nav-links .menu-tools .seg-nav { height: 46px; }   /* 44px buttons inside the hairline */
+  .nav[data-open="true"] .nav-links .menu-tools .seg-nav > * { padding: 0 14px; }
 }
+/* touch: a menu row is 45px tall */
+@media (max-width: 1023px) { .nav[data-open="true"] .nav-links > a { padding: 16px 0; } }
 /* phones: «Apri l'app» stays in the header, without its arrow, and the controls close ranks */
 @media (max-width: 640px) {
-  /* when the row can not hold the name, it wraps onto a clipped second line and disappears whole; the cross stays */
-  .nav .brand { display: flex; flex-wrap: wrap; row-gap: 0; flex-shrink: 1; min-width: 0; height: 26px; overflow: hidden; }
+  /* when the row can not hold the name, it wraps onto a clipped second line and disappears whole; the cross stays.
+     The link is 44px tall for the thumb: 9px of padding above and below the 26px row, and the row gap puts a
+     wrapped name below the clip */
+  .nav .brand { display: flex; flex-wrap: wrap; row-gap: 18px; flex-shrink: 1; min-width: 0; height: 44px; padding-block: 9px; overflow: hidden; }
+  .menu-btn { position: relative; }
+  .menu-btn::before { content: ""; position: absolute; inset: -4px 0; }   /* a 44px touch on the 36px button */
   .brand span.word { font-size: 15px; }
   .nav .wrap { gap: var(--s2); }
   .nav-ctl { gap: var(--s1); }
@@ -249,11 +264,21 @@ html:not(.js) .menu-btn, html:not(.js) .nav-theme { display: none !important; } 
   .nav .cta-sm .cta-arrow { display: none; }
 }
 @media (max-width: 350px) { .nav-theme { display: none; } }
+/* the smallest phones: the buttons close ranks (tighter tracking and padding, still 12px) so the row
+   holds «Open the app · coming soon» in both languages and the cross never shrinks */
+@media (max-width: 374px) {
+  .nav .cta-sm { padding: 0 8px; gap: 8px; letter-spacing: .06em; }
+  .nav .cta-sm em { letter-spacing: .06em; padding: 4px 5px; }
+  .menu-btn { padding: 0 8px; }
+  .nav .wrap { gap: 12px; } .nav-ctl { gap: 6px; }
+  .nav .brand { min-width: 26px; }
+}
 
 /* ---------- sections ---------- */
 .sec { position: relative; border-top: 1px solid var(--line-strong); padding-block: var(--s12); }
 [id] { scroll-margin-top: calc(var(--nav-h) + 8px); }
 .sec[id] { scroll-margin-top: calc(var(--nav-h) - 1px); }   /* the section's rule tucks under the nav's: one line, not two */
+.has-play .sec-moves[id] { scroll-margin-top: -1px; }   /* 001 pinned: the screen already pads the nav inside itself; -1px drops the section's own top rule */
 .sec-head { display: grid; grid-template-columns: 220px minmax(0, 1fr); align-items: start; gap: var(--s2) var(--s4); margin-bottom: var(--s6); }
 .sec-head .label { padding-top: 10px; }
 @media (max-width: 720px) { .sec-head { grid-template-columns: 1fr; } .sec-head .label { padding-top: 0; } }
@@ -265,10 +290,10 @@ html:not(.js) .menu-btn, html:not(.js) .nav-theme { display: none !important; } 
 @media (max-width: 1519px) { .sec-num { display: none; } }   /* below this they touch the content column */
 @media (max-width: 720px) { .sec { padding-block: var(--s8); } }
 
-/* ---------- hero: one sentence, full screen, two wide fans behind it ---------- */
+/* ---------- hero: one sentence, full screen, one block that changes word and colour along the pin, two wide fans behind it ---------- */
 .hero { position: relative; }
-/* the extra height is the scroll room for the phrase cycle; only added when JS can drive it */
-.has-pin .hero { height: 160vh; }
+/* the extra height is the scroll room for the four words, a quarter each; only added when JS can drive it */
+.has-pin .hero { height: 200vh; }
 .hero-stage {
   position: relative; overflow: hidden;
   display: grid; align-content: center; justify-items: center;
@@ -281,48 +306,113 @@ html:not(.js) .menu-btn, html:not(.js) .nav-theme { display: none !important; } 
    so the type keeps its contrast without the background losing its fill */
 .paths {
   position: absolute; inset: 0; pointer-events: none;
-  -webkit-mask-image: linear-gradient(to bottom, #000 0 24%, rgba(0,0,0,.42) 38%, rgba(0,0,0,.42) 64%, #000 78%);
-  mask-image: linear-gradient(to bottom, #000 0 24%, rgba(0,0,0,.42) 38%, rgba(0,0,0,.42) 64%, #000 78%);
+  -webkit-mask-image: linear-gradient(to bottom, #000 0 24%, rgba(0,0,0,.56) 38%, rgba(0,0,0,.56) 64%, #000 78%);
+  mask-image: linear-gradient(to bottom, #000 0 24%, rgba(0,0,0,.56) 38%, rgba(0,0,0,.56) 64%, #000 78%);
 }
 .paths-layer { position: absolute; inset: 0; width: 100%; height: 100%; }
-.paths-orange use { stroke: var(--primary); }
-.paths-green use { stroke: var(--emerald); }
+.paths-orange use { stroke: var(--orange); }
+.paths-green use { stroke: var(--proof); }   /* emerald on onyx, the deeper green on platinum (pale mint otherwise) */
 .paths-layer .base { stroke-linecap: round; }
-.paths-layer .flow {
-  stroke-linecap: round; stroke-dasharray: .3 .7; stroke-dashoffset: 1;
-  animation: pflow var(--period, 11s) linear infinite; animation-delay: var(--o, 0s);
-}
+.paths-layer .flow { stroke-linecap: round; stroke-dasharray: .3 .7; stroke-dashoffset: 1; animation: pflow var(--period, 11s) linear var(--o, 0s) infinite; }
 @keyframes pflow { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
-@media (prefers-reduced-motion: reduce) { .paths-layer .flow { animation: none; stroke-dasharray: none; stroke-opacity: .25; } }
+/* the arrival is CSS alone, so nothing can leave a line half drawn: each base line draws itself in (the
+   inner sweep first, --i from the markup), the travelling dashes fade in once the lines are there, and the
+   camera settles from slightly too close (the `scale` property, apart from the scroll transform below) */
+.js .paths-layer .base { stroke-dasharray: 1 1; stroke-dashoffset: 1; animation: fans-draw 1.1s ease-in-out both; animation-delay: calc(var(--i, 0) * 20ms); }
+.js .paths-layer .flow { animation: pflow var(--period, 11s) linear var(--o, 0s) infinite, fans-in 1s ease-out .6s both; }
+.js .paths { animation: fans-settle 1.8s cubic-bezier(.2, .7, .2, 1) both; }
+@keyframes fans-draw { to { stroke-dashoffset: 0; } }
+@keyframes fans-in { from { opacity: 0; } }
+@keyframes fans-settle { from { scale: 1.1; } to { scale: 1; } }
+@media (prefers-reduced-motion: reduce) {
+  .paths-layer .flow, .js .paths-layer .flow { animation: none; stroke-dasharray: none; stroke-opacity: .25; }
+  .js .paths-layer .base { animation: none; stroke-dasharray: none; }
+  .js .paths { animation: none; }
+}
 .hero-inner { position: relative; z-index: 1; display: grid; justify-items: center; text-align: center; }
-.hero-inner .display { max-width: 15ch; }
+.hero-inner .display { max-width: 18ch; }
 .hero .word { display: inline-block; }
-/* the highlighted block: the phrase changes at a hard cut (main.js sets data-phrase); the colour is
-   crimson that darkens slowly with the scroll (--p), then snaps to Liquid green on the last phrase */
-.hero { --p: 0; --z: 1; --mx: 0; --my: 0; --mk: color-mix(in oklab, var(--primary) calc(100% - min(1, var(--p) / .72) * 42%), #000); --on-mk: var(--on-primary); }
-.hero[data-phrase="3"] { --mk: var(--emerald); --on-mk: var(--onyx); }
+/* while the pin hides the bar, the brand sits where the bar's own will land once the first screen is behind you */
+.hero-top { display: none; }
+.has-pin .hero-top { position: absolute; z-index: 2; top: 0; left: 0; right: 0; height: var(--nav-h); display: flex; align-items: center; }
+.hero-brand { display: inline-flex; align-items: center; gap: 10px; white-space: nowrap; font-family: var(--display); font-stretch: 118%; font-weight: 800; letter-spacing: -.02em; font-size: 17px; line-height: 1; color: var(--ink-strong); }
+.hero-brand img { width: 26px; height: 26px; }
+@media (max-width: 640px) { .hero-brand { font-size: 15px; } }
+/* «bitcoin» gets the orange bar (orange only where bitcoin is named); main.js draws it in with --u */
+.u-btc { position: relative; display: inline-block; }
+.u-btc::after { content: ""; position: absolute; left: 0; right: 0; bottom: .01em; height: .09em; background: var(--orange); transform: scaleX(var(--u, 1)); transform-origin: 0 50%; }
+/* one flat colour per word, never mixed with black: Liquid cyan, the contract in the block colour (white on
+   onyx, jet on platinum), transparent emerald, secure crimson. Each word carries its tone; main.js copies the
+   current one onto the hero (hairline) */
+.hero { --p: 0; --mx: 0; --my: 0; }
+.hero [data-tone="liquid"], .hero[data-tone="liquid"] { --mk: var(--cyan); --on-mk: var(--platinum); }
+.hero [data-tone="contract"], .hero[data-tone="contract"] { --mk: var(--block); --on-mk: var(--on-block); }
+.hero [data-tone="clear"], .hero[data-tone="clear"] { --mk: var(--emerald); --on-mk: var(--onyx); }
+.hero [data-tone="safe"], .hero[data-tone="safe"] { --mk: var(--crimson); --on-mk: #FFFFFF; }
 .mark { display: inline-block; padding: 0 .12em; color: var(--on-mk); background: var(--mk); }
-/* depth. --z: the camera settles on load; --p: scrolling pushes through the fans, which open like
-   a curtain; --mx/--my: the pointer moves the two fans and the sentence on different planes */
-.paths { transform: scale(calc((1 + var(--p) * .18) * var(--z))); transform-origin: 50% 62%; }
+/* the block: four words, each in its flat colour. Still (no JS, reduced motion) they stand side by side on
+   one line; pinned they share one cell, the widest sets the width so nothing reflows or re-centres at a cut,
+   and the next layer wipes in over the last (main.js: clip-path, left to right, ~220 ms) */
+.hero .mark { display: flex; flex-wrap: wrap; justify-content: center; gap: .3em; margin: .9em auto 0; padding: 0; font-size: clamp(15px, 1.9vw, 26px); letter-spacing: -.01em; line-height: 1; background: none; }
+.hero .mark-txt { padding: .12em .34em .16em; white-space: nowrap; background: var(--mk); color: var(--on-mk); }
+.has-pin .hero .mark { display: grid; gap: 0; width: max-content; max-width: 100%; margin: .2em auto 0; font-size: inherit; letter-spacing: inherit; line-height: inherit; }
+.has-pin .hero .mark-txt { grid-area: 1 / 1; padding: .03em .26em .07em; visibility: hidden; }
+.has-pin .hero .mark-txt.is-on, .has-pin .hero .mark-txt.is-in { visibility: visible; }
+.has-pin .hero .mark-txt.is-in { z-index: 1; }
+/* the way on: a thin arrow at the foot of the pinned screen, nudging now and then; main.js scrolls the whole
+   pin for you (the four words pass by), the plain link lands on the band when there is no pin */
+.hero-down {
+  position: absolute; left: 50%; bottom: max(18px, env(safe-area-inset-bottom)); translate: -50% 0; z-index: 3;
+  display: grid; place-items: center; width: 44px; height: 44px; border-radius: 50%; color: var(--muted); transition: color .15s;
+}
+.hero-down svg { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; animation: nudge 2.6s cubic-bezier(.45, 0, .25, 1) infinite; }
+.hero-down:hover { color: var(--ink-strong); text-decoration: none; }
+@keyframes nudge { 0%, 55%, 100% { translate: 0 0; } 25% { translate: 0 6px; } }
+@media (prefers-reduced-motion: reduce) { .hero-down svg { animation: none; } }
+/* phones: the sentence and the block keep inside the gutter at 360 */
+@media (max-width: 520px) {
+  .hero-inner .display { font-size: min(38px, 9.8vw); }
+  .has-pin .hero .mark { font-size: min(1em, 8.4vw); }
+  .hero .mark-txt { padding-inline: .16em; }
+}
+/* short screens (laptops at 640-720, phones on their side): the pinned screen is only 100svh tall, so the
+   sentence is sized by the height too; below ~520px the brand steps aside */
+@media (max-height: 760px) and (min-width: 521px) {
+  .has-pin .hero-inner .display { font-size: min(clamp(38px, 5.8vw, 76px), 9.6vh); }
+}
+@media (max-height: 520px) and (min-width: 521px) {
+  .has-pin .hero-inner .display { font-size: min(clamp(28px, 5.8vw, 76px), 8.6vh); }
+  .has-pin .hero-top { display: none; }
+}
+/* depth. --p: scrolling pushes through the fans, which open like a curtain; --mx/--my: the pointer moves
+   the two fans and the sentence on different planes */
+.paths { transform: scale(calc(1 + var(--p) * .18)); transform-origin: 50% 62%; will-change: transform; }
 .paths-layer { overflow: visible; }
 .paths-orange { translate: calc(var(--mx) * -14px - var(--p) * 2.4vw) calc(var(--my) * -8px); }
 .paths-green { translate: calc(var(--mx) * -24px + var(--p) * 2.4vw) calc(var(--my) * -13px); }
 .hero-inner { translate: calc(var(--mx) * 7px) calc(var(--my) * 5px); }
-.has-pin .paths-orange { opacity: calc(1 - min(1, var(--p) / .72) * .55); }
-.has-pin .paths-green { opacity: .45; transition: opacity .25s; }
-.has-pin .hero[data-phrase="3"] .paths-green { opacity: 1; }
-.has-pin .hero[data-phrase="3"] .paths-orange { opacity: .12; }
-.hero-prog {
-  position: absolute; left: 0; right: 0; bottom: 0; height: 3px; z-index: 2; display: none;
-  transform: scaleX(var(--p)); transform-origin: 0 50%;
-  background: var(--mk);
+/* on platinum the thin strokes need more ink, or the orange reads as peach and the green as mint */
+:root[data-theme="light"] .paths-layer .base { stroke-opacity: .4; }
+@media (prefers-color-scheme: light) { :root:not([data-theme="dark"]) .paths-layer .base { stroke-opacity: .4; } }
+@media (prefers-reduced-motion: no-preference) {   /* reduced motion keeps its still, faint dashes */
+  :root[data-theme="light"] .paths-layer .flow { stroke-opacity: .72; }
 }
+@media (prefers-reduced-motion: no-preference) and (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .paths-layer .flow { stroke-opacity: .72; }
+}
+/* the pin's progress along the bottom edge, in the word's colour, over a notch where each word starts
+   (main.js adds one <b> per word and lights the ones already reached) */
+.hero-prog { position: absolute; left: 0; right: 0; bottom: 0; height: 10px; z-index: 2; display: none; pointer-events: none; }
 .has-pin .hero-prog { display: block; }
-.mark-txt { display: inline-block; }
+.hero-prog::before { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1px; background: var(--line); }
+.hero-prog::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 3px;
+  transform: scaleX(var(--p)); transform-origin: 0 50%; background: var(--mk); transition: background-color .2s;
+}
+.hero-prog b { position: absolute; bottom: 0; width: 2px; height: 10px; background: var(--line-strong); transition: background-color .2s; }
+.hero-prog b.is-on { background: var(--mk); }
 .cta-note { font-size: 11px; text-align: center; }
-@media (max-width: 720px) { .has-pin .hero { height: 150vh; } }
-@media (max-width: 520px) { .hero .mark { font-size: min(1em, 9vw); white-space: nowrap; } }   /* each phrase keeps one line: no jump at the cut */
+@media (max-width: 720px) { .has-pin .hero { height: 180vh; } }
 
 /* ---------- CTA: solid orange block, thin rotating ring, hard hover ---------- */
 .cta {
@@ -363,25 +453,33 @@ html:not(.js) .menu-btn, html:not(.js) .nav-theme { display: none !important; } 
 /* ---------- key/value cell ---------- */
 .kv { display: flex; justify-content: space-between; gap: var(--s2); font-family: var(--mono); font-size: 12px; letter-spacing: .04em; }
 .kv .k { color: var(--muted); text-transform: uppercase; }
-.spec .kv .k { font-size: 12px; letter-spacing: .12em; }
 .kv .v { color: var(--ink-strong); font-weight: 600; text-align: right; }
 .kv .v.orange { color: var(--primary); }
 
-/* ---------- spec band: the loan in four pictures, edge to edge ---------- */
+/* ---------- band under the hero: the protocol's four fundamentals, the icon in its colour, edge to edge ---------- */
 .spec { position: relative; border-top: 1px solid var(--line-strong); border-bottom: 1px solid var(--line-strong); background: var(--surface); }
-.spec-kv { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
-.spec .kv { display: grid; grid-template-columns: auto auto; grid-template-areas: "ic v" "ic k"; align-items: center; column-gap: clamp(12px, 1.4vw, 20px); row-gap: 4px; justify-content: center; padding: clamp(22px, 2.8vw, 38px) clamp(14px, 2vw, 30px); border-left: 1px solid var(--line); }
-.spec .kv:first-child { border-left: 0; }
-.kv-ic { grid-area: ic; width: clamp(34px, 3.2vw, 46px); height: clamp(34px, 3.2vw, 46px); color: var(--muted); }
-.kv-ic.is-btc { color: var(--orange); }
-.kv-ic.is-usd { color: var(--proof); }
-.spec .kv .v { grid-area: v; align-self: end; text-align: left; font: 700 clamp(17px, 1.7vw, 24px)/1.1 var(--mono); color: var(--ink-strong); letter-spacing: 0; }
-.spec .kv .k { grid-area: k; align-self: start; font: 500 12px/1.2 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
-@media (max-width: 860px) {
-  .spec-kv { grid-template-columns: repeat(2, 1fr); }
-  .spec .kv { justify-content: start; }
-  .spec .kv:nth-child(3) { border-left: 0; }
-  .spec .kv:nth-child(n+3) { border-top: 1px solid var(--line); }
+.spec[id] { scroll-margin-top: calc(var(--nav-h) - 1px); }   /* the band's rule tucks under the nav's */
+.spec-fund { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.fund { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "ic k" "ic v"; column-gap: clamp(12px, 1.3vw, 18px); row-gap: 6px; align-content: center; padding: clamp(22px, 2.6vw, 36px) clamp(16px, 1.7vw, 26px); border-left: 1px solid var(--line); }
+.fund:first-child { border-left: 0; }
+.fund-ic { grid-area: ic; align-self: start; width: clamp(34px, 3.2vw, 46px); height: clamp(34px, 3.2vw, 46px); color: var(--muted); }
+.fund-ic.is-ink { color: var(--ink-strong); }
+.fund-ic.is-liquid { color: var(--liquid); }
+.fund-ic.is-proof { color: var(--proof); }
+.fund-ic.is-btc { color: var(--orange); }
+.fund-k { grid-area: k; align-self: end; font: 700 clamp(16px, 1.4vw, 20px)/1.1 var(--mono); letter-spacing: 0; color: var(--ink-strong); }
+.fund-v { grid-area: v; display: block; max-width: 30ch; font-size: 14px; line-height: 1.45; color: var(--muted); text-wrap: pretty; }
+.fund-v::first-letter { text-transform: uppercase; }
+@media (max-width: 960px) {
+  .spec-fund { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .fund:nth-child(3) { border-left: 0; }
+  .fund:nth-child(n+3) { border-top: 1px solid var(--line); }
+}
+@media (max-width: 560px) {
+  .spec-fund { grid-template-columns: minmax(0, 1fr); }
+  .fund { padding: 18px var(--gutter); border-left: 0; }
+  .fund + .fund { border-top: 1px solid var(--line); }
+  .fund-v { max-width: none; }
 }
 
 /* ---------- 001 · pinned full screen: a title that tells the step, a picture that plays it ---------- */
@@ -399,7 +497,10 @@ html:not(.js) .menu-btn, html:not(.js) .nav-theme { display: none !important; } 
 /* the state, top left, in colour: grey offer · orange active · green repaid · amber expired */
 .dg-head { display: flex; align-items: center; gap: var(--s3); flex-wrap: wrap; margin-bottom: clamp(8px, 1.6vh, 18px); }
 .dg-state { display: inline-flex; align-items: center; gap: 10px; padding: 6px 12px 6px 10px; border: 1.5px solid var(--line-strong); border-radius: var(--r); transition: border-color .35s, background-color .35s; }
-.dg-state b { font: 800 clamp(12px, 1.1vw, 15px)/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--muted); transition: color .35s; }
+.dg-state b { --ls: .14em; font: 800 clamp(12px, 1.1vw, 15px)/1 var(--mono); letter-spacing: var(--ls); text-transform: uppercase; color: var(--muted); transition: color .35s; }
+/* the pill is as wide as its longest word from the start, so the chips beside it never move */
+.dg-state b { min-width: calc(10 * (1ch + var(--ls))); }
+html[lang="en"] .dg-state b { min-width: calc(7 * (1ch + var(--ls))); }
 .dg-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--line-strong); transition: background-color .35s; }
 .dg-state[data-tone="live"] { border-color: var(--primary); } .dg-state[data-tone="live"] b { color: var(--primary); } .dg-state[data-tone="live"] .dg-dot { background: var(--primary); animation: blink 1.4s steps(2, jump-none) infinite; }
 .dg-state[data-tone="ok"] { border-color: var(--proof); }     .dg-state[data-tone="ok"] b { color: var(--proof); }     .dg-state[data-tone="ok"] .dg-dot { background: var(--proof); }
@@ -408,13 +509,13 @@ html:not(.js) .menu-btn, html:not(.js) .nav-theme { display: none !important; } 
 .dg-sec { margin-left: auto; }
 /* the two endings: they only show up once the story forks */
 .forks { display: inline-flex; align-self: stretch; gap: 6px; }
-html:not(.has-play) .forks { display: none; }
+html:not(.has-play) .forks, html:not(.has-play) .dg-state { display: none; }   /* no picture, no state to show */
 button.fk { background: var(--bg); cursor: pointer; }
 button.fk:hover { color: var(--ink-strong); border-color: var(--line-strong); }
-.fk { display: inline-flex; align-items: center; gap: 6px; padding: 0 11px; border: 1px solid var(--line); border-radius: var(--r); font: 600 10.5px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); transition: color .3s, border-color .3s; }
-.fk .ic { width: 11px; height: 11px; color: inherit; display: none; }
+.fk { display: inline-flex; align-items: center; gap: 6px; padding: 0 11px; border: 1px solid var(--line); border-radius: var(--r); font: 600 12px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; white-space: nowrap; color: var(--muted); transition: color .3s, border-color .3s; }
+.fk .ic { width: 11px; height: 11px; color: inherit; display: block; visibility: hidden; }   /* the tick keeps its room: chip 2 never shifts */
 .forks[data-branch="a"] .fk-a { color: var(--proof); border-color: var(--proof); }
-.forks[data-branch="b"] .fk-a { color: var(--proof); } .forks[data-branch="b"] .fk-a .ic { display: block; }
+.forks[data-branch="b"] .fk-a { color: var(--proof); } .forks[data-branch="b"] .fk-a .ic { visibility: visible; }
 .forks[data-branch="b"] .fk-b { color: var(--warn); border-color: var(--warn); }
 
 /* the story. Unpinned (no JS, reduced motion) it is a plain numbered read; pinned, every step
@@ -429,10 +530,11 @@ button.fk:hover { color: var(--ink-strong); border-color: var(--line-strong); }
 .has-play .st { grid-area: 1 / 1; display: block; opacity: 0; will-change: opacity; }
 .has-play .st-k, .has-play .st-intro .st-k { font-stretch: 125%; font-size: clamp(34px, min(5.8vw, 9.5vh), 88px); line-height: 1; letter-spacing: -.035em; will-change: transform; }
 .has-play .st-k em { font-size: .36em; vertical-align: .95em; margin-right: .6em; }
-/* the closing line is longer: it drops a size so the title cell stays one line tall */
-.has-play .st-outro .st-k { font-size: clamp(24px, min(4.1vw, 8vh), 62px); }
+/* the opening and closing lines are longer: they drop a size so the title cell stays one line tall
+   (the story cell is as tall as its tallest step: one wrapped title would shrink every picture) */
+.has-play .st-intro .st-k, .has-play .st-outro .st-k { font-size: clamp(24px, min(4.1vw, 8vh), 62px); }
 .has-play .st-p { margin-top: clamp(8px, 1.6vh, 16px); max-width: 44ch; color: var(--ink); font-size: clamp(16px, min(1.75vw, 3vh), 25px); line-height: 1.3; }
-.st-p .w { opacity: 0; }
+.st-p .w { opacity: 0; white-space: nowrap; }   /* a word never breaks at its hyphen: «L-BTC» stays whole */
 
 /* the player: the picture runs on a clock. One hairline strip under it — play/pause, then a dash
    per step (the current one fills as its time passes, a click jumps there; scenario B in amber) */
@@ -467,7 +569,12 @@ button.fk:hover { color: var(--ink-strong); border-color: var(--line-strong); }
 
 /* the picture */
 .diagram { position: relative; --coin: clamp(38px, min(4.8vw, 8vh), 72px); --coin-s: calc(var(--coin) * .56); --coin-xs: calc(var(--coin) * .44); }
-html:not(.js) .diagram { display: none; }
+/* every label in the picture reads at 12px or more: when a short screen scales the picture down
+   (main.js sets --fit to that scale), the labels grow by as much */
+.diagram { --lbl: calc(12px / var(--fit, 1)); }
+html:not(.has-play) .diagram { display: none; }   /* no JS, or before main.js has placed a coin: the story alone */
+/* a jump (a dot, a chip, the loop's wrap) repaints in one frame: main.js sets this for that frame only */
+.dg-jump *, .dg-jump *::before, .dg-jump *::after { transition: none !important; }
 .dg-stage { position: relative; display: grid; will-change: opacity, transform; }
 .diagram .d { width: 9px; height: 9px; border-radius: 50%; flex: 0 0 auto; }
 .d-btc { background: var(--orange); }
@@ -484,8 +591,8 @@ html:not(.js) .diagram { display: none; }
 .dg-grid { position: relative; z-index: 1; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr); column-gap: clamp(18px, 9vw, 170px); align-items: end; }
 .node { position: relative; display: grid; justify-items: center; gap: 5px; padding: clamp(10px, 2vh, 22px) 10px clamp(10px, 1.8vh, 18px); border: 1.5px solid var(--line-strong); border-radius: var(--r); background: var(--bg); text-align: center; transition: opacity .4s, border-color .35s; }
 .node-ic { width: clamp(30px, min(4.4vw, 7.2vh), 66px); height: clamp(30px, min(4.4vw, 7.2vh), 66px); color: var(--ink-strong); transition: color .35s; }
-.node-k { font: 700 clamp(11px, 1.1vw, 15px)/1.1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-strong); }
-.node-s { font: 500 clamp(9px, .85vw, 11px)/1 var(--mono); letter-spacing: .08em; color: var(--muted); }
+.node-k { font: 700 max(var(--lbl), clamp(12px, 1.1vw, 15px))/1.1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-strong); }
+.node-s { font: 500 var(--lbl)/1 var(--mono); letter-spacing: .04em; color: var(--muted); }
 .pocket { display: flex; align-items: center; justify-content: center; gap: clamp(5px, .8vw, 12px); margin-top: clamp(6px, 1.4vh, 16px); min-height: var(--coin); }
 .slot { flex: 0 0 auto; border: 1.5px dashed var(--line-strong); border-radius: 50%; }
 .slot-lg { width: var(--coin); height: var(--coin); } .slot-sm { width: var(--coin-s); height: var(--coin-s); } .slot-xs { width: var(--coin-xs); height: var(--coin-xs); }
@@ -494,11 +601,13 @@ html:not(.js) .diagram { display: none; }
 /* the offer becomes the contract: same terms, then the lock closes on them */
 .node-c { border-style: dashed; }
 .ic-lk { color: var(--muted); }
-.terms { width: 100%; max-width: 300px; display: grid; gap: clamp(3px, .7vh, 7px); margin-top: clamp(4px, 1vh, 10px); }
-.terms li { display: grid; grid-template-columns: 16px minmax(0, 1fr) 62px; align-items: center; gap: 9px; }
+/* one grid for the four rows (each row a subgrid): the label column is as wide as the longest
+   label, «commissione», and the four bars start and end together */
+.terms { width: 100%; max-width: 300px; display: grid; grid-template-columns: 16px minmax(0, 1fr) max-content; gap: clamp(3px, .7vh, 7px) 9px; margin-top: clamp(4px, 1vh, 10px); }
+.terms li { grid-column: 1 / -1; display: grid; grid-template-columns: subgrid; align-items: center; }
 .terms .ic { width: 16px; height: 16px; }
 .t-btc .ic { color: var(--orange); } .t-usd .ic, .t-fee .ic { color: var(--proof); }
-.terms span { text-align: left; font: 500 10px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.terms span { text-align: left; font: 500 var(--lbl)/1 var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--muted); }
 .bar { display: flex; gap: 2px; height: clamp(7px, 1.1vh, 10px); transform-origin: 0 50%; }
 .bar-f, .bar-x { display: block; height: 100%; border-radius: 1px; }
 .t-btc .bar-f { width: 52%; background: var(--orange); }
@@ -511,8 +620,16 @@ html:not(.js) .diagram { display: none; }
 .sigs { display: flex; justify-content: center; gap: 8px; margin-top: clamp(4px, 1vh, 10px); }
 .sg { display: inline-flex; align-items: center; gap: 4px; padding: 3px 7px; border: 1px solid var(--line); border-radius: var(--r); color: var(--muted); transition: color .3s, border-color .3s; }
 .sg .ic { width: 12px; height: 12px; color: inherit; }
-.sg .sg-ok { opacity: 0; scale: .3; transition: opacity .3s, scale .3s cubic-bezier(.2, 1.6, .4, 1); }
+.sg .sg-ok { opacity: 0; scale: .3; transition: opacity .3s, scale .3s cubic-bezier(.2, .7, .2, 1); }
 .sg.on { color: var(--proof); border-color: var(--proof); } .sg.on .sg-ok { opacity: 1; scale: 1; }
+/* the badges say who signs the move on screen: A and B (Alice, Bob), the same in every language.
+   A signature landing sends one ring out of its badge */
+.sg { position: relative; }
+.sg-n { font: 700 var(--lbl)/1 var(--mono); letter-spacing: 0; }
+.sg.on::after { content: ""; position: absolute; inset: -1px; border: 1.5px solid var(--proof); border-radius: inherit; pointer-events: none; animation: sg-ring .9s ease-out both; }
+@keyframes sg-ring { from { opacity: .9; transform: scale(1); } to { opacity: 0; transform: scale(1.5, 1.9); } }
+/* reduced motion: no ring, and nothing blinks (the live dot, the current block, the margin) */
+@media (prefers-reduced-motion: reduce) { .sg.on::after { animation: none; opacity: 0; } .dg-state[data-tone] .dg-dot, .blocks i.now, .is-cover .t-btc .bar-x { animation: none; } }
 [data-tone="live"] .node-c { border-style: solid; border-color: var(--primary); } [data-tone="live"] .ic-lk { color: var(--primary); }
 [data-tone="ok"] .node-c { border-style: solid; border-color: var(--proof); }     [data-tone="ok"] .ic-lk { color: var(--proof); }
 [data-tone="warn"] .node-c { border-style: solid; border-color: var(--warn); }    [data-tone="warn"] .ic-lk { color: var(--warn); }
@@ -526,7 +643,7 @@ html:not(.js) .diagram { display: none; }
 .toll-slot { position: absolute; left: 50%; top: 0; translate: -50% -50%; background: var(--bg); transition: border-color .35s; }
 .toll.is-paid, .toll.is-paid .toll-slot { border-style: solid; border-color: var(--proof); }
 .toll .ic { width: 18px; height: 18px; color: var(--ink-strong); }
-.toll b { font: 700 clamp(10px, .95vw, 12px)/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink-strong); }
+.toll b { font: 700 var(--lbl)/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--ink-strong); }
 
 /* time, drawn as what it is: small blocks, one after the other, up to the flag */
 .chain { position: relative; z-index: 1; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; align-items: center; gap: 12px; margin-top: clamp(12px, 2.6vh, 28px); }
@@ -545,7 +662,9 @@ html:not(.js) .diagram { display: none; }
 .coin svg { width: 62%; height: 62%; }
 .coin-lg { width: var(--coin); height: var(--coin); } .coin-sm { width: var(--coin-s); height: var(--coin-s); } .coin-xs { width: var(--coin-xs); height: var(--coin-xs); }
 .coin.is-btc { background: var(--orange); } .coin.is-usd { background: var(--emerald); }
-.coin.is-held { outline: 2px solid var(--bg); outline-offset: -5px; }
+/* held in the contract: a ring inside the coin. Inset shadows follow the radius everywhere
+   (an outline is drawn square by Safari before 16.4) */
+.coin.is-held { box-shadow: inset 0 0 0 3px var(--orange), inset 0 0 0 5px var(--bg); }
 
 /* scenario B is another run of the same contract: its own frame, after a clean cut */
 .dg-stage::after { content: ""; position: absolute; inset: -12px; border: 1.5px dashed var(--warn); border-radius: var(--r); opacity: 0; pointer-events: none; transition: opacity .4s; z-index: 0; }
@@ -571,19 +690,21 @@ html:not(.js) .diagram { display: none; }
 
   .dg-sec { display: none; }
   .forks { margin-left: auto; }
+  /* the terms keep their labels: the contract takes more of the width, the gaps less */
+  .dg-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.6fr) minmax(0, 1fr); column-gap: clamp(18px, 4vw, 40px); }
 }
 @media (max-width: 720px) {
   .has-play .moves-pin { padding-block: calc(var(--nav-h) + 8px) 10px; gap: 8px; }
   .dg-head { gap: 8px; margin-bottom: 8px; }
-  .dg-state { padding: 5px 9px 5px 8px; gap: 7px; } .dg-state b { font-size: 11px; }
-  .fk { padding: 0 7px; font-size: 8px; letter-spacing: .04em; }
+  .dg-state { padding: 5px 9px 5px 8px; gap: 7px; } .dg-state b { --ls: .08em; font-size: 12px; }
+  .fk { padding: 0 7px; letter-spacing: .02em; }
   .has-play .st-k, .has-play .st-intro .st-k { font-size: clamp(30px, 9.4vw, 40px); }
   .has-play .st-p { font-size: 15px; line-height: 1.32; margin-top: 8px; }
   .dg-grid { column-gap: 10px; grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr) minmax(0, 1fr); }
   .node { padding: 9px 4px; gap: 4px; }
-  .node-k { font-size: 10px; letter-spacing: .06em; } .node-s { font-size: 8px; letter-spacing: .02em; }
+  .node-k { letter-spacing: .04em; } .node-s { letter-spacing: 0; }
   .pocket { gap: 3px; }
-  .terms { gap: 4px; } .terms li { grid-template-columns: 12px minmax(0, 1fr); gap: 5px; } .terms span { display: none; } .terms .ic { width: 12px; height: 12px; }
+  .terms { grid-template-columns: 12px minmax(0, 1fr); gap: 4px 5px; } .terms span { display: none; } .terms .ic { width: 12px; height: 12px; }
   .bar { height: 6px; }
   .sigs { gap: 4px; } .sg { padding: 2px 4px; gap: 2px; } .sg .ic { width: 10px; height: 10px; }
   .toll { padding: calc(var(--coin-xs) / 2 + 5px) 10px 6px; gap: 6px; } .toll .ic { width: 14px; height: 14px; }
@@ -595,26 +716,59 @@ html:not(.js) .diagram { display: none; }
   .pl-bar { display: flex; width: 100%; } .pl-bar > .pl-btn { width: 44px; }
   .pl-dots { flex: 1 1 auto; min-width: 0; gap: 4px; padding-inline: 10px; } .pl-dot { flex: 1 1 0; width: auto; min-width: 0; } .pl-gap { margin-inline: 3px; }
 }
+/* phones: a compact head, so the title, the picture and the player share the screen. At 390 the
+   pill and both chips still fit one row once the chips drop their letter-spacing and the tick's
+   reserve (the chips are right-aligned, so a changing state word never moves them); the title
+   settles at 30px. A chip stays 30px tall but takes a 44px touch */
+@media (max-width: 440px) {
+  .dg-head { gap: 6px; }
+  .dg-state { padding: 5px 8px 5px 7px; gap: 6px; } .dg-state b { --ls: 0; }
+  .fk { position: relative; min-height: 30px; padding: 0 6px; letter-spacing: 0; }
+  .fk::before { content: ""; position: absolute; inset: -7px 0; }
+  .fk .ic { display: none; }   /* the chip's colour alone says which ending has played */
+  .has-play .st-k, .has-play .st-intro .st-k { font-size: 30px; }
+  .has-play .st-k em { font-size: 12px; }   /* the step's marker keeps the 12px floor at a 30px title */
+}
+/* the smallest phones: no row holds all three at 12px. The pill keeps the first, the two endings split the second */
+@media (max-width: 374px) {
+  .forks { flex: 1 1 100%; margin-left: 0; }
+  .fk { flex: 1 1 0; justify-content: center; min-width: 0; }
+}
+/* the smallest phones: a smaller coin keeps Bob's three slots inside his card */
+@media (max-width: 350px) { .diagram { --coin: 32px; } }
+/* landscape phones and short windows: no height for three rows, so the words sit beside the picture */
+@media (max-height: 540px) and (min-width: 600px) {
+  .has-play .moves-pin { min-height: 0; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr); grid-template-rows: minmax(0, 1fr) auto; column-gap: 0; }
+  .has-play .moves-top { grid-area: 1 / 1; align-self: center; }
+  .has-play .moves-body { grid-area: 1 / 2; grid-template-columns: minmax(0, 1fr); }
+  .has-play .sec-moves .player { grid-area: 2 / 1 / 3 / 3; }
+  .has-play .sec-moves .pl-side { display: none; } .has-play .sec-moves .pl-in { display: inline-grid; width: 44px; }
+  .has-play .sec-moves .st-k, .has-play .sec-moves .st-intro .st-k { font-size: 28px; } .has-play .sec-moves .st-p { font-size: 14px; }
+  .dg-sec, .terms span { display: none; } .terms { grid-template-columns: 16px minmax(0, 1fr); }
+  .fk { min-height: 26px; padding: 0 6px; letter-spacing: 0; }   /* the chips drop to their own row under the pill: they keep a button's height */
+  .dg-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr) minmax(0, 1fr); column-gap: clamp(10px, 2vw, 40px); }   /* 9vw of the whole screen is too wide for half of it */
+}
 
 /* ---------- 002 · the schema: three answers side by side, one criterion per row ---------- */
 .schema { display: grid; gap: 0; border: 1px solid var(--line-strong); border-radius: var(--r); background: var(--bg); overflow: hidden; }
-.sch-heads, .sch-row { display: grid; grid-template-columns: minmax(150px, 1fr) repeat(3, minmax(0, 1.55fr)); }
+.sch-heads, .sch-row { display: grid; grid-template-columns: minmax(140px, 1fr) repeat(4, minmax(0, 1.4fr)); }
 .sch-heads { background: var(--surface); border-bottom: 1px solid var(--line-strong); }
 .sch-head { display: grid; justify-items: start; gap: 4px; padding: var(--s3); border-left: 1px solid var(--line-strong); }
 .sch-head svg, .sch-head img { width: 40px; height: 40px; padding: 8px; border: 1px solid var(--line-strong); border-radius: var(--r); color: var(--ink-strong); margin-bottom: 6px; }
 .sch-head b { font-family: var(--display); font-weight: 700; font-size: 18px; color: var(--ink-strong); }
 .sch-head span { font: 500 11px/1.4 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
-.sch-head.sch-us { background: var(--primary); color: var(--on-primary); }
-.sch-head.sch-us b, .sch-head.sch-us span { color: var(--on-primary); }
-.sch-head.sch-us img { border-color: rgba(255, 255, 255, .5); background: rgba(255, 255, 255, .12); }
+/* our column: the cross keeps its crimson on the plain surface, a crimson rule on top says which one is ours */
+.sch-head.sch-us { box-shadow: inset 0 2px 0 var(--primary); }
+.sch-head.sch-us img { border-color: var(--primary); }
 .sch-row { border-top: 1px solid var(--line-strong); }
 .sch-row:first-of-type { border-top: 0; }
-.sch-k { margin: 0; padding: var(--s3); font: 600 12px/1.45 var(--mono); letter-spacing: .04em; text-transform: uppercase; color: var(--ink-strong); background: var(--surface); }
+.sch-k { margin: 0; padding: var(--s3); font: 700 16px/1.3 var(--display); font-stretch: 108%; letter-spacing: -.01em; color: var(--ink-strong); background: var(--surface); text-wrap: balance; }
 .sch-c { padding: var(--s3); border-left: 1px solid var(--line-strong); font-size: 15px; line-height: 1.45; color: var(--ink); }
-.sch-c b { display: flex; align-items: baseline; gap: 8px; font-weight: 600; color: var(--ink-strong); font-size: 16px; }
+.sch-c b { display: flex; align-items: baseline; gap: 8px; font-weight: 600; color: var(--ink-strong); font-size: 15px; text-wrap: balance; }
 .sch-c b::before { font-family: var(--mono); font-weight: 700; font-size: 13px; flex: 0 0 auto; }
 .sch-c b.no::before { content: "\2715"; color: var(--warn); }
 .sch-c b.yes::before { content: "\2713"; color: var(--proof); }
+.sch-c b:not([class])::before { content: "\2013"; color: var(--muted); }   /* neither yes nor no: a dash keeps the indent */
 .sch-c span { display: block; margin-top: 4px; padding-left: 21px; font-size: 14px; color: var(--muted); }
 .sch-c.sch-us { background: color-mix(in oklab, var(--primary) 7%, var(--surface-2)); }
 .sch-c.sch-us span { color: var(--ink); }
@@ -622,12 +776,25 @@ html:not(.js) .diagram { display: none; }
 @media (max-width: 860px) {
   .sch-heads { display: none; }
   .sch-row { grid-template-columns: 1fr; }
-  .sch-k { padding: 12px var(--s2); }
+  .sch-k { padding: 12px var(--s2); font-size: 15px; }
   .sch-c { border-left: 0; padding: 12px var(--s2) 14px; }
   .sch-c + .sch-c { border-top: 1px solid var(--line); }
-  .sch-c::before { display: block; }
+  .sch-c::before { display: block; font-size: 12px; }
   .sch-c.sch-us::before { color: var(--primary); }
+  /* the picker (main.js, .seg-vs + data-vs on the table): one rival at a time, beside us. It stays
+     under the bar while the table scrolls by. The three rival cells share one grid cell, the two
+     not chosen invisible but still counted, so every row is as tall as its tallest choice and a
+     switch never moves the page */
+  .seg-vs { position: sticky; top: calc(var(--nav-h) + var(--s1)); z-index: 5; display: flex; width: 100%; height: 46px; margin-bottom: var(--s2); background: var(--bg); }   /* 44px buttons inside the hairline */
+  .seg-vs > button { flex: 1 1 0; justify-content: center; min-width: 0; padding: 0 6px; font-size: 12px; }
+  .schema[data-vs] .sch-row { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .schema[data-vs] .sch-k { grid-column: 1 / -1; }
+  .schema[data-vs] .sch-c { grid-row: 2; grid-column: 2; visibility: hidden; border-top: 0; border-left: 1px solid var(--line); padding: 12px 12px 14px; }
+  .schema[data-vs] .sch-c.sch-us { grid-column: 1; visibility: visible; border-left: 0; }
+  .schema[data-vs="aave"] .sch-c:nth-child(3), .schema[data-vs="morpho"] .sch-c:nth-child(4), .schema[data-vs="bank"] .sch-c:nth-child(5) { visibility: visible; }
+  .schema[data-vs] .sch-c span { padding-left: 0; }   /* a half-width column has no room for the indent under the mark */
 }
+@media (min-width: 861px) { .seg-vs { display: none; } }   /* four columns: nothing to pick */
 
 /* ---------- + expanders (native <details>) ---------- */
 /* the + itself: two bars in currentColor (the context rules below place them inside their box) */
@@ -671,7 +838,8 @@ html:not(.js) .diagram { display: none; }
 .qa-row[open] > summary .plus-i::before, .qa-row[open] > summary .plus-i::after { rotate: 45deg; }
 .qa-d { padding: 0 var(--s3) var(--s3) calc(220px + var(--s3) + var(--s3)); }
 .qa-d > p { max-width: 62ch; font-size: 15px; color: var(--ink); }
-.qa-d .share { margin-top: 0; }
+.qa-d > .share:first-child { margin-top: 0; }
+.qa-d > * + * { margin-top: var(--s3); }   /* an answer can be text, the two columns, then text again */
 @media (max-width: 720px) {
   .qa-row > summary { grid-template-columns: minmax(0, 1fr) auto; gap: var(--s1) var(--s2); padding: var(--s2); }
   .qa-row > summary .plus-i { grid-row: 1 / 3; grid-column: 2; }
@@ -681,9 +849,10 @@ html:not(.js) .diagram { display: none; }
 
 /* ---------- 003 · what you share, what you never do ---------- */
 .share { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s3); margin-top: var(--s3); }
-.share-col { border: 1px solid var(--line-strong); border-left-width: 4px; border-radius: var(--r); background: var(--surface); padding: var(--s3); }
-.share-col.is-ok { border-left-color: var(--proof); } .share-col.is-no { border-left-color: var(--primary); }
+.share-col { border: 1px solid var(--line-strong); border-radius: var(--r); background: var(--surface); padding: var(--s3); }
 .share-col .label { display: flex; align-items: center; gap: 8px; color: var(--ink-strong); }
+/* the colour sits on the icon, not on a thick edge */
+.share-col.is-ok .label .ic { color: var(--proof); } .share-col.is-no .label .ic { color: var(--primary); }
 .share-col .label .ic { width: 16px; height: 16px; }
 .share-col.is-ok .label { color: var(--proof); } .share-col.is-no .label { color: var(--primary); }
 .share-col ul { display: grid; gap: 6px; margin-top: var(--s2); }
@@ -707,6 +876,24 @@ html:not(.js) .diagram { display: none; }
 @media (max-width: 960px) { .cards-3 { grid-template-columns: 1fr; } }
 @media (max-width: 720px) { .cards { grid-template-columns: 1fr; } }
 
+/* ---------- 005 · the two ways to sign: one sheet, two columns, the same four rows in each ---------- */
+.sgn { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border: 1px solid var(--line-strong); border-radius: var(--r); background: var(--surface); overflow: hidden; }
+.sgn-col { display: grid; align-content: start; gap: var(--s3); padding: var(--s4); }
+.sgn-col + .sgn-col { border-left: 1px solid var(--line-strong); }
+.sgn-t { display: flex; align-items: center; gap: 12px; margin: 0; font-family: var(--display); font-stretch: 112%; font-weight: 700; font-size: clamp(22px, 2vw, 28px); letter-spacing: -.02em; color: var(--ink-strong); }
+.sgn-t img, .sgn-t svg { width: 28px; height: 28px; flex: 0 0 auto; color: var(--ink-strong); }
+.sgn-kv { display: grid; margin: 0; border-top: 1px solid var(--line); }
+.sgn-kv > div { display: grid; grid-template-columns: 5.5em minmax(0, 1fr); gap: var(--s2); padding: 12px 0; border-bottom: 1px solid var(--line); }
+.sgn-kv dt { font: 600 11px/1.7 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.sgn-kv dd { margin: 0; font-size: 15px; line-height: 1.5; color: var(--ink); }
+.sgn-more { justify-self: start; font: 600 12px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--primary); }
+@media (max-width: 720px) {
+  .sgn { grid-template-columns: 1fr; }
+  .sgn-col { padding: var(--s3); }
+  .sgn-col + .sgn-col { border-left: 0; border-top: 1px solid var(--line-strong); }
+  .sgn-kv > div { grid-template-columns: 5em minmax(0, 1fr); }
+}
+
 /* ---------- 006 · the connector: the site window, the one door, the wallet with real screens ---------- */
 .conn { display: grid; grid-template-columns: minmax(0, 5fr) 88px minmax(0, 4fr) 88px minmax(0, 7fr); align-items: center; gap: 0; margin-top: var(--s2); }
 .conn figure { margin: 0; display: grid; gap: var(--s2); justify-items: center; }
@@ -729,14 +916,19 @@ html:not(.js) .diagram { display: none; }
 .cn-link { position: relative; display: grid; gap: 22px; align-content: center; padding: 0 6px; }
 .cn-link .ln { display: block; height: 3px; border-radius: 2px; background-image: repeating-linear-gradient(90deg, var(--primary) 0 8px, transparent 8px 16px); background-size: 16px 3px; animation: ln-out 1.2s linear infinite; }
 .cn-link .ln.back { background-image: repeating-linear-gradient(90deg, var(--proof) 0 8px, transparent 8px 16px); animation: ln-back 1.2s linear infinite; }
-.cn-link .lab { position: absolute; left: 50%; translate: -50% 0; font: 600 9px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+.cn-link .lab { position: absolute; left: 50%; translate: -50% 0; font: 600 11px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
 .cn-link .lab:first-of-type { top: calc(50% - 30px); } .cn-link .lab.is-proof { top: calc(50% + 20px); color: var(--proof); }
 @keyframes ln-out { to { background-position: 16px 0; } }
 @keyframes ln-back { to { background-position: -16px 0; } }
 .conn-box { width: 100%; display: grid; gap: 8px; justify-items: center; text-align: center; padding: var(--s3) var(--s2); border: 1.5px solid var(--primary); border-radius: var(--r); background: var(--bg); }
 .conn-box .label.is-primary { color: var(--primary); }
-.conn-ring { width: 84px; height: 84px; padding: 18px; border: 1px solid var(--line-strong); border-radius: 50%; background: var(--surface); color: var(--emerald); }
-.conn-ring svg { width: 100%; height: 100%; }
+.conn-ring { position: relative; display: grid; place-items: center; width: 88px; height: 88px; border: 1.5px solid var(--primary); border-radius: 50%; background: var(--surface); }
+.conn-ring img, .conn-ring svg { width: 44px; height: 44px; }
+/* two thin rings leave the mark in turn, in step with the wires: the request going out, the signature coming back */
+.conn-ring::before, .conn-ring::after { content: ""; position: absolute; inset: -1.5px; border: 1.5px solid var(--primary); border-radius: 50%; opacity: 0; animation: ring-out 2.4s cubic-bezier(.2, .6, .2, 1) infinite; }
+.conn-ring::after { animation-delay: 1.2s; border-color: var(--proof); }
+@keyframes ring-out { 0% { transform: scale(1); opacity: .6; } 70%, 100% { transform: scale(1.5); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .conn-ring::before, .conn-ring::after { animation: none; } }
 .conn-scheme { font-size: 18px; font-weight: 700; color: var(--ink-strong); }
 .conn-box .win-small { border-top: 0; padding-top: 0; }
 .cn-wallet { position: relative; }
@@ -770,17 +962,8 @@ html:not(.js) .diagram { display: none; }
 .sec-head-c { display: grid; justify-items: center; text-align: center; gap: var(--s1); margin-bottom: var(--s6); }
 /* ---------- 005 · templar wallet: the explorer ---------- */
 .brand-mark { width: 26px; height: 26px; display: block; }
-.tw-brand { display: flex; align-items: center; gap: var(--s2); margin: 0 0 var(--s3); font-family: var(--display); font-stretch: 118%; font-weight: 800; letter-spacing: -.02em; font-size: 22px; color: var(--ink-strong); }
-.tw-brand img { width: 44px; height: 44px; padding: 8px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); }
-.peek { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: var(--s6); align-items: center; margin-top: var(--s2); }
-.peek-shots { margin: 0; display: grid; gap: var(--s2); }
-.tw-frame { position: relative; display: grid; border: 1px solid var(--line-strong); border-radius: var(--r); background: var(--onyx); padding: 10px; }
-.pk-shot { grid-area: 1 / 1; margin: 0; }
-.js .pk-shot { opacity: 0; transition: opacity .7s ease; } .js .pk-shot.is-on { opacity: 1; }
-.pk-cap { text-align: center; }
-.tw-frame::after { content: ""; display: block; height: 10px; margin: 10px -10px -10px; border-top: 1px solid var(--line-strong); background: var(--surface-2); border-radius: 0 0 var(--r) var(--r); }
-.tw-frame img { display: block; width: 100%; height: auto; border-radius: 2px; transition: opacity .16s; }
-.tw-frame img.is-swapping { opacity: 0; }
+.tw-brand { display: flex; align-items: center; gap: var(--s2); margin: 0 0 var(--s3); font-family: var(--display); font-stretch: 118%; font-weight: 800; letter-spacing: -.02em; font-size: clamp(26px, 2.4vw, 32px); color: var(--ink-strong); }
+.tw-brand img { width: 60px; height: 60px; padding: 11px; border: 1px solid var(--line); border-radius: var(--r); background: var(--surface); }
 .tw-points { list-style: none; margin: var(--s3) 0 0; padding: 0; display: grid; gap: var(--s3); }
 .tw-points-row { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--s4); }
 .tw-points li { display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: var(--s2); align-items: start; }
@@ -789,11 +972,36 @@ html:not(.js) .diagram { display: none; }
 .tw-points p { margin: 0; color: var(--muted); }
 .tw-ctas { display: flex; flex-wrap: wrap; align-items: center; gap: var(--s2) var(--s3); margin-top: var(--s4); }
 .tw-note { flex-basis: 100%; margin: 0; }
+/* 006 · the scroll showcase (ContainerScroll, a React island from src/components/ui): the heading block centred
+   above the device, the real dashboard inside it (dark or light, following the page), then the points and the CTA */
+.tw-show { overflow-x: clip; margin-block: calc(-1 * var(--s8)) calc(-1 * var(--s12)); }
+.tw-show-head { display: grid; justify-items: center; gap: var(--s2); text-align: center; padding: 0 var(--gutter) var(--s4); }
+.tw-show-head .lede { margin-inline: auto; }
+.tw-scr { display: block; width: 100%; height: 100%; }
+.tw-scr img { width: 100%; height: 100%; object-fit: cover; object-position: left top; border-radius: 10px; }
+/* phones: the card keeps the dashboard's own 16:10 (the island), so the whole screen shows, uncropped */
+@media (max-width: 767px) { .tw-scr img { object-fit: contain; object-position: center; border-radius: 12px; } }
+.tw-scr-light { display: none; }
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) .tw-scr-dark { display: none; }
+  :root:not([data-theme="dark"]) .tw-scr-light { display: block; }
+}
+:root[data-theme="light"] .tw-scr-dark { display: none; }
+:root[data-theme="light"] .tw-scr-light { display: block; }
+.tw-info { display: grid; justify-items: center; }
+.tw-info .tw-points { justify-self: stretch; }
+.tw-info .tw-ctas { justify-content: center; text-align: center; margin-top: var(--s6); }
+/* 006 · the connector, framed as the wallet's advantage: a short centred head under the points, then the
+   diagram and the three steps at the full column width (the same width they had in 005) */
+.tw-conn { justify-self: stretch; margin-top: var(--s8); padding-top: var(--s8); border-top: 1px solid var(--line); }
+.tw-conn-head { display: grid; justify-items: center; gap: var(--s2); text-align: center; margin-bottom: var(--s4); }
+.tw-conn-head .label { margin: 0; }
+.tw-conn-h { font-family: var(--display); font-stretch: 112%; font-weight: 700; line-height: 1.1; letter-spacing: -.02em; font-size: clamp(24px, 2.6vw, 34px); text-wrap: balance; color: var(--ink-strong); max-width: 24ch; }
+.tw-conn-head .lede { margin-inline: auto; max-width: 40em; font-size: clamp(16px, 1.3vw, 18px); }
+@media (max-width: 720px) { .tw-conn { margin-top: var(--s6); padding-top: var(--s6); } }
 .btn-ghost { display: inline-flex; align-items: center; min-height: 48px; padding: 0 var(--s3); border: 1px solid var(--line-strong); border-radius: var(--r); font: 600 12px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--ink); text-decoration: none; }
 .btn-ghost:hover { border-color: var(--primary); color: var(--ink-strong); text-decoration: none; }
 @media (max-width: 960px) {
-  .peek { grid-template-columns: 1fr; gap: var(--s3); }
-  .peek-shots { order: -1; }
   .tw-points-row { grid-template-columns: 1fr; gap: var(--s3); }
 }
 
@@ -803,9 +1011,9 @@ html:not(.js) .diagram { display: none; }
 .fee .h3 { font-size: 20px; }
 /* three drawings, three different ideas: a line that stays flat while time passes, a lock that
    clicks and lets one small coin go, a coin with one thin slice cut out */
-.fx { width: 100%; max-width: 300px; height: auto; overflow: visible; --loop: 5s; }
+.fx { width: 100%; max-width: 320px; height: auto; overflow: visible; --loop: 5s; }
 .fx-ic { color: var(--ink-strong); }
-.fx-t { font: 600 9px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; fill: var(--muted); }
+.fx-t { font: 600 11.5px/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; fill: var(--muted); }
 .fx-rule { fill: none; stroke: var(--line-strong); stroke-width: 1.5; stroke-dasharray: 3 5; }
 .fx-head { fill: var(--line-strong); }
 .fx-tick { fill: none; stroke: var(--line); stroke-width: 1.5; }
@@ -845,9 +1053,16 @@ html:not(.js) .diagram { display: none; }
   .fx-hop { translate: 150px 0; }
   .fx-wedge { translate: 22px 0; } .fx-pie { translate: -10px 0; }
 }
-.fee-when { font-size: 11px; }
+/* the amount, big, right above the line that says when and in what: the number in the display
+   face, its unit half as big. Orange only where bitcoin is named */
+.fee-v { font-family: var(--display); font-stretch: 125%; font-weight: 800; font-size: clamp(28px, 3vw, 40px); line-height: 1; letter-spacing: -.03em; font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--ink-strong); }
+.fee-v .fee-u { font-size: .5em; font-stretch: 100%; font-weight: 700; letter-spacing: 0; }
+.fee-v.is-btc { color: var(--orange); }
+.fee-v.is-word { font-size: clamp(24px, 2.4vw, 34px); letter-spacing: -.02em; }
+.fee-v + .fee-when { margin-top: -8px; }
+.fee-when { font-size: 12px; text-wrap: balance; max-width: 26ch; }
 .fee .more > p { max-width: 30ch; color: var(--muted); font-size: 14px; }
-.fees-note { text-align: center; margin-top: var(--s4); font-size: 11px; }
+.fees-note { text-align: center; margin: var(--s4) auto 0; max-width: 60ch; font-size: 14px; line-height: 1.5; color: var(--muted); }
 @media (max-width: 840px) { .fees { grid-template-columns: 1fr; max-width: 420px; } }
 
 /* ---------- team ---------- */
@@ -863,7 +1078,7 @@ html:not(.js) .diagram { display: none; }
 .cta-final .cta-h { max-width: 16ch; font-size: clamp(38px, 6vw, 84px); }
 .cta-final .lede { max-width: 30em; }
 .cta-final .cta-xl { margin-top: var(--s2); height: 80px; padding: 0 var(--s8); font-size: 17px; gap: 16px; }
-@media (max-width: 720px) { .cta-final .cta-xl { height: 64px; padding: 0 var(--s5); font-size: 15px; } }
+@media (max-width: 720px) { .cta-final .cta-xl { height: 64px; padding: 0 var(--s4); font-size: 15px; } }
 
 /* ---------- footer: a hairline slab, columns blur in once ---------- */
 .foot {
@@ -886,8 +1101,26 @@ html:not(.js) .diagram { display: none; }
 .foot-small a { color: inherit; text-decoration: underline; text-underline-offset: 3px; }
 .foot-small { font-size: 11px; letter-spacing: .06em; color: var(--muted); text-transform: uppercase; }
 @media (min-width: 720px) { .foot-cols { grid-template-columns: repeat(4, minmax(max-content, 1fr)); } }
+/* phones: two columns can not hold the e-mail address, so the four lists stack */
+@media (max-width: 520px) { .foot-cols { grid-template-columns: 1fr; gap: var(--s4); } .foot-col a { min-width: 0; overflow-wrap: anywhere; } }
 @media (min-width: 1100px) { .foot { padding-inline: var(--s6); } .foot-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 2fr); } }
 @media (max-width: 720px) { .foot { width: 100%; max-width: none; padding-inline: var(--gutter); border-inline: 0; border-radius: 0; } }
+
+/* ---------- phones: the two floors, 12px for any text on screen and 44px for anything you tap ----------
+   The desktop keeps its 10-11px mono micro-labels; here they all step up to 12px. Small links and
+   handles grow their touch area with padding that a negative margin gives back, so nothing moves;
+   list rows that would overlap instead take the full 44px pitch */
+@media (max-width: 640px) {
+  .tag, .seg > *, .qa-q, .more summary, .win-small, .win-url, .sgn-kv dt, .foot-col h3, .foot-small, .cta-note,
+  .win-rows li span, .cta.is-soon em, .foot-soon em { font-size: 12px; }
+  .more summary { padding-block: 10px; margin-block: -10px; }
+  .sgn-more { padding-block: 14px; margin-block: -14px; }
+  .foot-brand .brand { padding-block: 9px; margin-block: -9px; }
+  .foot-col ul { gap: 0; }
+  .foot-col a { padding-block: 11px; }
+  .foot-col .foot-soon { padding-block: 11px; }
+  .foot-bottom .seg { height: 46px; } .foot-bottom .seg > * { padding: 0 14px; }
+}
 
 /* ---------- scroll ruler (block clock) ---------- */
 .rule { position: fixed; right: 0; top: var(--nav-h); bottom: 0; width: 40px; display: flex; flex-direction: column; align-items: center; z-index: 40; pointer-events: none; }

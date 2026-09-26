@@ -6,9 +6,12 @@
   var root = document.documentElement;
   var EN = root.lang === "en";
   var L = EN
-    ? { light: "Switch to the light theme", dark: "Switch to the dark theme", offer: "Request", signing: "Signing", active: "Active", repaid: "Repaid", expired: "Expired", claimed: "Claimed", contract: "Contract", step: "Step", of: "of", pause: "Pause", play: "Play", vs: "Compare Templar Lend with" }
-    : { light: "Passa al tema chiaro", dark: "Passa al tema scuro", offer: "Richiesta", signing: "In firma", active: "Attivo", repaid: "Rimborsato", expired: "Scaduto", claimed: "Reclamato", contract: "Contratto", step: "Passo", of: "di", pause: "Pausa", play: "Riproduci", vs: "Confronta Templar Lend con" };
+    ? { light: "Switch to the light theme", dark: "Switch to the dark theme", offer: "Request", signing: "Signing", active: "Active", repaid: "Repaid", expired: "Expired", claimed: "Claimed", contract: "Contract", step: "Step", of: "of", pause: "Pause", play: "Play", vs: "Compare Templar Lend with", vsq: "Question", next: "Next", again: "Start again" }
+    : { light: "Passa al tema chiaro", dark: "Passa al tema scuro", offer: "Richiesta", signing: "In firma", active: "Attivo", repaid: "Rimborsato", expired: "Scaduto", claimed: "Reclamato", contract: "Contratto", step: "Passo", of: "di", pause: "Pausa", play: "Riproduci", vs: "Confronta Templar Lend con", vsq: "Domanda", next: "Avanti", again: "Ricomincia" };
   var reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  /* phones (the same line as .only-phone / .only-desktop in style.css): no scroll-driven blocks, the hero's
+     words on a clock, the worked example on four tap stops. Read once: a phone does not change width */
+  var PHONE = window.matchMedia("(max-width: 767px)").matches;
   var store = {
     get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
     set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
@@ -104,8 +107,12 @@
   /* the worked example (001), the comparison picker (002) and the details on demand need no GSAP:
      they start here, before the guard (all three are function declarations further down, hoisted) */
   initDiagram();
+  if (PHONE) initMobDiagram();
   initSchemaPick();
   initDetails();
+  initSnaps();
+  initNavHere();
+  if (PHONE && !reduce) initHeroCycle();
 
   /* ---------- GSAP ---------- */
   if (!window.gsap) return;
@@ -144,7 +151,9 @@
   var hero = document.querySelector(".hero");
   var heroMark = document.getElementById("hero-mark");
   var heroIntro = [];   /* the load-in tweens (reveals, below): the first cut lands them, so a quick scroll never cuts a half-drawn block */
-  if (hero && heroMark && ST && !reduce) {
+  /* phones: no pin and no scripted scroll (initHeroCycle, above the GSAP guard, runs the words on a clock;
+     the arrow is a plain smooth-scroll link to the band) */
+  if (hero && heroMark && ST && !reduce && !PHONE) {
     var heroLayers = Array.prototype.slice.call(heroMark.querySelectorAll(".mark-txt"));
     var nBeats = heroLayers.length;
     var heroProg = hero.querySelector(".hero-prog");
@@ -619,6 +628,67 @@
     }
   }
 
+  /* ---------- 001 on phones: four tap stops instead of the clock. The engine above stays as it is; this
+     pauses it (the flag sticks even before the section is on screen) and drives it through its own dots
+     (#pl-dots, one per step but the intro and the outro: offer 0 · accept 1 · time 2 · repay 3 · cut 4 ·
+     timeB 5 · claim 6), so a stop
+     always shows that step's finished picture and its whole sentence. The bar and the chips are hidden
+     by CSS; the .mob-step control (‹ · «Passo N di 4» · › and the crimson «Avanti») is what you tap ---------- */
+  function initMobDiagram() {
+    var box = document.querySelector(".mob-step"), playBtn = document.getElementById("pl-play");
+    var dots = Array.prototype.slice.call(document.querySelectorAll("#pl-dots .pl-dot"));
+    if (!box || !playBtn || dots.length < 7) return;
+    var STOPS = [0, 1, 3, 6];                       /* Alice chiede · Bob accetta · Alice restituisce · Bob prende il bitcoin */
+    var lbl = box.querySelector(".mob-lbl"), next = box.querySelector(".mob-next"), at = 0;
+    var paint = function () {
+      lbl.textContent = L.step + " " + (at + 1) + " " + L.of + " " + STOPS.length;
+      var last = at === STOPS.length - 1;
+      next.querySelector("span").textContent = last ? L.again : L.next;
+      next.classList.toggle("is-again", last);
+    };
+    var goTo = function (i) {
+      at = ((i % STOPS.length) + STOPS.length) % STOPS.length;
+      dots[STOPS[at]].click(); paint();
+    };
+    if (playBtn.getAttribute("aria-label") === L.pause) playBtn.click();
+    goTo(0);
+    box.querySelectorAll("[data-mob]").forEach(function (b) { b.addEventListener("click", function () { goTo(at + (+b.dataset.mob)); }); });
+    next.addEventListener("click", function () { goTo(at + 1); });
+  }
+
+  /* ---------- the hero on phones: the block says its four words on a clock, 2.2 s each, the next one cutting
+     in over the last with the same left-to-right wipe (style.css: mark-cut on .is-in). It runs only while the
+     hero is on screen and the tab visible. No GSAP needed ---------- */
+  function initHeroCycle() {
+    var box = document.querySelector(".hero"), mark = document.getElementById("hero-mark");
+    if (!box || !mark) return;
+    var layers = Array.prototype.slice.call(mark.querySelectorAll(".mark-txt"));
+    if (layers.length < 2) return;
+    root.classList.add("has-cycle");
+    var beat = 0, timer = 0, swap = 0, inView = true;
+    var dress = function (i) { box.setAttribute("data-tone", layers[i].getAttribute("data-tone") || ""); box.setAttribute("data-beat", String(i)); };
+    layers[0].classList.add("is-on"); dress(0);
+    var cut = function () {
+      var from = beat, to = (beat + 1) % layers.length, layer = layers[to];
+      if (swap) { clearTimeout(swap); layers.forEach(function (l) { l.classList.remove("is-in"); }); layers[from].classList.add("is-on"); }
+      beat = to; dress(to);
+      layer.classList.add("is-in");
+      swap = setTimeout(function () {
+        swap = 0;
+        layers[from].classList.remove("is-on");
+        layer.classList.remove("is-in"); layer.classList.add("is-on");
+      }, 360);
+    };
+    var run = function () {
+      var should = inView && !document.hidden;
+      if (should && !timer) timer = setInterval(cut, 2200);
+      if (!should && timer) { clearInterval(timer); timer = 0; }
+    };
+    if ("IntersectionObserver" in window) new IntersectionObserver(function (en) { inView = en[0].isIntersecting; run(); }, { threshold: 0.15 }).observe(box);
+    document.addEventListener("visibilitychange", run);
+    run();
+  }
+
   /* ---------- 002 on phones: one rival at a time. Above the table a segmented control, one button
      per rival column (its name read from the header cell, so each language keeps its own); the
      choice lands on the table as data-vs="aave|morpho|bank" (the column order) and style.css shows,
@@ -645,6 +715,51 @@
     };
     schema.parentNode.insertBefore(seg, schema);
     pick(KEYS[0]);
+    /* phones: the rows become the cards of a strip (one question per card), the table rows step aside */
+    if (matchMedia("(max-width: 767px)").matches) {
+      var strip = document.createElement("div"); strip.className = "snap sch-strip";
+      strip.setAttribute("data-snap-label", L.vsq || "");
+      Array.prototype.forEach.call(schema.querySelectorAll(".sch-row"), function (row) {
+        var card = document.createElement("div"); card.className = "sch-card";
+        Array.prototype.forEach.call(row.children, function (c) { card.appendChild(c.cloneNode(true)); });
+        strip.appendChild(card);
+      });
+      schema.appendChild(strip); schema.classList.add("has-strip");
+    }
+  }
+
+  /* ---------- phones: the swipe strips get their dots, the bar says which section you are in ---------- */
+  function initSnaps() {
+    Array.prototype.forEach.call(document.querySelectorAll(".snap"), function (strip) {
+      var cards = Array.prototype.slice.call(strip.children);
+      if (cards.length < 2 || (strip.nextElementSibling && strip.nextElementSibling.classList.contains("snap-dots"))) return;
+      var dots = document.createElement("div"); dots.className = "snap-dots";
+      var btns = cards.map(function (c, i) {
+        var b = document.createElement("button"); b.type = "button";
+        b.setAttribute("aria-label", ((strip.getAttribute("data-snap-label") || "") + " " + (i + 1) + "/" + cards.length).trim());
+        b.addEventListener("click", function () { strip.scrollTo({ left: c.offsetLeft - strip.offsetLeft - parseFloat(getComputedStyle(strip).paddingLeft || 0), behavior: "smooth" }); });
+        dots.appendChild(b); return b;
+      });
+      strip.parentNode.insertBefore(dots, strip.nextSibling);
+      var mark = function (i) { btns.forEach(function (b, k) { if (k === i) b.setAttribute("aria-current", "true"); else b.removeAttribute("aria-current"); }); };
+      mark(0);
+      if ("IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (en) { en.forEach(function (e) { if (e.isIntersecting) mark(cards.indexOf(e.target)); }); }, { root: strip, threshold: 0.6 });
+        cards.forEach(function (c) { io.observe(c); });
+      }
+    });
+  }
+  function initNavHere() {
+    var here = document.querySelector(".nav-here");
+    var secs = Array.prototype.slice.call(document.querySelectorAll("[data-nav]"));
+    if (!here || !secs.length || !("IntersectionObserver" in window)) return;
+    var on = null;
+    var io = new IntersectionObserver(function (en) {
+      en.forEach(function (e) { if (e.isIntersecting) on = e.target; else if (on === e.target) on = null; });
+      here.textContent = on ? on.getAttribute("data-nav") : "";
+      here.classList.toggle("is-on", !!on);
+    }, { rootMargin: "-38% 0px -57% 0px", threshold: 0 });
+    secs.forEach(function (s) { io.observe(s); });
   }
 
   /* ---------- details on demand: the + is only the visible handle. A click anywhere on a row,
@@ -697,13 +812,13 @@
       var uBtc = h1Fix.querySelector(".u-btc");
       if (uBtc) heroIntro.push(gsap.fromTo(uBtc, { "--u": 0 }, { "--u": 1, duration: 0.4, delay: 0.3, ease: "power3.inOut" }));
     }
-    if (heroMark && root.classList.contains("has-pin")) {
+    if (heroMark && (root.classList.contains("has-pin") || root.classList.contains("has-cycle"))) {
       heroIntro.push(gsap.from(heroMark, { clipPath: "inset(0% 100% 0% 0%)", duration: 0.34, delay: 0.3, ease: "power3.out", clearProps: "clipPath" }));
     }
     var heroRest = gsap.utils.toArray(".hero-top, .hero-down");
     if (heroRest.length) heroIntro.push(gsap.from(heroRest, { y: 10, opacity: 0, duration: 0.4, stagger: 0.05, delay: 0.45, ease: "power2.out", clearProps: "transform,opacity" }));
-    /* the fans draw themselves in and the camera settles in CSS alone (style.css: fans-draw, fans-in,
-       fans-settle), so a tab switch, a refresh or a fast scroll can never leave a line half drawn */
+    /* the fans arrive in CSS alone (style.css: fans-reveal), one clip per fan: no per-stroke animation, no
+       scaling of the masked layer, nothing that can flicker or be left half drawn */
     var heroBox = document.querySelector(".hero");
     if (heroBox) {
       /* depth: with a mouse, the two fans and the sentence sit on different planes and drift

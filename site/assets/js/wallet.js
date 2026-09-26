@@ -319,6 +319,7 @@
   if (tour) {
     var chapters = $$(".chapter[data-scene]", tour), rows = $$(".tr-h[data-ch]", tour);
     var wide = window.matchMedia("(min-width: 1024px)");
+    var phone = window.matchMedia("(max-width: 767px)"), mob = $(".mob-tour");   /* phones: the drawn tour is hidden, the strip stands in */
     var order = [], on = null, tourIn = false;
     var rowOf = function (id) { return rows.filter(function (t) { return t.dataset.ch === id; })[0]; };
     var chOf = function (id) { return chapters.filter(function (c) { return c.dataset.scene === id; })[0]; };
@@ -373,6 +374,14 @@
     /* bring a chapter into view: on a wide screen the whole tour; on phones and tablets its row comes to the top,
        where it will sit once the rows above it have folded (they are still folding while the page scrolls) */
     var bring = function (id, how) {
+      if (phone.matches) {
+        /* the section (#tour) comes under the bar and the strip swipes to the chapter's card */
+        var sec = document.getElementById("tour");
+        if (sec) sec.scrollIntoView({ behavior: how });
+        var card = mob ? $('[data-ch="' + id + '"]', mob) : null;
+        if (card) mob.scrollTo({ left: card.offsetLeft - mob.offsetLeft - (parseFloat(getComputedStyle(mob).paddingLeft) || 0), behavior: how });
+        return;
+      }
       if (wide.matches) { tour.scrollIntoView({ behavior: how }); return; }
       var t = rowOf(id); if (!t) return;
       var fold = 0;
@@ -490,4 +499,63 @@
     });
   });
 
+
+  /* ---------- phones: the swipe strips get their dots, the bar says which section you are in ---------- */
+  function initSnaps() {
+    Array.prototype.forEach.call(document.querySelectorAll(".snap"), function (strip) {
+      var cards = Array.prototype.slice.call(strip.children);
+      if (cards.length < 2 || (strip.nextElementSibling && strip.nextElementSibling.classList.contains("snap-dots"))) return;
+      var dots = document.createElement("div"); dots.className = "snap-dots";
+      var btns = cards.map(function (c, i) {
+        var b = document.createElement("button"); b.type = "button";
+        b.setAttribute("aria-label", ((strip.getAttribute("data-snap-label") || "") + " " + (i + 1) + "/" + cards.length).trim());
+        b.addEventListener("click", function () { strip.scrollTo({ left: c.offsetLeft - strip.offsetLeft - parseFloat(getComputedStyle(strip).paddingLeft || 0), behavior: "smooth" }); });
+        dots.appendChild(b); return b;
+      });
+      strip.parentNode.insertBefore(dots, strip.nextSibling);
+      var mark = function (i) { btns.forEach(function (b, k) { if (k === i) b.setAttribute("aria-current", "true"); else b.removeAttribute("aria-current"); }); };
+      mark(0);
+      if ("IntersectionObserver" in window) {
+        var io = new IntersectionObserver(function (en) { en.forEach(function (e) { if (e.isIntersecting) mark(cards.indexOf(e.target)); }); }, { root: strip, threshold: 0.6 });
+        cards.forEach(function (c) { io.observe(c); });
+      }
+    });
+  }
+  function initNavHere() {
+    var here = document.querySelector(".nav-here");
+    var secs = Array.prototype.slice.call(document.querySelectorAll("[data-nav]"));
+    if (!here || !secs.length || !("IntersectionObserver" in window)) return;
+    var on = null;
+    var io = new IntersectionObserver(function (en) {
+      en.forEach(function (e) { if (e.isIntersecting) on = e.target; else if (on === e.target) on = null; });
+      here.textContent = on ? on.getAttribute("data-nav") : "";
+      here.classList.toggle("is-on", !!on);
+    }, { rootMargin: "-38% 0px -57% 0px", threshold: 0 });
+    secs.forEach(function (s) { io.observe(s); });
+  }
+  /* the comparison on phones: the table becomes a strip of cards, one per question (the dots come from initSnaps) */
+  (function () {
+    if (!matchMedia("(max-width: 767px)").matches) return;
+    var table = document.querySelector(".cm-t"), body = table && table.tBodies[0];
+    if (!body || body.rows.length < 2) return;
+    var strip = document.createElement("div"); strip.className = "snap cm-strip";
+    strip.setAttribute("data-snap-label", IT ? "Domanda" : "Question");
+    Array.prototype.forEach.call(body.rows, function (row) {
+      var card = document.createElement("article"); card.className = "cm-card";
+      var h = document.createElement("h3"); h.textContent = row.querySelector("th").textContent.trim(); card.appendChild(h);
+      var ul = document.createElement("ul"); ul.setAttribute("role", "list");
+      Array.prototype.forEach.call(row.querySelectorAll("td"), function (td) {
+        var li = document.createElement("li"); li.className = td.className;
+        var w = document.createElement("span"); w.className = "cm-w"; w.textContent = td.getAttribute("data-w") || "";
+        var g = document.createElement("span"); g.className = "cm-g"; g.setAttribute("aria-hidden", "true"); g.textContent = (td.querySelector(".cm-g") || td).textContent.trim();
+        var sr = td.querySelector(".sr-only"); if (sr) { var s2 = document.createElement("span"); s2.className = "sr-only"; s2.textContent = sr.textContent; li.appendChild(s2); }
+        li.appendChild(w); li.appendChild(g); ul.appendChild(li);
+      });
+      card.appendChild(ul); strip.appendChild(card);
+    });
+    table.parentNode.insertBefore(strip, table.nextSibling);
+    table.classList.add("is-off"); table.setAttribute("aria-hidden", "true");
+  })();
+  initSnaps();
+  initNavHere();
 })();

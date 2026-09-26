@@ -315,19 +315,16 @@ html:not(.js) .menu-btn, html:not(.js) .nav-theme { display: none !important; } 
 .paths-layer .base { stroke-linecap: round; }
 .paths-layer .flow { stroke-linecap: round; stroke-dasharray: .3 .7; stroke-dashoffset: 1; animation: pflow var(--period, 11s) linear var(--o, 0s) infinite; }
 @keyframes pflow { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
-/* the arrival is CSS alone, so nothing can leave a line half drawn: each base line draws itself in (the
-   inner sweep first, --i from the markup), the travelling dashes fade in once the lines are there, and the
-   camera settles from slightly too close (the `scale` property, apart from the scroll transform below) */
-.js .paths-layer .base { stroke-dasharray: 1 1; stroke-dashoffset: 1; animation: fans-draw 1.1s ease-in-out both; animation-delay: calc(var(--i, 0) * 20ms); }
-.js .paths-layer .flow { animation: pflow var(--period, 11s) linear var(--o, 0s) infinite, fans-in 1s ease-out .6s both; }
-.js .paths { animation: fans-settle 1.8s cubic-bezier(.2, .7, .2, 1) both; }
-@keyframes fans-draw { to { stroke-dashoffset: 0; } }
-@keyframes fans-in { from { opacity: 0; } }
-@keyframes fans-settle { from { scale: 1.1; } to { scale: 1; } }
+/* the arrival: each fan is revealed as a whole (a clip that opens from its own edge, plus a short fade),
+   nothing touches the strokes themselves and nothing scales the masked layer — the two things that made the
+   lines flicker while they drew in. Reduced motion: the fans are simply there. */
+.js .paths-layer { animation: fans-reveal 1.2s cubic-bezier(.2, .7, .2, 1) both; }
+.js .paths-green { animation-name: fans-reveal-r; animation-delay: .08s; }
+@keyframes fans-reveal { from { clip-path: inset(0 100% 0 0); opacity: 0; } 35% { opacity: 1; } to { clip-path: inset(0 0 0 0); opacity: 1; } }
+@keyframes fans-reveal-r { from { clip-path: inset(0 0 0 100%); opacity: 0; } 35% { opacity: 1; } to { clip-path: inset(0 0 0 0); opacity: 1; } }
 @media (prefers-reduced-motion: reduce) {
-  .paths-layer .flow, .js .paths-layer .flow { animation: none; stroke-dasharray: none; stroke-opacity: .25; }
-  .js .paths-layer .base { animation: none; stroke-dasharray: none; }
-  .js .paths { animation: none; }
+  .paths-layer .flow { animation: none; stroke-dasharray: none; stroke-opacity: .25; }
+  .js .paths-layer { animation: none; clip-path: none; opacity: 1; }
 }
 .hero-inner { position: relative; z-index: 1; display: grid; justify-items: center; text-align: center; }
 .hero-inner .display { max-width: 18ch; }
@@ -386,7 +383,7 @@ html:not(.js) .menu-btn, html:not(.js) .nav-theme { display: none !important; } 
 }
 /* depth. --p: scrolling pushes through the fans, which open like a curtain; --mx/--my: the pointer moves
    the two fans and the sentence on different planes */
-.paths { transform: scale(calc(1 + var(--p) * .18)); transform-origin: 50% 62%; will-change: transform; }
+.paths { transform: scale(calc(1 + var(--p) * .18)); transform-origin: 50% 62%; }
 .paths-layer { overflow: visible; }
 .paths-orange { translate: calc(var(--mx) * -14px - var(--p) * 2.4vw) calc(var(--my) * -8px); }
 .paths-green { translate: calc(var(--mx) * -24px + var(--p) * 2.4vw) calc(var(--my) * -13px); }
@@ -1134,3 +1131,123 @@ html:not(.has-play) .diagram { display: none; }   /* no JS, or before main.js ha
 .status a { color: var(--ink-strong); text-decoration: underline; text-underline-offset: 3px; }
 .reveal { will-change: transform, opacity; }
 .js .reveal.is-in { will-change: auto; }   /* release the layer once revealed: a layer on a fractional position covers hairlines */
+
+/* ---------- phones: the two versions of a block. ≤767px the phone version shows, the desktop piece steps aside ---------- */
+@media (max-width: 767px) { .only-desktop { display: none !important; } }
+@media (min-width: 768px) { .only-phone { display: none !important; } }
+
+/* the swipe strip (phones only: on the landing the same elements are grids from 768px up): one card per
+   screen, snapping, the next one peeking; the dots come from initSnaps() */
+@media (max-width: 767px) {
+  .snap { display: flex; gap: 12px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none; -webkit-overflow-scrolling: touch; margin-inline: calc(-1 * var(--gutter)); padding: 4px var(--gutter); scroll-padding-inline: var(--gutter); }
+  .snap::-webkit-scrollbar { display: none; }
+  .snap > * { flex: 0 0 calc(100% - 28px); min-width: 0; scroll-snap-align: start; }
+}
+@media (min-width: 768px) { .snap-dots { display: none !important; } }
+.snap-dots { display: flex; justify-content: center; gap: 0; margin-top: var(--s1); }
+.snap-dots button { width: 44px; height: 44px; display: grid; place-items: center; padding: 0; }   /* a 44px touch around an 8px dot */
+.snap-dots button::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--line-strong); transition: background-color .2s, transform .2s; }
+.snap-dots button[aria-current]::before { background: var(--primary); transform: scale(1.25); }
+
+/* the bar on phones says where you are (initNavHere: the section under the upper part of the screen), and the
+   open menu is the page's index: numbered rows, then the other product and the tools */
+.nav-here { display: none; }
+@media (max-width: 640px) {
+  .nav-here { display: block; flex: 1 1 auto; min-width: 0; font: 600 11px/1.2 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; opacity: 0; transition: opacity .25s; }
+  .nav-here.is-on { opacity: 1; min-width: 12ch; }   /* the section's name wins over the brand's word, which clips away */
+  .nav-ctl > .cta-sm.is-soon { display: none; }   /* the switched-off app button leaves the bar; it stays in the closing section */
+}
+.nav[data-open="true"] .nav-links > a[data-n]::before { content: attr(data-n); display: inline-block; min-width: 3.4em; color: var(--muted); font-weight: 500; }
+
+/* ---------- phones (≤767px): the reduced version. No scroll-driven blocks — the hero's words on a clock, the
+   worked example on four tap stops, the long rows as swipe strips — and the desktop-only pieces step aside
+   with a one-line note (.mob-note). Nothing in here reaches 768px ---------- */
+@keyframes mark-cut { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0); } }
+@media (max-width: 767px) {
+  /* the hero: one screen (no pin, so no .has-pin height), the block stacked in one cell like the pinned one;
+     initHeroCycle adds .is-in to the next word (the wipe), then .is-on. The brand sits where the bar will land */
+  .has-cycle .hero-top { position: absolute; z-index: 2; top: 0; left: 0; right: 0; height: var(--nav-h); display: flex; align-items: center; }
+  .has-cycle .hero .mark { display: grid; gap: 0; width: max-content; max-width: 100%; margin: .2em auto 0; font-size: min(1em, 8.4vw); letter-spacing: inherit; line-height: inherit; }
+  .has-cycle .hero .mark-txt { grid-area: 1 / 1; padding: .03em .26em .07em; visibility: hidden; }
+  .has-cycle .hero .mark-txt.is-on, .has-cycle .hero .mark-txt.is-in { visibility: visible; }
+  .has-cycle .hero .mark-txt.is-in { z-index: 1; animation: mark-cut .32s cubic-bezier(.2, .7, .2, 1) both; }
+  /* the fans stay, with half of their moving lines (the .flow uses sit after the 24 .base uses in each layer) */
+  .paths-layer .flow:nth-of-type(even) { display: none; }
+
+  /* 001: not pinned, it flows like any other section. The bar, the side arrows and the chips are .only-desktop;
+     the .mob-step control under the picture drives the same engine (main.js initMobDiagram) */
+  .has-play .sec-moves { padding-block: var(--s6) var(--s8); }
+  .has-play .sec-moves[id] { scroll-margin-top: calc(var(--nav-h) - 1px); }
+  .has-play .moves-pin { height: auto; min-height: 0; overflow: visible; grid-template-rows: auto auto auto; gap: var(--s3); padding-block: 0; }
+  .has-play .st-k, .has-play .st-intro .st-k { font-size: 30px; }
+  .has-play .st-k em { font-size: 12px; }
+  .has-play .st-p { font-size: 15px; line-height: 1.35; margin-top: 8px; }
+  .has-play .player { flex-direction: column; align-items: stretch; gap: 0; }
+  .mob-step { display: grid; gap: 10px; }
+  .mob-row { display: grid; grid-template-columns: 44px minmax(0, 1fr) 44px; align-items: center; gap: var(--s2); }
+  .mob-btn { display: grid; place-items: center; width: 44px; height: 44px; border: 1.5px solid var(--line-strong); border-radius: var(--r); background: var(--bg); color: var(--ink-strong); }
+  .mob-btn svg { width: 15px; height: 15px; }
+  .mob-btn:active, .mob-next:active { translate: 0 1px; }
+  .mob-lbl { text-align: center; font: 500 12px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+  .mob-next { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; height: 56px; border-radius: var(--r); background: var(--primary); color: var(--on-primary); font: 700 13px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+  .mob-next.is-again .cta-arrow { display: none; }
+  .mob-note { margin-top: var(--s2); font-size: 12px; line-height: 1.45; color: var(--muted); text-align: center; text-wrap: pretty; }
+
+  /* 004 · 005 · 006: the fee cards, the two ways to sign and the wallet's three points are swipe strips (.snap) */
+  .fees { max-width: none; }
+  .fx-t { font-size: 12.5px; }   /* the drawing is scaled to the card: at 360 this still renders at 12px */
+  .sgn { border: 0; border-radius: 0; background: none; overflow-x: auto; overflow-y: hidden; }
+  .sgn > .sgn-col { border: 1px solid var(--line-strong); border-radius: var(--r); background: var(--surface); padding: var(--s3); }
+  .tw-points > li { padding: var(--s3); border: 1px solid var(--line-strong); border-radius: var(--r); background: var(--surface); }
+
+  /* 006: the island renders a still block below 768px (container-scroll-animation.tsx: .tw-static); the
+     section's negative margins were the tall island's slack */
+  .tw-show { margin-block: 0; }
+  .tw-static { padding: 0 var(--gutter) var(--s4); }
+  .tw-static .tw-show-head { padding-inline: 0; }
+  /* the connector without its diagram: the three steps as a compact numbered list, icon left */
+  .tw-conn { margin-top: var(--s4); padding-top: var(--s4); }
+  .tw-conn-head { margin-bottom: var(--s3); }
+  .tw-info .tw-ctas { margin-top: var(--s4); }
+  .way { grid-template-columns: minmax(0, 1fr); margin-top: var(--s3); }
+  .way li { grid-template-columns: 30px minmax(0, 1fr); grid-template-areas: "ic h" "ic p"; column-gap: 14px; row-gap: 4px; justify-items: start; align-items: start; text-align: left; padding: 14px var(--s2); border-left: 0; }
+  .way li + li { border-top: 1px solid var(--line); }
+  .way .way-ic { grid-area: ic; margin: 0; }   /* .way-ic alone would reach the .tw-points cards */
+  .way .h3 { grid-area: h; font-size: 17px; }
+  .way p { grid-area: p; font-size: 14px; line-height: 1.45; max-width: none; }
+
+  /* the landing's footer (.foot-land: the wallet pages keep their own, in wallet.css): two columns of links,
+     the e-mail row across both, 40px rows */
+  .foot-land { padding-top: var(--s6); }
+  .foot-land .foot-grid { gap: var(--s4); }
+  .foot-land .foot-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s3) 12px; }
+  .foot-land .foot-col:nth-child(3) { grid-column: 1 / -1; }
+  .foot-land .foot-col ul { gap: 0; margin-top: var(--s1); }
+  .foot-land .foot-col a, .foot-land .foot-col .foot-soon { padding-block: 9px; min-width: 0; overflow-wrap: anywhere; }
+  .foot-land .foot-bottom { margin-top: var(--s4); }
+}
+
+/* ---------- phones, second pass: a shorter page ---------- */
+@media (max-width: 767px) {
+  /* a horizontal overflow must never widen the page: Chrome for Android would shrink everything to fit it */
+  html { overflow-x: clip; }
+  /* the sections breathe less: 48px instead of 64 */
+  .sec, .sec-moves { padding-block: var(--s6); }
+  .sec-head, .sec-head-c { margin-bottom: var(--s4); }
+  /* the closing title on one screen */
+  .cta-final .cta-h { font-size: clamp(30px, 8.6vw, 38px); }
+  /* 002 · the comparison as a strip: one card per question, the picked rival beside us (main.js rebuilds the
+     rows as cards inside .schema so the picker's data-vs keeps working; the picker itself is no longer sticky) */
+  .schema.has-strip .sch-heads, .schema.has-strip .sch-row { display: none; }
+  .schema.has-strip { border: 0; background: none; overflow: visible; }
+  .seg-vs { position: static; }
+  .sch-card { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-content: start; border: 1px solid var(--line-strong); border-radius: var(--r); background: var(--bg); overflow: hidden; }
+  .sch-card .sch-k { grid-column: 1 / -1; padding: 14px var(--s2); font-size: 16px; }
+  .sch-card .sch-c { display: none; border-left: 0; border-top: 1px solid var(--line); padding: 12px var(--s2) 14px; }
+  .sch-card .sch-c::before { display: block; }
+  .sch-card .sch-c.sch-us { display: block; }
+  .sch-card .sch-c.sch-us::before { color: var(--primary); }
+  .schema[data-vs="aave"] .sch-card .sch-c:nth-child(3), .schema[data-vs="morpho"] .sch-card .sch-c:nth-child(4), .schema[data-vs="bank"] .sch-card .sch-c:nth-child(5) { display: block; border-left: 1px solid var(--line); }
+  .sch-card .sch-c span { padding-left: 0; }
+  .sch-card .sch-c b { font-size: 14px; }
+}

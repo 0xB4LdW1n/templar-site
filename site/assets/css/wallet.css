@@ -1052,3 +1052,70 @@ html:not(.js) .dv-label .typed, [data-scene="coins"].past-2 .dv-label .typed { w
 /* the accordion: a tapped row lands 8px under the navbar (wallet.js reads this margin) */
 @media (max-width: 1023px) { .tr-h[id] { scroll-margin-top: calc(var(--nav-h) + 16px); } }
 @media (max-width: 380px) { .pillars { gap: 8px 10px; } .pillars li { gap: 6px; } .pillars .way-ic { width: 28px; height: 28px; padding: 6px; } }
+
+/* =====================================================================================================
+   5 · PHONES (≤767px) — the reduced version, 2026-09-26: no scroll animations, the long pieces as swipe strips,
+       the desktop-only pieces step aside with one line. Nothing here reaches 768px and up.
+   ===================================================================================================== */
+@media (max-width: 767px) {
+  /* the hero: the knight never taller than 40% of the screen, so words, buttons and knight read in ~1.5 screens */
+  .wh { padding-bottom: var(--s6); }
+  .wh-knight { width: min(100%, 360px, 40svh); }
+  /* the page's rhythm, a notch tighter (the hero keeps its own top padding under the fixed bar) */
+  .sec:not(.wh) { padding-block: var(--s6); }
+  .sec-head { margin-bottom: var(--s4); }
+
+  /* ---------- 001 · the tour as a swipe strip: seven cards, a real screenshot each (16:10 in a dark frame; the
+     phone shot of the connector in a 4:5 frame of the same height), number, title, one sentence ---------- */
+  .mt-card { display: grid; gap: 8px; align-content: start; padding: 10px 10px 14px; border: 1px solid var(--line-strong); border-radius: var(--r); background: var(--surface); }
+  .mt-slot { display: flex; justify-content: center; aspect-ratio: 16 / 10; }
+  .mt-shot { width: 100%; height: 100%; overflow: hidden; border: 1px solid var(--line-strong); border-radius: var(--r); background: #0A0E0D; }
+  .mt-shot.is-phone { flex: 0 0 auto; width: auto; aspect-ratio: 4 / 5; }
+  .mt-shot picture, .mt-shot img { display: block; width: 100%; height: 100%; }
+  .mt-shot img { object-fit: cover; object-position: 50% 0; }
+  .mt-t { display: flex; align-items: center; gap: 12px; margin: 6px 0 0; font: 600 17px/1.3 var(--display); letter-spacing: -.01em; color: var(--ink-strong); text-wrap: balance; }
+  .mt-n { flex: 0 0 auto; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--ink-strong); color: var(--bg); font: 500 12px/1 var(--mono); }
+  .mt-p { margin: 0 0 0 40px; font-size: 14px; line-height: 1.5; color: var(--muted); text-wrap: pretty; }
+  .mt-note { margin: var(--s2) 0 0; font-size: 13px; line-height: 1.5; color: var(--muted); text-wrap: pretty; }
+
+  /* ---------- 004 · the four ways into the documentation as a compact list: one row each, the arrow at the end ---------- */
+  .gh-docs { grid-template-columns: minmax(0, 1fr); }
+  .doc-link { grid-template-columns: minmax(0, 1fr) auto; grid-template-rows: auto auto; align-items: center; align-content: center; gap: 2px 12px; min-height: 56px; padding: 8px 14px; }
+  .doc-link b { grid-column: 1; font-size: 15px; }
+  .doc-link span { grid-column: 1; font-size: 12px; line-height: 1.35; }
+  .doc-link i { position: static; grid-column: 2; grid-row: 1 / span 2; }
+
+  /* ---------- the footer: the links two columns wide, the contact row across both, the address never past the edge ---------- */
+  .foot-cols { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s3); }
+  .foot-col:nth-child(3) { grid-column: 1 / -1; }
+  .foot-col ul { gap: 0; margin-top: var(--s1); }
+  .foot-col a, .foot-col .foot-soon { display: flex; min-height: 40px; padding-block: 8px; min-width: 0; overflow-wrap: anywhere; }
+
+  /* ---------- the two floors: 12px for any text, 44px for anything you tap ---------- */
+  .btn.is-soon em, .os-you { font-size: 12px; }
+  .mob-tour + .snap-dots { gap: 0; }
+  .mob-tour + .snap-dots button { width: 44px; height: 44px; }
+  /* links inside running text keep their place; the padding only widens what a finger can hit */
+  .os-note a, .os-alt a, .os-all a, .dl-src a, .cm-note a, .cm-links a, .foot-small a { padding-block: 14px; }
+  .cm-links { gap: 12px; }
+}
+
+/* ---------- 6 · PHONES, second pass: a shorter Download and a Comparison you swipe through ---------- */
+@media (max-width: 767px) {
+  /* the drawn monitor is a desktop piece: the system switch, the sheet and the button say it all */
+  .mon { display: none; }
+  .dl-grid { gap: 0; }
+  /* the comparison: on phones wallet.js rebuilds the table as a strip of cards (one per question) and switches the
+     table off; a flex tbody would not clip its overflow and Chrome for Android widened the whole page to it */
+  .cm-t.is-off { display: none; }
+  .cm-card { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px 12px; align-content: start; padding: var(--s3); border: 1px solid var(--line-strong); border-radius: var(--r); background: var(--surface); }
+  .cm-card h3 { grid-column: 1 / -1; margin: 0; padding: 0 0 10px; border-bottom: 1px solid var(--line); font-family: var(--display); font-weight: 600; font-size: 18px; line-height: 1.25; color: var(--ink-strong); }
+  .cm-card li { display: flex; align-items: center; gap: 10px; min-height: 44px; }
+  .cm-card .cm-w { font: 600 12px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+  .cm-card .is-us .cm-w { color: var(--primary); }
+  .cm-card .cm-g { font-size: 20px; }
+  .cm-card .is-yes .cm-g { color: var(--proof); }
+  .cm-card .is-no .cm-g { color: var(--muted); }
+  /* a horizontal overflow must never widen the page: Chrome for Android would shrink everything to fit it */
+  html { overflow-x: clip; }
+}
